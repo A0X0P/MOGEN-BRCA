@@ -1,0 +1,31 @@
+# Data contract for the active TCGA-BRCA cohort.
+#
+# The values here are the ratified data contract (CLAUDE.md sections 4-8). The
+# gene panel and clinical layout are NOT configurable: they live in
+# src/data/pam50.py and src/data/schema/clinical.py so a trained checkpoint can
+# never disagree with the code that produced it.
+
+cohort: TCGA-BRCA
+
+# Raw sources, relative to the repository root.
+sources:
+  # Age, sex, pathological tumour/nodal stage, PAM50 SUBTYPE, overall survival.
+  pan_can_clinical: data/raw/brca_tcga_pan_can_atlas_2018/data_clinical_patient.txt
+  # The only source carrying per-patient receptor assays (ER/PR IHC, HER2
+  # IHC score, HER2 FISH).
+  legacy_clinical: data/raw/brca_tcga_clinical_data.tsv
+  # RSEM gene expression.
+  expression: data/raw/brca_tcga_pan_can_atlas_2018/data_mrna_seq_v2_rsem.txt
+
+# Patient-level split. Stratified on PAM50 subtype x survival-event status.
+split:
+  val_fraction: 0.15
+  test_fraction: 0.15
+  stratify: true
+
+# Fitted at runtime by scripts/run_train.py on the TRAINING fold only, then
+# written back into this section so the statistics ride inside the checkpoint
+# and inference reuses them instead of refitting (CLAUDE.md sections 11-12).
+normalization_stats: null
+gene_standardization: null
+gene_order: null

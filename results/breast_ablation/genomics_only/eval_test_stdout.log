@@ -1,0 +1,48 @@
+[17:48:40] INFO     Global seed set to 42.                                     
+[17:48:40] INFO     Loaded checkpoint from                                     
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\genomics_only\checkpoints\checkpoint_best.p
+                    t (epoch=28, git=3978ab33).                                
+[17:48:40] INFO     Model loaded on cpu (checkpoint epoch=28,                  
+                    clinical_stats=True, gene_stats=True).                     
+[17:48:43] INFO     BRCA cohort: pan_can=1084 legacy=1101 expression=1082      
+                    intersection=1082 genes=50                                 
+           INFO     Usable labels: {'subtype': 981, 'er': 1031, 'pr': 1028,    
+                    'her2': 937, 'survival': 1068} | events=151 | survival     
+                    exclusions=14                                              
+           INFO     HER2 evidence paths: {'ihc-definitive': 536,               
+                    'masked:no-evidence': 145, 'fish-only': 247,               
+                    'ihc-and-fish-agree': 146, 'conflict:fish-wins': 8}        
+           INFO     BRCA cohort: pan_can=1084 legacy=1101 expression=1082      
+                    intersection=1082 genes=50                                 
+           INFO     Usable labels: {'subtype': 981, 'er': 1031, 'pr': 1028,    
+                    'her2': 937, 'survival': 1068} | events=151 | survival     
+                    exclusions=14                                              
+           INFO     HER2 evidence paths: {'ihc-definitive': 536,               
+                    'masked:no-evidence': 145, 'fish-only': 247,               
+                    'ihc-and-fish-agree': 146, 'conflict:fish-wins': 8}        
+[17:48:43] WARNING  Stratum 'Basal-like|survival:missing' has only 2 patient(s)
+                    — assigned to train.                                       
+           WARNING  Stratum 'Normal-like|survival:missing' has only 1          
+                    patient(s) — assigned to train.                            
+           INFO     Split: train=756 val=163 test=163 (total=1082).            
+[17:48:43] INFO     Recomputed split matches the training run's                
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\genomics_only\split.json.                  
+           INFO     Evaluating 163 patients; usable labels per task:           
+                    {'subtype': 148, 'er': 155, 'pr': 155, 'her2': 134,        
+                    'survival': 160}.                                          
+[17:48:44] INFO     Evaluation complete: 163 patients, task counts {'subtype': 
+                    148, 'er': 155, 'pr': 155, 'her2': 134, 'survival': 160}.  
+[17:48:44] INFO     subtype: n=148 accuracy=0.8649 f1=0.7912 pr_auc=0.8432     
+                    precision=0.8301 recall=0.7721 roc_auc=0.9622              
+           INFO     er: n=155 accuracy=0.9226 f1=0.8845 pr_auc=0.8763          
+                    precision=0.8845 recall=0.8845 roc_auc=0.9183              
+           INFO     pr: n=155 accuracy=0.8581 f1=0.8230 pr_auc=0.8763          
+                    precision=0.8879 recall=0.7980 roc_auc=0.8652              
+           INFO     her2: n=134 accuracy=0.8284 f1=0.7033 pr_auc=0.7930        
+                    precision=0.8160 recall=0.6728 roc_auc=0.8033              
+           INFO     survival: concordance_index=0.6008 n_events=23.0000        
+           INFO     Metrics written to                                         
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\genomics_only\test_metrics.json.           

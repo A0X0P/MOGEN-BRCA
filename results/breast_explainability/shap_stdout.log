@@ -1,0 +1,94 @@
+[18:32:46] INFO     Loaded checkpoint from                                     
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast\checkpoints\checkpoint_best.pt (epoch=14,           
+                    git=3978ab33).                                             
+[18:32:46] INFO     Model loaded on cpu (checkpoint epoch=14,                  
+                    clinical_stats=True, gene_stats=True).                     
+[18:32:48] INFO     BRCA cohort: pan_can=1084 legacy=1101 expression=1082      
+                    intersection=1082 genes=50                                 
+           INFO     Usable labels: {'subtype': 981, 'er': 1031, 'pr': 1028,    
+                    'her2': 937, 'survival': 1068} | events=151 | survival     
+                    exclusions=14                                              
+           INFO     HER2 evidence paths: {'ihc-definitive': 536,               
+                    'masked:no-evidence': 145, 'fish-only': 247,               
+                    'ihc-and-fish-agree': 146, 'conflict:fish-wins': 8}        
+           INFO     BRCA cohort: pan_can=1084 legacy=1101 expression=1082      
+                    intersection=1082 genes=50                                 
+           INFO     Usable labels: {'subtype': 981, 'er': 1031, 'pr': 1028,    
+                    'her2': 937, 'survival': 1068} | events=151 | survival     
+                    exclusions=14                                              
+           INFO     HER2 evidence paths: {'ihc-definitive': 536,               
+                    'masked:no-evidence': 145, 'fish-only': 247,               
+                    'ihc-and-fish-agree': 146, 'conflict:fish-wins': 8}        
+[18:32:48] WARNING  Stratum 'Basal-like|survival:missing' has only 2 patient(s)
+                    — assigned to train.                                       
+           WARNING  Stratum 'Normal-like|survival:missing' has only 1          
+                    patient(s) — assigned to train.                            
+           INFO     Split: train=756 val=163 test=163 (total=1082).            
+[18:32:48] INFO     Evaluating 163 patients; usable labels per task:           
+                    {'subtype': 148, 'er': 155, 'pr': 155, 'her2': 134,        
+                    'survival': 160}.                                          
+[18:32:49] INFO     Evaluation complete: 163 patients, task counts {'subtype': 
+                    148, 'er': 155, 'pr': 155, 'her2': 134, 'survival': 160}.  
+[18:32:49] INFO     Recorded metrics reproduced: True (max abs diff 0.000e+00  
+                    over 34 metrics).                                          
+           INFO     Feature space: 62 features (50 genomic + 12 clinical).     
+                    Background 100 train patients, explaining 163 test         
+                    patients.                                                  
+[18:34:45] INFO     er: SHAP computed for 1 output(s) over 163 patients        
+                    (nsamples=200).                                            
+[18:36:31] INFO     pr: SHAP computed for 1 output(s) over 163 patients        
+                    (nsamples=200).                                            
+[18:38:28] INFO     her2: SHAP computed for 1 output(s) over 163 patients      
+                    (nsamples=200).                                            
+[18:47:28] INFO     pam50: SHAP computed for 5 output(s) over 163 patients     
+                    (nsamples=200).                                            
+[18:49:24] INFO     survival: SHAP computed for 1 output(s) over 163 patients  
+                    (nsamples=200).                                            
+           INFO     All 10 SHAP sanity checks passed.                          
+[18:49:26] INFO     Wrote shap_er_global.png.                                  
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:27] INFO     Wrote shap_er_beeswarm.png.                                
+[18:49:28] INFO     Wrote shap_pr_global.png.                                  
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:29] INFO     Wrote shap_pr_beeswarm.png.                                
+[18:49:30] INFO     Wrote shap_her2_global.png.                                
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:31] INFO     Wrote shap_her2_beeswarm.png.                              
+[18:49:32] INFO     Wrote shap_pam50_global.png.                               
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:478: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:33] INFO     Wrote shap_pam50_class_bars.png.                           
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:34] INFO     Wrote shap_pam50_beeswarm_luminal_a.png.                   
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:35] INFO     Wrote shap_pam50_beeswarm_luminal_b.png.                   
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:36] INFO     Wrote shap_pam50_beeswarm_her2_enriched.png.               
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:38] INFO     Wrote shap_pam50_beeswarm_basal_like.png.                  
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:39] INFO     Wrote shap_pam50_beeswarm_normal_like.png.                 
+           INFO     Wrote shap_survival_global.png.                            
+C:\Users\A0X0P\OneDrive\Documents\cancer-framework\scripts\run_shap.py:453: FutureWarning: The NumPy global RNG was seeded by calling `np.random.seed`. In a future version this function will no longer use the global RNG. Pass `rng` explicitly to opt-in to the new behaviour and silence this warning.
+  shap.summary_plot(
+[18:49:40] INFO     Wrote shap_survival_beeswarm.png.                          
+           INFO     Wrote 620 rows to shap_feature_importance.csv.             
+           INFO     er: genomic share 87.9%, clinical share 12.1%, top features
+                    ['ESR1', 'FOXC1', 'MAPT'].                                 
+           INFO     pr: genomic share 91.1%, clinical share 8.9%, top features 
+                    ['ESR1', 'FOXC1', 'MAPT'].                                 
+           INFO     her2: genomic share 87.6%, clinical share 12.4%, top       
+                    features ['FOXC1', 'ANLN', 'ESR1'].                        
+           INFO     pam50: genomic share 88.3%, clinical share 11.7%, top      
+                    features ['ESR1', 'FOXC1', 'MAPT'].                        
+           INFO     survival: genomic share 42.2%, clinical share 57.8%, top   
+                    features ['age', 'nodal_N0', 'nodal_N2'].                  

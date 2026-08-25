@@ -1,0 +1,48 @@
+# Clinical-only ablation of the two-modality TCGA-BRCA architecture.
+#
+# Identical to configs/breast/model.yaml except that the genomic branch is
+# disabled. Every other dimension is held fixed so the comparison isolates the
+# gene-expression modality rather than model capacity.
+#
+#   Clinical (12)
+#        |
+#   Clinical MLP                 (no genomic branch)
+#        |                       (no cross-modal attention)
+#   Fusion MLP
+#        |
+#   PAM50 / ER / PR / HER2 / DeepSurv heads
+#
+# This baseline is deliberately NOT tuned to be competitive. It measures how
+# much of each target is recoverable from age, pathological tumour stage,
+# pathological nodal stage, and sex alone.
+
+embedding_dim: 256
+fused_dim: 256
+dropout: 0.1
+
+# Ablation: genomic branch removed.
+enable_clinical: true
+enable_genomics: false
+enable_survival: true
+
+# Clinical MLP over the ratified 12-dimensional vector — unchanged from the full model.
+clinical_input_dim: 12
+clinical_hidden_dim: 128
+clinical_num_blocks: 2
+
+# Retained for provenance; unused while enable_genomics is false.
+genomics_input_dim: 50
+genomics_d_model: 128
+genomics_nhead: 4
+genomics_num_layers: 3
+genomics_dim_feedforward: 256
+
+# Retained for provenance; no cross-modal attention is built with one modality.
+cross_attention_nhead: 4
+cross_attention_dropout: 0.1
+
+# Task heads — unchanged from the full model.
+classification_hidden_dim: 128
+subtype_num_classes: 5
+receptor_num_classes: 2
+survival_hidden_dim: 128
