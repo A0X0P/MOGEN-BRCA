@@ -1,0 +1,58 @@
+# Clinical-only ablation run.
+#
+#   uv run scripts/run_train.py --config configs/breast/train_clinical_only.yaml
+#   uv run scripts/run_eval.py  --config configs/breast/train_clinical_only.yaml \
+#       --checkpoint results/breast_ablation/clinical_only/checkpoints/checkpoint_best.pt
+#
+# Every optimisation setting below is copied verbatim from
+# configs/breast/train.yaml (the frozen full-model run). Only model_config,
+# experiment_name, output_dir, and checkpoint_dir differ, so the comparison
+# isolates the modality rather than the training protocol. In particular the
+# learning rate and epoch budget are NOT retuned for this weaker baseline.
+#
+# The data config, seed, and split fractions are identical to the frozen run, so
+# split_patients() reproduces the same 756/163/163 patient-level partition.
+
+data_config: configs/breast/data.yaml
+model_config: configs/breast/model_clinical_only.yaml
+
+experiment_name: brca_ablation_clinical_only
+
+seed: 42
+
+device: auto
+mixed_precision: false
+
+epochs: 60
+batch_size: 32
+learning_rate: 0.0003
+weight_decay: 0.00001
+grad_accumulation_steps: 1
+grad_clip: 1.0
+
+scheduler:
+  name: plateau
+  monitor: val_total
+  mode: min
+  factor: 0.5
+  patience: 5
+
+loss:
+  subtype_weight: 1.0
+  er_weight: 1.0
+  pr_weight: 1.0
+  her2_weight: 1.0
+  survival_weight: 1.0
+  enable_survival: true
+  focal_gamma: 2.0
+
+# Separate output tree. results/breast/ is frozen and must not be written to.
+output_dir: results/breast_ablation/clinical_only
+checkpoint_dir: results/breast_ablation/clinical_only/checkpoints
+save_every_n_epochs: 20
+
+monitor: val_total
+monitor_mode: min
+early_stopping_patience: 12
+
+resume_checkpoint: null

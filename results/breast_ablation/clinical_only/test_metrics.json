@@ -1,0 +1,61 @@
+{
+  "partition": "test",
+  "checkpoint": "results/breast_ablation/clinical_only/checkpoints/checkpoint_best.pt",
+  "classification": {
+    "subtype": {
+      "accuracy": 0.49324324324324326,
+      "precision": 0.15063145809414466,
+      "recall": 0.20821052631578948,
+      "f1": 0.16491228070175437,
+      "roc_auc": 0.45048851954631103,
+      "pr_auc": 0.21737577323862514
+    },
+    "er": {
+      "accuracy": 0.7870967741935484,
+      "precision": 0.3935483870967742,
+      "recall": 0.5,
+      "f1": 0.4404332129963899,
+      "roc_auc": 0.4772727272727273,
+      "pr_auc": 0.5021806903455577
+    },
+    "pr": {
+      "accuracy": 0.6645161290322581,
+      "precision": 0.33225806451612905,
+      "recall": 0.5,
+      "f1": 0.3992248062015504,
+      "roc_auc": 0.4978528752800597,
+      "pr_auc": 0.5317750566738
+    },
+    "her2": {
+      "accuracy": 0.7611940298507462,
+      "precision": 0.3805970149253731,
+      "recall": 0.5,
+      "f1": 0.4322033898305085,
+      "roc_auc": 0.5410539215686275,
+      "pr_auc": 0.5454008260795096
+    }
+  },
+  "survival": {
+    "concordance_index": 0.7371922821024618,
+    "n_events": 23.0
+  },
+  "calibration": {
+    "er": {
+      "brier_score": 0.20078639686107635
+    },
+    "pr": {
+      "brier_score": 0.23621270060539246
+    },
+    "her2": {
+      "brier_score": 0.18826118111610413
+    }
+  },
+  "task_counts": {
+    "subtype": 148,
+    "er": 155,
+    "pr": 155,
+    "her2": 134,
+    "survival": 160
+  },
+  "n_samples": 163
+}

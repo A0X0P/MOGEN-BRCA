@@ -1,0 +1,403 @@
+{
+  "purpose": "Determine whether two-modality fusion adds predictive value over each single-modality ablation on one shared held-out partition.",
+  "partition": "test",
+  "reference_model": "full_multimodal",
+  "difference_convention": "full_multimodal minus ablation. Positive favours the full multimodal model. For brier_score, LOWER is better, so a positive difference favours the ablation.",
+  "split_verification": {
+    "all_arms_share_one_split": true,
+    "order_identical": true,
+    "partition_sizes": {
+      "train": 756,
+      "val": 163,
+      "test": 163
+    },
+    "pairwise_patient_overlap": {
+      "train_and_val": 0,
+      "train_and_test": 0,
+      "val_and_test": 0
+    },
+    "reference": "results/breast/split.json"
+  },
+  "metric_notes": {
+    "balanced_accuracy": "The evaluator's macro-averaged 'recall'. For a single-label task macro recall is the mean per-class recall, i.e. balanced accuracy. No new metric implementation was introduced.",
+    "macro_f1": "Macro-averaged F1 over all classes of the task.",
+    "pr_auc": "Macro-averaged average-precision over classes (both classes for the binary receptor tasks, all five for PAM50). This is not the positive-class average precision.",
+    "roc_auc": "One-vs-rest ROC-AUC, macro-averaged for PAM50.",
+    "brier_score": "Positive-class Brier score; receptor tasks only. Lower is better.",
+    "concordance_index": "Harrell's C-index on the survival-evaluable subset of the partition. Survival is the only task with an n_events figure.",
+    "majority_class_accuracy": "Accuracy of a constant majority-class predictor on this partition. A descriptive property of the labels, included so the accuracy column cannot be misread: an arm whose accuracy equals this value and whose balanced_accuracy is 0.5 has collapsed onto the majority class and learned nothing."
+  },
+  "test_partition_majority_class_accuracy": {
+    "subtype": 0.5135135135135135,
+    "er": 0.7870967741935484,
+    "pr": 0.6645161290322581,
+    "her2": 0.7611940298507462,
+    "survival": null
+  },
+  "models": {
+    "full_multimodal": {
+      "description": "Genomic Transformer + Clinical MLP + cross-modal attention + fusion",
+      "run_dir": "results/breast",
+      "config": "configs/breast/train.yaml",
+      "checkpoint": "results/breast/checkpoints/checkpoint_best.pt",
+      "training": {
+        "best_epoch": 14,
+        "best_epoch_from_history_argmin": 14,
+        "best_val_total": 1.6806726257006328,
+        "epochs_completed": 27,
+        "epochs_configured": 60,
+        "early_stopped": true,
+        "early_stopping_patience": 12,
+        "model_selection_monitor": "val_total",
+        "seed": 42,
+        "git_commit": "3978ab33c267cc91c33f31e036a3c8184573be59"
+      },
+      "parameters": {
+        "total": 1514512,
+        "trainable": 1514512
+      },
+      "tasks": {
+        "subtype": {
+          "n": 148,
+          "accuracy": 0.8648648648648649,
+          "balanced_accuracy": 0.7608771929824562,
+          "macro_f1": 0.7903661911858633,
+          "roc_auc": 0.9429781116308377,
+          "pr_auc": 0.8045422407857579,
+          "brier_score": null,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "er": {
+          "n": 155,
+          "accuracy": 0.9096774193548387,
+          "balanced_accuracy": 0.887357178340785,
+          "macro_f1": 0.8708333333333333,
+          "roc_auc": 0.9232488822652758,
+          "pr_auc": 0.8822911957214132,
+          "brier_score": 0.08265075832605362,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "pr": {
+          "n": 155,
+          "accuracy": 0.864516129032258,
+          "balanced_accuracy": 0.8123599701269604,
+          "macro_f1": 0.8345111596929178,
+          "roc_auc": 0.8663181478715458,
+          "pr_auc": 0.8714804718587872,
+          "brier_score": 0.14269161224365234,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "her2": {
+          "n": 134,
+          "accuracy": 0.7761194029850746,
+          "balanced_accuracy": 0.5741421568627452,
+          "macro_f1": 0.5764854614412136,
+          "roc_auc": 0.7735906862745098,
+          "pr_auc": 0.6962538081558589,
+          "brier_score": 0.167232483625412,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "survival": {
+          "n": 160,
+          "accuracy": null,
+          "balanced_accuracy": null,
+          "macro_f1": null,
+          "roc_auc": null,
+          "pr_auc": null,
+          "brier_score": null,
+          "concordance_index": 0.7112441783100466,
+          "n_events": 23.0
+        }
+      }
+    },
+    "genomics_only": {
+      "description": "Genomic Transformer + fusion; no clinical branch, no cross-modal attention",
+      "run_dir": "results/breast_ablation/genomics_only",
+      "config": "configs/breast/train_genomics_only.yaml",
+      "checkpoint": "results/breast_ablation/genomics_only/checkpoints/checkpoint_best.pt",
+      "training": {
+        "best_epoch": 28,
+        "best_epoch_from_history_argmin": 28,
+        "best_val_total": 1.5921720564365387,
+        "epochs_completed": 41,
+        "epochs_configured": 60,
+        "early_stopped": true,
+        "early_stopping_patience": 12,
+        "model_selection_monitor": "val_total",
+        "seed": 42,
+        "git_commit": "3978ab33c267cc91c33f31e036a3c8184573be59"
+      },
+      "parameters": {
+        "total": 885392,
+        "trainable": 885392
+      },
+      "tasks": {
+        "subtype": {
+          "n": 148,
+          "accuracy": 0.8648648648648649,
+          "balanced_accuracy": 0.7721052631578947,
+          "macro_f1": 0.7911981094589791,
+          "roc_auc": 0.9621509164894798,
+          "pr_auc": 0.8432392417492677,
+          "brier_score": null,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "er": {
+          "n": 155,
+          "accuracy": 0.9225806451612903,
+          "balanced_accuracy": 0.8845007451564828,
+          "macro_f1": 0.8845007451564828,
+          "roc_auc": 0.9182811723795329,
+          "pr_auc": 0.8763296460805868,
+          "brier_score": 0.08218856155872345,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "pr": {
+          "n": 155,
+          "accuracy": 0.8580645161290322,
+          "balanced_accuracy": 0.79798356982823,
+          "macro_f1": 0.8229858803986712,
+          "roc_auc": 0.8651979088872294,
+          "pr_auc": 0.8763213040511417,
+          "brier_score": 0.14729173481464386,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "her2": {
+          "n": 134,
+          "accuracy": 0.8283582089552238,
+          "balanced_accuracy": 0.6727941176470589,
+          "macro_f1": 0.7032829498411476,
+          "roc_auc": 0.8033088235294117,
+          "pr_auc": 0.7930067274612361,
+          "brier_score": 0.14373964071273804,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "survival": {
+          "n": 160,
+          "accuracy": null,
+          "balanced_accuracy": null,
+          "macro_f1": null,
+          "roc_auc": null,
+          "pr_auc": null,
+          "brier_score": null,
+          "concordance_index": 0.6007984031936128,
+          "n_events": 23.0
+        }
+      }
+    },
+    "clinical_only": {
+      "description": "Clinical MLP + fusion; no genomic branch, no cross-modal attention",
+      "run_dir": "results/breast_ablation/clinical_only",
+      "config": "configs/breast/train_clinical_only.yaml",
+      "checkpoint": "results/breast_ablation/clinical_only/checkpoints/checkpoint_best.pt",
+      "training": {
+        "best_epoch": 14,
+        "best_epoch_from_history_argmin": 14,
+        "best_val_total": 2.435859670241674,
+        "epochs_completed": 27,
+        "epochs_configured": 60,
+        "early_stopped": true,
+        "early_stopping_patience": 12,
+        "model_selection_monitor": "val_total",
+        "seed": 42,
+        "git_commit": "3978ab33c267cc91c33f31e036a3c8184573be59"
+      },
+      "parameters": {
+        "total": 483728,
+        "trainable": 483728
+      },
+      "tasks": {
+        "subtype": {
+          "n": 148,
+          "accuracy": 0.49324324324324326,
+          "balanced_accuracy": 0.20821052631578948,
+          "macro_f1": 0.16491228070175437,
+          "roc_auc": 0.45048851954631103,
+          "pr_auc": 0.21737577323862514,
+          "brier_score": null,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "er": {
+          "n": 155,
+          "accuracy": 0.7870967741935484,
+          "balanced_accuracy": 0.5,
+          "macro_f1": 0.4404332129963899,
+          "roc_auc": 0.4772727272727273,
+          "pr_auc": 0.5021806903455577,
+          "brier_score": 0.20078639686107635,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "pr": {
+          "n": 155,
+          "accuracy": 0.6645161290322581,
+          "balanced_accuracy": 0.5,
+          "macro_f1": 0.3992248062015504,
+          "roc_auc": 0.4978528752800597,
+          "pr_auc": 0.5317750566738,
+          "brier_score": 0.23621270060539246,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "her2": {
+          "n": 134,
+          "accuracy": 0.7611940298507462,
+          "balanced_accuracy": 0.5,
+          "macro_f1": 0.4322033898305085,
+          "roc_auc": 0.5410539215686275,
+          "pr_auc": 0.5454008260795096,
+          "brier_score": 0.18826118111610413,
+          "concordance_index": null,
+          "n_events": null
+        },
+        "survival": {
+          "n": 160,
+          "accuracy": null,
+          "balanced_accuracy": null,
+          "macro_f1": null,
+          "roc_auc": null,
+          "pr_auc": null,
+          "brier_score": null,
+          "concordance_index": 0.7371922821024618,
+          "n_events": 23.0
+        }
+      }
+    }
+  },
+  "differences": {
+    "full_multimodal_minus_genomics_only": {
+      "subtype": {
+        "n": 148,
+        "n_events": null,
+        "accuracy": 0.0,
+        "balanced_accuracy": -0.011228070175438587,
+        "macro_f1": -0.0008319182731157948,
+        "roc_auc": -0.019172804858642145,
+        "pr_auc": -0.03869700096350981,
+        "brier_score": null,
+        "concordance_index": null
+      },
+      "er": {
+        "n": 155,
+        "n_events": null,
+        "accuracy": -0.012903225806451646,
+        "balanced_accuracy": 0.002856433184302176,
+        "macro_f1": -0.013667411823149456,
+        "roc_auc": 0.00496770988574291,
+        "pr_auc": 0.005961549640826402,
+        "brier_score": 0.0004621967673301697,
+        "concordance_index": null
+      },
+      "pr": {
+        "n": 155,
+        "n_events": null,
+        "accuracy": 0.006451612903225823,
+        "balanced_accuracy": 0.01437640029873033,
+        "macro_f1": 0.011525279294246626,
+        "roc_auc": 0.0011202389843164573,
+        "pr_auc": -0.004840832192354538,
+        "brier_score": -0.004600122570991516,
+        "concordance_index": null
+      },
+      "her2": {
+        "n": 134,
+        "n_events": null,
+        "accuracy": -0.05223880597014918,
+        "balanced_accuracy": -0.09865196078431371,
+        "macro_f1": -0.126797488399934,
+        "roc_auc": -0.02971813725490191,
+        "pr_auc": -0.09675291930537722,
+        "brier_score": 0.02349284291267395,
+        "concordance_index": null
+      },
+      "survival": {
+        "n": 160,
+        "n_events": 23.0,
+        "accuracy": null,
+        "balanced_accuracy": null,
+        "macro_f1": null,
+        "roc_auc": null,
+        "pr_auc": null,
+        "brier_score": null,
+        "concordance_index": 0.11044577511643383
+      }
+    },
+    "full_multimodal_minus_clinical_only": {
+      "subtype": {
+        "n": 148,
+        "n_events": null,
+        "accuracy": 0.37162162162162166,
+        "balanced_accuracy": 0.5526666666666666,
+        "macro_f1": 0.6254539104841089,
+        "roc_auc": 0.49248959208452664,
+        "pr_auc": 0.5871664675471328,
+        "brier_score": null,
+        "concordance_index": null
+      },
+      "er": {
+        "n": 155,
+        "n_events": null,
+        "accuracy": 0.1225806451612903,
+        "balanced_accuracy": 0.387357178340785,
+        "macro_f1": 0.43040012033694347,
+        "roc_auc": 0.4459761549925485,
+        "pr_auc": 0.38011050537585556,
+        "brier_score": -0.11813563853502274,
+        "concordance_index": null
+      },
+      "pr": {
+        "n": 155,
+        "n_events": null,
+        "accuracy": 0.19999999999999996,
+        "balanced_accuracy": 0.3123599701269604,
+        "macro_f1": 0.4352863534913674,
+        "roc_auc": 0.3684652725914861,
+        "pr_auc": 0.3397054151849872,
+        "brier_score": -0.09352108836174011,
+        "concordance_index": null
+      },
+      "her2": {
+        "n": 134,
+        "n_events": null,
+        "accuracy": 0.014925373134328401,
+        "balanced_accuracy": 0.07414215686274517,
+        "macro_f1": 0.1442820716107051,
+        "roc_auc": 0.23253676470588225,
+        "pr_auc": 0.15085298207634934,
+        "brier_score": -0.02102869749069214,
+        "concordance_index": null
+      },
+      "survival": {
+        "n": 160,
+        "n_events": 23.0,
+        "accuracy": null,
+        "balanced_accuracy": null,
+        "macro_f1": null,
+        "roc_auc": null,
+        "pr_auc": null,
+        "brier_score": null,
+        "concordance_index": -0.02594810379241519
+      }
+    }
+  },
+  "statistical_testing": {
+    "performed": false,
+    "tests": [],
+    "note": "No hypothesis test, confidence interval, or resampling procedure was run. All differences are point estimates from a single seed, a single split, and one training run per arm. No statistical significance is claimed."
+  },
+  "caveats": [
+    "PAM50 is reproduction/recovery of the published PAM50 assignment from the same 50-gene panel the assignment derives from. It is not independent molecular-subtype discovery or independent phenotype prediction.",
+    "Each arm selected its own checkpoint by minimum val_total under an identical protocol, so the arms stopped at different epochs. The measured differences therefore reflect modality AND the selection epoch that modality's validation curve produced, not modality in isolation.",
+    "val_total is dominated by the Cox term, so model selection is weighted towards survival for every arm.",
+    "No external cohort was evaluated. No claim of external generalisation or clinical utility is supported."
+  ]
+}

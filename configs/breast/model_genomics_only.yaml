@@ -1,0 +1,49 @@
+# Genomics-only ablation of the two-modality TCGA-BRCA architecture.
+#
+# Identical to configs/breast/model.yaml except that the clinical branch is
+# disabled. Every other dimension is held fixed so the comparison isolates the
+# clinical modality rather than model capacity.
+#
+#   Gene expression (50)
+#          |
+#   Genomic Transformer          (no clinical branch)
+#          |                     (no cross-modal attention)
+#      Fusion MLP
+#          |
+#   PAM50 / ER / PR / HER2 / DeepSurv heads
+#
+# With one modality enabled, model_factory omits cross-modal attention entirely
+# (attention over a single modality token cannot carry cross-modal information)
+# and FusionHead marks the absent clinical slot with a zero vector plus a 0
+# presence indicator. The fusion input width is therefore unchanged.
+
+embedding_dim: 256
+fused_dim: 256
+dropout: 0.1
+
+# Ablation: clinical branch removed.
+enable_clinical: false
+enable_genomics: true
+enable_survival: true
+
+# Retained for provenance; unused while enable_clinical is false.
+clinical_input_dim: 12
+clinical_hidden_dim: 128
+clinical_num_blocks: 2
+
+# Genomic Transformer over the 50-gene PAM50 panel — unchanged from the full model.
+genomics_input_dim: 50
+genomics_d_model: 128
+genomics_nhead: 4
+genomics_num_layers: 3
+genomics_dim_feedforward: 256
+
+# Retained for provenance; no cross-modal attention is built with one modality.
+cross_attention_nhead: 4
+cross_attention_dropout: 0.1
+
+# Task heads — unchanged from the full model.
+classification_hidden_dim: 128
+subtype_num_classes: 5
+receptor_num_classes: 2
+survival_hidden_dim: 128

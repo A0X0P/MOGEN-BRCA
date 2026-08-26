@@ -1,0 +1,181 @@
+task,explained_output,rank,modality,feature,mean_abs_shap,mean_shap,feature_shap_correlation,direction
+er,er_margin,1,genomic,ESR1,0.2718895573006952,-0.04595009627398253,0.9321321821751013,higher feature value increases the output
+er,er_margin,2,genomic,FOXC1,0.15469887993819198,-0.020897524743646808,-0.871550453579182,higher feature value decreases the output
+er,er_margin,3,genomic,MAPT,0.06377458563782508,-0.016579724990902878,0.8680680896025261,higher feature value increases the output
+er,er_margin,4,genomic,NAT1,0.05305139709825878,-0.007372059700714192,0.8930182962610624,higher feature value increases the output
+er,er_margin,5,genomic,ANLN,0.0459324061576672,-0.008406770191777308,-0.6576253583315471,higher feature value decreases the output
+er,er_margin,6,genomic,ERBB2,0.03986417069786824,-0.0021570869674792065,-0.7013672749529565,higher feature value decreases the output
+er,er_margin,7,clinical,age,0.037297253644412734,0.0014145311290712699,0.33549722067808985,higher feature value increases the output
+er,er_margin,8,clinical,stage_III,0.036854538372374825,0.0018181009002525886,-0.8793195676595889,higher feature value decreases the output
+er,er_margin,9,genomic,CDH3,0.0365497039281953,-0.0093784022701536,-0.7232863559257108,higher feature value decreases the output
+er,er_margin,10,genomic,CEP55,0.03574911025686862,0.0023487965822351236,-0.7730464426360943,higher feature value decreases the output
+er,er_margin,11,genomic,CDC6,0.03502458025499366,-0.0036128399641028467,-0.8516652813636048,higher feature value decreases the output
+er,er_margin,12,genomic,RRM2,0.03127907922283088,-0.0012998826789304137,-0.7971211133199559,higher feature value decreases the output
+er,er_margin,13,genomic,MLPH,0.029859774556724117,-0.0027141683372098554,0.851322983560488,higher feature value increases the output
+er,er_margin,14,genomic,CXXC5,0.029469400563649464,-0.0012508812815130931,0.8188789410174536,higher feature value increases the output
+er,er_margin,15,clinical,nodal_N0,0.026330272549706452,-0.00248855294204713,0.24455002864387038,higher feature value increases the output
+er,er_margin,16,genomic,CCNE1,0.025736149707362183,-0.005278426243562654,-0.872864032655745,higher feature value decreases the output
+er,er_margin,17,genomic,CENPF,0.0247534524167439,0.0020285953336595716,-0.6735255755940869,higher feature value decreases the output
+er,er_margin,18,clinical,nodal_N2,0.022550009635191482,-0.003300132641345683,-0.9087721345395005,higher feature value decreases the output
+er,er_margin,19,genomic,PHGDH,0.02204473024561792,-0.005312929148774883,-0.5896424389084384,higher feature value decreases the output
+er,er_margin,20,genomic,TMEM45B,0.020177102421843156,0.0036029933544042434,-0.4931805364270831,higher feature value decreases the output
+pr,pr_margin,1,genomic,ESR1,0.17161021997666767,-0.02794162909353986,0.9139563357939751,higher feature value increases the output
+pr,pr_margin,2,genomic,FOXC1,0.13501846207891946,-0.014966000629724094,-0.870109136527108,higher feature value decreases the output
+pr,pr_margin,3,genomic,MAPT,0.046840167881303366,-0.011818286874557136,0.8908547959393875,higher feature value increases the output
+pr,pr_margin,4,genomic,CEP55,0.0394052561770548,0.002337503927253246,-0.9205099236575247,higher feature value decreases the output
+pr,pr_margin,5,genomic,NAT1,0.03703576912566485,-0.004687269622446035,0.9135141575466861,higher feature value increases the output
+pr,pr_margin,6,genomic,ANLN,0.031189830232440135,-0.004393204163934685,-0.7610387241163943,higher feature value decreases the output
+pr,pr_margin,7,genomic,CDH3,0.027797833607900755,-0.007463272000466716,-0.7318850067349006,higher feature value decreases the output
+pr,pr_margin,8,genomic,CDC6,0.026942101257180103,-0.0027054961370047994,-0.8958054375681466,higher feature value decreases the output
+pr,pr_margin,9,genomic,ERBB2,0.024891478733295908,-0.0009432872231212388,-0.695293037315605,higher feature value decreases the output
+pr,pr_margin,10,clinical,stage_III,0.022800106574034838,0.002284298293782508,-0.9491873759609786,higher feature value decreases the output
+pr,pr_margin,11,genomic,CCNE1,0.02231832012938978,-0.003570974226288293,-0.8781555297423742,higher feature value decreases the output
+pr,pr_margin,12,genomic,RRM2,0.02075445783953855,-0.00035309741023906296,-0.7957254418064234,higher feature value decreases the output
+pr,pr_margin,13,genomic,CXXC5,0.018023979803799894,-0.00028538062748547694,0.8513946998371896,higher feature value increases the output
+pr,pr_margin,14,clinical,age,0.017885237458075007,0.0008127407629952974,0.0033824784779988726,mixed (no consistent direction across patients)
+pr,pr_margin,15,genomic,PHGDH,0.017260784502343446,-0.003326150480825066,-0.6438510774478075,higher feature value decreases the output
+pr,pr_margin,16,genomic,CENPF,0.016849532690906138,0.0016650678288440332,-0.7323465431834478,higher feature value decreases the output
+pr,pr_margin,17,genomic,MLPH,0.015490426367313842,-0.0015047698045358372,0.838325231053568,higher feature value increases the output
+pr,pr_margin,18,genomic,KRT17,0.01437190436418992,0.002858262643684693,0.2536111676672726,higher feature value increases the output
+pr,pr_margin,19,genomic,CCNB1,0.014367052622583264,0.004055424222443521,-0.8078539235230753,higher feature value decreases the output
+pr,pr_margin,20,genomic,TMEM45B,0.01370748657646057,0.0016311402684369924,-0.5424675003848903,higher feature value decreases the output
+her2,her2_margin,1,genomic,FOXC1,0.14505648950840022,-0.006520393424758174,-0.8471592707585941,higher feature value decreases the output
+her2,her2_margin,2,genomic,ANLN,0.05769578103724267,0.003657456236138832,0.7511806127924949,higher feature value increases the output
+her2,her2_margin,3,genomic,ESR1,0.056506004645908985,0.005376216953289272,-0.6375140293791782,higher feature value decreases the output
+her2,her2_margin,4,genomic,MAPT,0.03970570967550599,0.010377219805718972,-0.8294628712017829,higher feature value decreases the output
+her2,her2_margin,5,genomic,CEP55,0.0390112407287105,-0.0007315205610498906,0.8948948643049887,higher feature value increases the output
+her2,her2_margin,6,genomic,CDC6,0.034378191237543224,0.003993762339655965,0.8626573474096576,higher feature value increases the output
+her2,her2_margin,7,genomic,KRT17,0.032037586465137845,-0.0058586065705080155,-0.7600868056082386,higher feature value decreases the output
+her2,her2_margin,8,genomic,NAT1,0.02968201695157975,0.004630413811678906,-0.8460586804598687,higher feature value decreases the output
+her2,her2_margin,9,clinical,age,0.02959249807429914,-0.0007838608279933651,-0.0746307644432085,mixed (no consistent direction across patients)
+her2,her2_margin,10,clinical,nodal_N0,0.02172644204100831,-0.00484920475327732,-0.08148516475768743,mixed (no consistent direction across patients)
+her2,her2_margin,11,genomic,ERBB2,0.01904496965178537,0.00029702858915795735,0.6937277342207772,higher feature value increases the output
+her2,her2_margin,12,genomic,CCNB1,0.018176269443801685,-0.003765910243514158,0.832265236511013,higher feature value increases the output
+her2,her2_margin,13,genomic,CXXC5,0.017636280090421338,-0.00048387283568739997,-0.7121132667800192,higher feature value decreases the output
+her2,her2_margin,14,genomic,GRB7,0.017241358954424062,0.004010971579504368,0.7373975174957462,higher feature value increases the output
+her2,her2_margin,15,genomic,RRM2,0.016727477529089766,0.0011087961381857393,0.7491210329958744,higher feature value increases the output
+her2,her2_margin,16,genomic,CENPF,0.016590942511082927,-0.0012971642684258228,0.6288276835076675,higher feature value increases the output
+her2,her2_margin,17,genomic,PHGDH,0.01258180107707349,0.0016771315802239168,0.5342895834372977,higher feature value increases the output
+her2,her2_margin,18,genomic,EXO1,0.012284823575056385,0.00021379939331328646,0.8587105923355586,higher feature value increases the output
+her2,her2_margin,19,genomic,CDH3,0.01147288688889442,-0.000291161462276755,-0.42107214229898227,higher feature value decreases the output
+her2,her2_margin,20,genomic,CCNE1,0.01128571955340312,-7.292307764595998e-05,-0.2722333601791704,higher feature value decreases the output
+pam50,Luminal A,1,genomic,ESR1,0.48429623880644135,-0.08243506357180015,0.9277215312779138,higher feature value increases the output
+pam50,Luminal A,2,genomic,FOXC1,0.31905455790411485,-0.04015740904855544,-0.8672310867896917,higher feature value decreases the output
+pam50,Luminal A,3,genomic,MAPT,0.1419836087453064,-0.034012006161939785,0.8736283419884391,higher feature value increases the output
+pam50,Luminal A,4,genomic,ANLN,0.12773680772083346,-0.017160095268507626,-0.707940804726026,higher feature value decreases the output
+pam50,Luminal A,5,genomic,NAT1,0.11473327929465064,-0.01674730507622907,0.9001847052352525,higher feature value increases the output
+pam50,Luminal A,6,genomic,CEP55,0.11075533473127132,0.006678512193415995,-0.8817763427871591,higher feature value decreases the output
+pam50,Luminal A,7,genomic,CDC6,0.08844234364772711,-0.007980132224463672,-0.8720552141008231,higher feature value decreases the output
+pam50,Luminal A,8,genomic,ERBB2,0.0778869899381706,-0.0038078242229952334,-0.7300187612996274,higher feature value decreases the output
+pam50,Luminal A,9,genomic,CDH3,0.07143605073632439,-0.01854108194590136,-0.7362460524367943,higher feature value decreases the output
+pam50,Luminal A,10,genomic,RRM2,0.07056553441903063,-0.002188008364682244,-0.8125331615976866,higher feature value decreases the output
+pam50,Luminal A,11,clinical,nodal_N2,0.06408865538397937,4.131529267700816e-05,-0.9338631630546869,higher feature value decreases the output
+pam50,Luminal A,12,genomic,CCNE1,0.06219312630933355,-0.010849070648968843,-0.8954846593631851,higher feature value decreases the output
+pam50,Luminal A,13,genomic,CXXC5,0.06141686162382441,-0.0018285978983381271,0.7985939833114812,higher feature value increases the output
+pam50,Luminal A,14,genomic,CENPF,0.06002846924156191,0.004589883105886697,-0.7076866314486158,higher feature value decreases the output
+pam50,Luminal A,15,clinical,age,0.052808242049185244,0.01487003771717302,-0.07919888852250498,mixed (no consistent direction across patients)
+pam50,Luminal A,16,genomic,PHGDH,0.051776079151559413,-0.010371692165955314,-0.6539938411296226,higher feature value decreases the output
+pam50,Luminal A,17,genomic,MLPH,0.051470466393976046,-0.004069512222105124,0.8290130381395588,higher feature value increases the output
+pam50,Luminal A,18,genomic,CCNB1,0.04744803530790251,0.013675283547044868,-0.7597850977648105,higher feature value decreases the output
+pam50,Luminal A,19,genomic,KRT17,0.043105874607605135,0.01047170252144657,0.36711076802689097,higher feature value increases the output
+pam50,Luminal A,20,genomic,TMEM45B,0.042782618017461936,0.009017905638702544,-0.5394303170061792,higher feature value decreases the output
+pam50,Luminal B,1,genomic,ESR1,0.4675798748118073,-0.08060723155883051,0.932379091485362,higher feature value increases the output
+pam50,Luminal B,2,genomic,FOXC1,0.38694354366625683,-0.04095781792274173,-0.8887601344472432,higher feature value decreases the output
+pam50,Luminal B,3,genomic,CEP55,0.09455951967886157,-0.005267943887860711,0.7449829621092103,higher feature value increases the output
+pam50,Luminal B,4,genomic,KRT17,0.07550706367228252,-0.01089175580364891,-0.708274720690159,higher feature value decreases the output
+pam50,Luminal B,5,genomic,CDH3,0.07305316859543705,-0.018574013201303214,-0.7637159945071611,higher feature value decreases the output
+pam50,Luminal B,6,clinical,age,0.06353312648929345,0.0032038118809104305,0.754952016848229,higher feature value increases the output
+pam50,Luminal B,7,genomic,ANLN,0.053142611862895324,-0.006781921518745087,0.20876551486521047,higher feature value increases the output
+pam50,Luminal B,8,genomic,MAPT,0.05159300291956347,0.004120026690589131,0.0563651404752094,mixed (no consistent direction across patients)
+pam50,Luminal B,9,genomic,CDC6,0.04581932653720203,0.0007596874811816269,0.6596706661449174,higher feature value increases the output
+pam50,Luminal B,10,genomic,ERBB2,0.04419974300215764,-0.0006218788766197158,-0.6140191186497882,higher feature value decreases the output
+pam50,Luminal B,11,genomic,NAT1,0.0440294931986565,-0.007350555949131015,0.5063224141489815,higher feature value increases the output
+pam50,Luminal B,12,genomic,MLPH,0.043009435841468054,-0.0029391517148508366,0.8331218144708646,higher feature value increases the output
+pam50,Luminal B,13,genomic,CCNB1,0.0402126715370061,-0.00522349951279377,0.7583635900432537,higher feature value increases the output
+pam50,Luminal B,14,clinical,nodal_N0,0.03994643738255119,-0.004742374481914975,-0.7148533182968543,higher feature value decreases the output
+pam50,Luminal B,15,genomic,CCNE1,0.0397907855510025,-0.008075243866112818,-0.7467496052512661,higher feature value decreases the output
+pam50,Luminal B,16,clinical,nodal_N1,0.03207167479337311,-0.0013771768881727497,0.9349351045191007,higher feature value increases the output
+pam50,Luminal B,17,clinical,nodal_N2,0.030341396007118975,7.543518147410569e-05,-0.8658880844193184,higher feature value decreases the output
+pam50,Luminal B,18,genomic,FGFR4,0.029847550861685,-0.006784584648754071,-0.4875240003753486,higher feature value decreases the output
+pam50,Luminal B,19,genomic,GRB7,0.028987791570219863,0.005018384612658361,0.4723034354725298,higher feature value increases the output
+pam50,Luminal B,20,clinical,stage_I,0.02786389818665841,0.0011433185238955196,0.9224552036638962,higher feature value increases the output
+pam50,HER2-enriched,1,genomic,ESR1,0.32702096894878785,0.05335257497143652,-0.9102175239280454,higher feature value decreases the output
+pam50,HER2-enriched,2,genomic,ANLN,0.17455259027858944,0.015839126236172448,0.7216225959197642,higher feature value increases the output
+pam50,HER2-enriched,3,genomic,MAPT,0.15638239246448388,0.04117447948584784,-0.8633065590571587,higher feature value decreases the output
+pam50,HER2-enriched,4,genomic,CEP55,0.12571486894756156,-0.008173291300646346,0.8769420619402175,higher feature value increases the output
+pam50,HER2-enriched,5,genomic,CDC6,0.12177189460070721,0.012566382534150537,0.8555672293125329,higher feature value increases the output
+pam50,HER2-enriched,6,genomic,NAT1,0.11910739512206846,0.015616181762224485,-0.88317828891494,higher feature value decreases the output
+pam50,HER2-enriched,7,genomic,FOXC1,0.10430794461623519,0.00913915142197797,-0.5125431764374653,higher feature value decreases the output
+pam50,HER2-enriched,8,genomic,ERBB2,0.07565362235472543,0.004612426855353002,0.7175932417586334,higher feature value increases the output
+pam50,HER2-enriched,9,clinical,age,0.0712629880381204,-0.01395241220244082,-0.1361922212570486,higher feature value decreases the output
+pam50,HER2-enriched,10,genomic,RRM2,0.0710753377712634,0.00404221786612654,0.7850876267633993,higher feature value increases the output
+pam50,HER2-enriched,11,genomic,KRT17,0.06940123767876429,-0.017755260735043854,-0.6926541040239511,higher feature value decreases the output
+pam50,HER2-enriched,12,genomic,CXXC5,0.06872020926377811,-0.0010281187133803068,-0.7581101666673177,higher feature value decreases the output
+pam50,HER2-enriched,13,genomic,CENPF,0.06608285968311663,-0.007230114112813667,0.654646477716908,higher feature value increases the output
+pam50,HER2-enriched,14,genomic,CCNB1,0.06295274835798662,-0.017855248681227582,0.7610918064767954,higher feature value increases the output
+pam50,HER2-enriched,15,genomic,GRB7,0.055950128303039075,0.01204505192888269,0.6721891403420995,higher feature value increases the output
+pam50,HER2-enriched,16,clinical,nodal_N0,0.04909997239053627,0.0034901013773347687,-0.33241677035665773,higher feature value decreases the output
+pam50,HER2-enriched,17,clinical,stage_II,0.048842641363194605,0.0011799359715394273,0.7153693428850357,higher feature value increases the output
+pam50,HER2-enriched,18,clinical,nodal_N2,0.04720239056323462,0.0028574842100865154,0.9500849095301945,higher feature value increases the output
+pam50,HER2-enriched,19,genomic,MLPH,0.04630432002156806,0.0043018983751003815,-0.8109025400110633,higher feature value decreases the output
+pam50,HER2-enriched,20,genomic,PHGDH,0.045821765259977824,0.007710235790961745,0.6160910607711535,higher feature value increases the output
+pam50,Basal-like,1,genomic,FOXC1,0.5590294173991954,0.05395609205345596,0.878046567884534,higher feature value increases the output
+pam50,Basal-like,2,genomic,ESR1,0.5094609191131978,0.09014861344360924,-0.916055244376413,higher feature value decreases the output
+pam50,Basal-like,3,genomic,CDH3,0.09565648089110569,0.025020719548050657,0.7701656108843609,higher feature value increases the output
+pam50,Basal-like,4,genomic,CEP55,0.07882811757708219,0.004246918343478299,-0.4538147421670004,higher feature value decreases the output
+pam50,Basal-like,5,genomic,CCNE1,0.0651473928503824,0.01121289478063347,0.7947876344500987,higher feature value increases the output
+pam50,Basal-like,6,genomic,KRT17,0.06499831976224275,0.009388018350033086,0.639114792927029,higher feature value increases the output
+pam50,Basal-like,7,clinical,nodal_N2,0.05869400253612974,-0.0012744353151168844,0.9211067204887763,higher feature value increases the output
+pam50,Basal-like,8,clinical,age,0.05482387464966,-0.014382947416594715,0.14146291488739338,higher feature value increases the output
+pam50,Basal-like,9,genomic,MAPT,0.052833803320740884,-0.001862540169330159,-0.24642869675201237,higher feature value decreases the output
+pam50,Basal-like,10,genomic,NAT1,0.04912637497464613,0.007929884302876163,-0.6080990664598241,higher feature value decreases the output
+pam50,Basal-like,11,genomic,ERBB2,0.04860021059812929,0.002148693389364886,0.6325786342552451,higher feature value increases the output
+pam50,Basal-like,12,genomic,ANLN,0.04547662558184459,0.0084536767347316,0.01989699364404501,mixed (no consistent direction across patients)
+pam50,Basal-like,13,clinical,nodal_N0,0.043192562026935555,0.009006666349231432,0.037684015674234746,mixed (no consistent direction across patients)
+pam50,Basal-like,14,genomic,CDC6,0.038627242066446854,0.00011708479826401859,-0.5266609486590758,higher feature value decreases the output
+pam50,Basal-like,15,genomic,MLPH,0.038048748090140076,0.0022445567269041714,-0.8058967524373984,higher feature value decreases the output
+pam50,Basal-like,16,genomic,PHGDH,0.03649651701734727,0.007979375741632981,0.6069038041166099,higher feature value increases the output
+pam50,Basal-like,17,clinical,stage_I,0.03501193402390117,0.00013248963172664418,-0.9129144966214763,higher feature value decreases the output
+pam50,Basal-like,18,genomic,RRM2,0.034952534846058356,0.0001187747860045303,0.7177930108262345,higher feature value increases the output
+pam50,Basal-like,19,genomic,ACTR3B,0.03493559867333194,0.003522904094032043,0.6426880822860905,higher feature value increases the output
+pam50,Basal-like,20,clinical,nodal_N1,0.03239717397613186,0.00160334911666143,-0.8432795534643459,higher feature value decreases the output
+pam50,Normal-like,1,genomic,ESR1,0.09893680980737218,0.016837914220237206,-0.8901651559483214,higher feature value decreases the output
+pam50,Normal-like,2,genomic,FOXC1,0.08700292136352704,0.01045747720288699,0.8130274262834873,higher feature value increases the output
+pam50,Normal-like,3,genomic,CEP55,0.06780365383858168,0.001092802806984608,-0.932377705774103,higher feature value decreases the output
+pam50,Normal-like,4,clinical,age,0.05047381449966579,-0.0005603972513022374,-0.48886621201231567,higher feature value decreases the output
+pam50,Normal-like,5,genomic,KRT17,0.04731582535044718,0.005977870980732445,0.7517918519267951,higher feature value increases the output
+pam50,Normal-like,6,genomic,ANLN,0.04560000144044607,0.00033614559232655736,-0.7923083667998048,higher feature value decreases the output
+pam50,Normal-like,7,clinical,stage_III,0.036212453600783526,-0.001553438335578535,0.824240940178576,higher feature value increases the output
+pam50,Normal-like,8,genomic,CDC6,0.0329575117204206,-0.0037135178367286178,-0.8600018502097384,higher feature value decreases the output
+pam50,Normal-like,9,clinical,nodal_N0,0.030967372420533698,0.007483424214146987,0.18283747116331295,higher feature value increases the output
+pam50,Normal-like,10,genomic,CCNB1,0.022549793526800754,0.003317098268592832,-0.9022691387878613,higher feature value decreases the output
+pam50,Normal-like,11,genomic,GRB7,0.02148807060642239,-0.005761979108207522,-0.8144200984965568,higher feature value decreases the output
+pam50,Normal-like,12,genomic,MAPT,0.020311500319895294,-0.0029174276820834546,0.41700103907485314,higher feature value increases the output
+pam50,Normal-like,13,genomic,MLPH,0.019557886757537574,0.0016628440660304453,-0.8531925008465782,higher feature value decreases the output
+pam50,Normal-like,14,clinical,stage_II,0.019356823372722216,0.0027547821846640092,-0.5547004703293784,higher feature value decreases the output
+pam50,Normal-like,15,genomic,EXO1,0.016795569892953166,0.000902742246992125,-0.8933135561922964,higher feature value decreases the output
+pam50,Normal-like,16,genomic,MYBL2,0.015557294963279672,0.00034355030657684315,-0.9241734714798127,higher feature value decreases the output
+pam50,Normal-like,17,genomic,BIRC5,0.01483517563862291,-0.0016614123518992028,-0.7947937386343366,higher feature value decreases the output
+pam50,Normal-like,18,genomic,PHGDH,0.014372459502155351,0.000966146974324667,-0.6465191444425995,higher feature value decreases the output
+pam50,Normal-like,19,genomic,EGFR,0.013120799862811883,-0.0007693763204892354,0.47808547490506403,higher feature value increases the output
+pam50,Normal-like,20,genomic,CENPF,0.012429439570391878,0.0021238855409446067,-0.7776405708181878,higher feature value decreases the output
+survival,risk_score,1,clinical,age,0.46517650836150254,-0.036387825023024845,0.8252300273085312,higher feature value increases the output
+survival,risk_score,2,clinical,nodal_N0,0.36097790699125515,0.011381406055184324,-0.9056162520214242,higher feature value decreases the output
+survival,risk_score,3,clinical,nodal_N2,0.1345090312566794,0.0004933627038491321,0.9445724631154766,higher feature value increases the output
+survival,risk_score,4,clinical,stage_III,0.13036758439195203,-0.01121153979900813,0.7786048637300292,higher feature value increases the output
+survival,risk_score,5,clinical,stage_II,0.12041908787684356,-0.008859971381956584,-0.7352503329561996,higher feature value decreases the output
+survival,risk_score,6,genomic,MAPT,0.082977672002695,0.02007339777111809,-0.8214843481939242,higher feature value decreases the output
+survival,risk_score,7,genomic,ANLN,0.07831487279926466,0.0076263185416502914,0.6655340938020546,higher feature value increases the output
+survival,risk_score,8,genomic,CEP55,0.07361374890425719,-0.009558849807771157,0.8295911215563938,higher feature value increases the output
+survival,risk_score,9,clinical,nodal_N1,0.07194473439715589,0.02281748700569122,0.6971411121722088,higher feature value increases the output
+survival,risk_score,10,genomic,CDC6,0.06665649235916207,0.0038357353601733367,0.8249777933439832,higher feature value increases the output
+survival,risk_score,11,genomic,ESR1,0.05873400837380152,0.004418068654242221,-0.3315666023780274,higher feature value decreases the output
+survival,risk_score,12,genomic,FOXC1,0.058338760891037546,-0.0004698020053711661,-0.5949888147853588,higher feature value decreases the output
+survival,risk_score,13,genomic,NAT1,0.05641338551559012,0.006042572654109792,-0.8414014835966511,higher feature value decreases the output
+survival,risk_score,14,clinical,stage_I,0.049349287044206665,-0.002559458992231594,-0.7904420375491558,higher feature value decreases the output
+survival,risk_score,15,clinical,stage_IV,0.04541629895415765,-0.012603542755266501,0.9800120631635431,higher feature value increases the output
+survival,risk_score,16,genomic,KRT17,0.041986231607055974,-0.008421542700730606,-0.7720541867512986,higher feature value decreases the output
+survival,risk_score,17,genomic,CCNB1,0.04172959884432292,-0.013167458620333602,0.7654039139332459,higher feature value increases the output
+survival,risk_score,18,genomic,RRM2,0.030736214504067855,0.0010011417799634815,0.7184922262906562,higher feature value increases the output
+survival,risk_score,19,genomic,CENPF,0.0295118241706949,-0.007777552042920012,0.5272013035369705,higher feature value increases the output
+survival,risk_score,20,genomic,CXXC5,0.028948084733667806,-0.00041880772031645534,-0.7445457834835958,higher feature value decreases the output

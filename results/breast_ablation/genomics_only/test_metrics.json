@@ -1,0 +1,61 @@
+{
+  "partition": "test",
+  "checkpoint": "results/breast_ablation/genomics_only/checkpoints/checkpoint_best.pt",
+  "classification": {
+    "subtype": {
+      "accuracy": 0.8648648648648649,
+      "precision": 0.8300980392156863,
+      "recall": 0.7721052631578947,
+      "f1": 0.7911981094589791,
+      "roc_auc": 0.9621509164894798,
+      "pr_auc": 0.8432392417492677
+    },
+    "er": {
+      "accuracy": 0.9225806451612903,
+      "precision": 0.8845007451564828,
+      "recall": 0.8845007451564828,
+      "f1": 0.8845007451564828,
+      "roc_auc": 0.9182811723795329,
+      "pr_auc": 0.8763296460805868
+    },
+    "pr": {
+      "accuracy": 0.8580645161290322,
+      "precision": 0.887943607194944,
+      "recall": 0.79798356982823,
+      "f1": 0.8229858803986712,
+      "roc_auc": 0.8651979088872294,
+      "pr_auc": 0.8763213040511417
+    },
+    "her2": {
+      "accuracy": 0.8283582089552238,
+      "precision": 0.8159663865546218,
+      "recall": 0.6727941176470589,
+      "f1": 0.7032829498411476,
+      "roc_auc": 0.8033088235294117,
+      "pr_auc": 0.7930067274612361
+    }
+  },
+  "survival": {
+    "concordance_index": 0.6007984031936128,
+    "n_events": 23.0
+  },
+  "calibration": {
+    "er": {
+      "brier_score": 0.08218856155872345
+    },
+    "pr": {
+      "brier_score": 0.14729173481464386
+    },
+    "her2": {
+      "brier_score": 0.14373964071273804
+    }
+  },
+  "task_counts": {
+    "subtype": 148,
+    "er": 155,
+    "pr": 155,
+    "her2": 134,
+    "survival": 160
+  },
+  "n_samples": 163
+}

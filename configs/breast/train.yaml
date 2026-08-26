@@ -1,0 +1,63 @@
+# Training configuration for the active TCGA-BRCA experiment.
+#
+# This is the entry-point config:
+#
+#   uv run scripts/run_train.py --config configs/breast/train.yaml
+#   uv run scripts/run_eval.py  --config configs/breast/train.yaml \
+#                               --checkpoint results/breast/checkpoints/checkpoint_best.pt
+#
+# The data and model contracts live in their own files and are merged into a
+# single config dict by the run scripts, which is then embedded in every
+# checkpoint as the authoritative record of the run.
+
+data_config: configs/breast/data.yaml
+model_config: configs/breast/model.yaml
+
+experiment_name: brca_two_modality
+
+# Reproducibility. The seed drives the split, the shuffling, and the parameter
+# initialisation, and must not change during a run (CLAUDE.md section 19).
+seed: 42
+
+# "auto" resolves to CUDA when available and CPU otherwise. The pipeline is
+# expected to complete a real run on CPU.
+device: auto
+mixed_precision: false  # only ever enabled when CUDA is actually present
+
+# Optimisation.
+epochs: 60
+batch_size: 32
+learning_rate: 0.0003
+weight_decay: 0.00001
+grad_accumulation_steps: 1
+grad_clip: 1.0
+
+scheduler:
+  name: plateau
+  monitor: val_total
+  mode: min
+  factor: 0.5
+  patience: 5
+
+# Multi-task loss weights. Each term is averaged over that task's valid rows
+# only, so the weights are comparable despite the different label counts.
+loss:
+  subtype_weight: 1.0
+  er_weight: 1.0
+  pr_weight: 1.0
+  her2_weight: 1.0
+  survival_weight: 1.0
+  enable_survival: true
+  focal_gamma: 2.0
+
+# Checkpointing and early stopping both monitor the total validation loss.
+output_dir: results/breast
+checkpoint_dir: results/breast/checkpoints
+save_every_n_epochs: 20
+
+monitor: val_total
+monitor_mode: min
+early_stopping_patience: 12
+
+# Set to a checkpoint path to resume; null starts from scratch.
+resume_checkpoint: null

@@ -1,0 +1,656 @@
+[17:49:16] INFO     Global seed set to 42.                                     
+[17:49:19] INFO     BRCA cohort: pan_can=1084 legacy=1101 expression=1082      
+                    intersection=1082 genes=50                                 
+           INFO     Usable labels: {'subtype': 981, 'er': 1031, 'pr': 1028,    
+                    'her2': 937, 'survival': 1068} | events=151 | survival     
+                    exclusions=14                                              
+           INFO     HER2 evidence paths: {'ihc-definitive': 536,               
+                    'masked:no-evidence': 145, 'fish-only': 247,               
+                    'ihc-and-fish-agree': 146, 'conflict:fish-wins': 8}        
+[17:49:19] WARNING  Stratum 'Basal-like|survival:missing' has only 2 patient(s)
+                    — assigned to train.                                       
+           WARNING  Stratum 'Normal-like|survival:missing' has only 1          
+                    patient(s) — assigned to train.                            
+           INFO     Split: train=756 val=163 test=163 (total=1082).            
+[17:49:19] INFO     Split written to                                           
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\split.json.                  
+           INFO     Fitted train-fold statistics on 756 patients (age          
+                    mean=58.22 std=13.20).                                     
+           INFO     train: 756 patients, usable labels {'subtype': 685, 'er':  
+                    717, 'pr': 715, 'her2': 655, 'survival': 748}.             
+           INFO     val: 163 patients, usable labels {'subtype': 148, 'er':    
+                    159, 'pr': 158, 'her2': 148, 'survival': 160}.             
+           INFO     test: 163 patients, usable labels {'subtype': 148, 'er':   
+                    155, 'pr': 155, 'her2': 134, 'survival': 160}.             
+           INFO     Model built: 483728 parameters.                            
+[17:49:26] INFO     Global seed set to 42.                                     
+[17:49:29] INFO     Epoch   0 | lr=3.00e-04 | train_er=0.15151 |               
+                    train_her2=0.13598 | train_pr=0.17516 |                    
+                    train_subtype=0.82915 | train_survival=2.03025 |           
+                    train_total=3.32204 | val_er=0.11517 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18343 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.64469 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.66365 | val_her2=0.13414 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.14743 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.51206 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.52917 | val_pr=0.14483 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22116 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.57443 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.59991 | val_subtype=0.62275 |             
+                    val_subtype_accuracy=0.49324 | val_subtype_f1=0.15253 |    
+                    val_subtype_pr_auc=0.30038 | val_subtype_precision=0.15143 
+                    | val_subtype_recall=0.20018 | val_subtype_roc_auc=0.60320 
+                    | val_survival=1.53939 |                                   
+                    val_survival_concordance_index=0.65895 |                   
+                    val_survival_n_events=23.00000 | val_total=2.55628         
+[17:49:29] INFO     Checkpoint saved to                                        
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\checkpoints\checkpoint_best.p
+                    t.                                                         
+           INFO     Best val_total=2.55628 at epoch 0 — checkpoint saved.      
+[17:49:30] INFO     Epoch   1 | lr=3.00e-04 | train_er=0.14245 |               
+                    train_her2=0.12801 | train_pr=0.16317 |                    
+                    train_subtype=0.74728 | train_survival=1.92196 |           
+                    train_total=3.10287 | val_er=0.11624 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18120 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62695 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.66459 | val_her2=0.12237 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15531 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.51813 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.54182 | val_pr=0.14640 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22469 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.58215 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.57648 | val_subtype=0.61808 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.32937 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.62295 
+                    | val_survival=1.58192 |                                   
+                    val_survival_concordance_index=0.56881 |                   
+                    val_survival_n_events=23.00000 | val_total=2.58501         
+[17:49:32] INFO     Epoch   2 | lr=3.00e-04 | train_er=0.13916 |               
+                    train_her2=0.12558 | train_pr=0.16127 |                    
+                    train_subtype=0.74463 | train_survival=1.93920 |           
+                    train_total=3.10983 | val_er=0.11451 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.17199 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.64564 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.68494 | val_her2=0.13328 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15139 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.51263 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.52060 | val_pr=0.15497 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.21480 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.58305 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.58333 | val_subtype=0.64111 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.32287 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.63102 
+                    | val_survival=1.56310 |                                   
+                    val_survival_concordance_index=0.67398 |                   
+                    val_survival_n_events=23.00000 | val_total=2.60697         
+[17:49:35] INFO     Epoch   3 | lr=3.00e-04 | train_er=0.14444 |               
+                    train_her2=0.12450 | train_pr=0.16845 |                    
+                    train_subtype=0.74061 | train_survival=1.96983 |           
+                    train_total=3.14782 | val_er=0.12111 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18420 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.54528 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.59400 | val_her2=0.12926 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15336 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.51498 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.54345 | val_pr=0.15398 |                
+                    val_pr_accuracy=0.65823 | val_pr_brier_score=0.23188 |     
+                    val_pr_f1=0.44453 | val_pr_pr_auc=0.53794 |                
+                    val_pr_precision=0.49122 | val_pr_recall=0.49759 |         
+                    val_pr_roc_auc=0.54509 | val_subtype=0.63463 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.32313 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.60206 
+                    | val_survival=1.54349 |                                   
+                    val_survival_concordance_index=0.68600 |                   
+                    val_survival_n_events=23.00000 | val_total=2.58247         
+[17:49:37] INFO     Epoch   4 | lr=3.00e-04 | train_er=0.13878 |               
+                    train_her2=0.12486 | train_pr=0.16118 |                    
+                    train_subtype=0.74844 | train_survival=1.97660 |           
+                    train_total=3.14986 | val_er=0.11504 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18326 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62733 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.67506 | val_her2=0.12114 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16033 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53977 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.59690 | val_pr=0.14570 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22037 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.56563 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.59583 | val_subtype=0.63138 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.29913 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.57889 
+                    | val_survival=1.52767 |                                   
+                    val_survival_concordance_index=0.68239 |                   
+                    val_survival_n_events=23.00000 | val_total=2.54092         
+[17:49:37] INFO     Checkpoint saved to                                        
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\checkpoints\checkpoint_best.p
+                    t.                                                         
+           INFO     Best val_total=2.54092 at epoch 4 — checkpoint saved.      
+[17:49:42] INFO     Epoch   5 | lr=3.00e-04 | train_er=0.13771 |               
+                    train_her2=0.12435 | train_pr=0.16128 |                    
+                    train_subtype=0.75242 | train_survival=1.95972 |           
+                    train_total=3.13548 | val_er=0.11797 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.19234 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62658 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.67235 | val_her2=0.12784 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.18637 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53356 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.57813 | val_pr=0.14822 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22582 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.59645 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.59815 | val_subtype=0.62989 |             
+                    val_subtype_accuracy=0.52703 | val_subtype_f1=0.20071 |    
+                    val_subtype_pr_auc=0.32165 | val_subtype_precision=0.20588 
+                    | val_subtype_recall=0.23747 | val_subtype_roc_auc=0.61297 
+                    | val_survival=1.46730 |                                   
+                    val_survival_concordance_index=0.70763 |                   
+                    val_survival_n_events=23.00000 | val_total=2.49122         
+[17:49:42] INFO     Checkpoint saved to                                        
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\checkpoints\checkpoint_best.p
+                    t.                                                         
+           INFO     Best val_total=2.49122 at epoch 5 — checkpoint saved.      
+[17:49:44] INFO     Epoch   6 | lr=3.00e-04 | train_er=0.13646 |               
+                    train_her2=0.12567 | train_pr=0.16178 |                    
+                    train_subtype=0.72674 | train_survival=1.85507 |           
+                    train_total=3.00572 | val_er=0.11665 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18638 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.60992 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.65047 | val_her2=0.12535 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16691 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.52499 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.54835 | val_pr=0.14799 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22529 |     
+                    val_pr_f1=0.57445 | val_pr_pr_auc=0.57964 |                
+                    val_pr_precision=0.61154 | val_pr_recall=0.57519 |         
+                    val_pr_roc_auc=0.61324 | val_subtype=0.62675 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.29907 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.60576 
+                    | val_survival=1.50312 |                                   
+                    val_survival_concordance_index=0.72987 |                   
+                    val_survival_n_events=23.00000 | val_total=2.51986         
+[17:49:46] INFO     Epoch   7 | lr=3.00e-04 | train_er=0.13741 |               
+                    train_her2=0.12333 | train_pr=0.16049 |                    
+                    train_subtype=0.73129 | train_survival=1.84795 |           
+                    train_total=3.00046 | val_er=0.12187 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.19250 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.57505 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.61635 | val_her2=0.14003 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15287 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.50286 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.47124 | val_pr=0.15826 |                
+                    val_pr_accuracy=0.65190 | val_pr_brier_score=0.23397 |     
+                    val_pr_f1=0.47911 | val_pr_pr_auc=0.53708 |                
+                    val_pr_precision=0.52044 | val_pr_recall=0.50907 |         
+                    val_pr_roc_auc=0.54204 | val_subtype=0.62319 |             
+                    val_subtype_accuracy=0.54730 | val_subtype_f1=0.24831 |    
+                    val_subtype_pr_auc=0.31352 | val_subtype_precision=0.35082 
+                    | val_subtype_recall=0.26151 | val_subtype_roc_auc=0.60175 
+                    | val_survival=1.53630 |                                   
+                    val_survival_concordance_index=0.70944 |                   
+                    val_survival_n_events=23.00000 | val_total=2.57965         
+[17:49:48] INFO     Epoch   8 | lr=3.00e-04 | train_er=0.13749 |               
+                    train_her2=0.12171 | train_pr=0.16192 |                    
+                    train_subtype=0.73580 | train_survival=1.96159 |           
+                    train_total=3.11851 | val_er=0.11528 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18448 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.64369 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.67941 | val_her2=0.12618 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15515 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53182 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.56018 | val_pr=0.14449 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.21604 |     
+                    val_pr_f1=0.42716 | val_pr_pr_auc=0.60371 |                
+                    val_pr_precision=0.84395 | val_pr_recall=0.51000 |         
+                    val_pr_roc_auc=0.61963 | val_subtype=0.62521 |             
+                    val_subtype_accuracy=0.48649 | val_subtype_f1=0.13091 |    
+                    val_subtype_pr_auc=0.29290 | val_subtype_precision=0.10000 
+                    | val_subtype_recall=0.18947 | val_subtype_roc_auc=0.60626 
+                    | val_survival=1.43653 |                                   
+                    val_survival_concordance_index=0.67097 |                   
+                    val_survival_n_events=23.00000 | val_total=2.44769         
+[17:49:48] INFO     Checkpoint saved to                                        
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\checkpoints\checkpoint_best.p
+                    t.                                                         
+           INFO     Best val_total=2.44769 at epoch 8 — checkpoint saved.      
+[17:49:50] INFO     Epoch   9 | lr=3.00e-04 | train_er=0.13927 |               
+                    train_her2=0.12689 | train_pr=0.16117 |                    
+                    train_subtype=0.73644 | train_survival=1.82090 |           
+                    train_total=2.98467 | val_er=0.11811 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18869 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.59589 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.63047 | val_her2=0.12613 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16348 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.52946 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.56059 | val_pr=0.15076 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.22238 |     
+                    val_pr_f1=0.42716 | val_pr_pr_auc=0.53460 |                
+                    val_pr_precision=0.84395 | val_pr_recall=0.51000 |         
+                    val_pr_roc_auc=0.53611 | val_subtype=0.63385 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.30507 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.60748 
+                    | val_survival=1.55627 |                                   
+                    val_survival_concordance_index=0.68660 |                   
+                    val_survival_n_events=23.00000 | val_total=2.58513         
+[17:49:53] INFO     Epoch  10 | lr=3.00e-04 | train_er=0.13762 |               
+                    train_her2=0.12126 | train_pr=0.16125 |                    
+                    train_subtype=0.73150 | train_survival=1.94467 |           
+                    train_total=3.09630 | val_er=0.11704 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.17906 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62352 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.66459 | val_her2=0.12322 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16791 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.52366 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.53611 | val_pr=0.14663 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22252 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.59308 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.58694 | val_subtype=0.61981 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.13571 |    
+                    val_subtype_pr_auc=0.29450 | val_subtype_precision=0.10270 
+                    | val_subtype_recall=0.20000 | val_subtype_roc_auc=0.60520 
+                    | val_survival=1.51821 |                                   
+                    val_survival_concordance_index=0.66136 |                   
+                    val_survival_n_events=23.00000 | val_total=2.52491         
+[17:49:55] INFO     Epoch  11 | lr=3.00e-04 | train_er=0.13662 |               
+                    train_her2=0.12162 | train_pr=0.16076 |                    
+                    train_subtype=0.73113 | train_survival=1.95269 |           
+                    train_total=3.10282 | val_er=0.12055 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.19136 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62160 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.63188 | val_her2=0.12704 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16805 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53304 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.57405 | val_pr=0.14771 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22215 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.56864 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.57787 | val_subtype=0.63381 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.22699 |    
+                    val_subtype_pr_auc=0.29065 | val_subtype_precision=0.20445 
+                    | val_subtype_recall=0.26695 | val_subtype_roc_auc=0.58552 
+                    | val_survival=1.56033 |                                   
+                    val_survival_concordance_index=0.66556 |                   
+                    val_survival_n_events=23.00000 | val_total=2.58944         
+[17:49:57] INFO     Epoch  12 | lr=3.00e-04 | train_er=0.13588 |               
+                    train_her2=0.12130 | train_pr=0.15858 |                    
+                    train_subtype=0.73141 | train_survival=1.92389 |           
+                    train_total=3.07106 | val_er=0.11895 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18829 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.59761 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.63871 | val_her2=0.12679 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15409 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.55139 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.62913 | val_pr=0.14773 |                
+                    val_pr_accuracy=0.69620 | val_pr_brier_score=0.22389 |     
+                    val_pr_f1=0.46395 | val_pr_pr_auc=0.59189 |                
+                    val_pr_precision=0.72240 | val_pr_recall=0.52537 |         
+                    val_pr_roc_auc=0.59713 | val_subtype=0.62165 |             
+                    val_subtype_accuracy=0.54054 | val_subtype_f1=0.24016 |    
+                    val_subtype_pr_auc=0.32110 | val_subtype_precision=0.34769 
+                    | val_subtype_recall=0.26154 | val_subtype_roc_auc=0.60984 
+                    | val_survival=1.51816 |                                   
+                    val_survival_concordance_index=0.68419 |                   
+                    val_survival_n_events=23.00000 | val_total=2.53329         
+[17:49:59] INFO     Epoch  13 | lr=3.00e-04 | train_er=0.13766 |               
+                    train_her2=0.12161 | train_pr=0.16003 |                    
+                    train_subtype=0.72478 | train_survival=1.87282 |           
+                    train_total=3.01690 | val_er=0.12215 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.19581 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.60477 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.64000 | val_her2=0.12656 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16044 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.54278 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.59894 | val_pr=0.15290 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.23107 |     
+                    val_pr_f1=0.55493 | val_pr_pr_auc=0.58448 |                
+                    val_pr_precision=0.61957 | val_pr_recall=0.56370 |         
+                    val_pr_roc_auc=0.58111 | val_subtype=0.63326 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.23067 |    
+                    val_subtype_pr_auc=0.30972 | val_subtype_precision=0.20494 
+                    | val_subtype_recall=0.27232 | val_subtype_roc_auc=0.62039 
+                    | val_survival=1.55204 |                                   
+                    val_survival_concordance_index=0.66797 |                   
+                    val_survival_n_events=23.00000 | val_total=2.58691         
+[17:50:01] INFO     Epoch  14 | lr=3.00e-04 | train_er=0.13568 |               
+                    train_her2=0.11929 | train_pr=0.15955 |                    
+                    train_subtype=0.72242 | train_survival=1.88048 |           
+                    train_total=3.01743 | val_er=0.11936 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.19184 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.60170 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.63541 | val_her2=0.13064 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.14996 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53434 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.57528 | val_pr=0.14995 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22902 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.56101 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.57046 | val_subtype=0.62425 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.21589 |    
+                    val_subtype_pr_auc=0.29588 | val_subtype_precision=0.21343 
+                    | val_subtype_recall=0.25084 | val_subtype_roc_auc=0.61304 
+                    | val_survival=1.41165 |                                   
+                    val_survival_concordance_index=0.71124 |                   
+                    val_survival_n_events=23.00000 | val_total=2.43586         
+[17:50:01] INFO     Checkpoint saved to                                        
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\checkpoints\checkpoint_best.p
+                    t.                                                         
+           INFO     Best val_total=2.43586 at epoch 14 — checkpoint saved.     
+[17:50:03] INFO     Epoch  15 | lr=3.00e-04 | train_er=0.13616 |               
+                    train_her2=0.12169 | train_pr=0.15964 |                    
+                    train_subtype=0.71817 | train_survival=1.83813 |           
+                    train_total=2.97378 | val_er=0.11675 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18680 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.60414 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.64588 | val_her2=0.12623 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16181 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53481 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.58099 | val_pr=0.14518 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.22045 |     
+                    val_pr_f1=0.42716 | val_pr_pr_auc=0.60179 |                
+                    val_pr_precision=0.84395 | val_pr_recall=0.51000 |         
+                    val_pr_roc_auc=0.61167 | val_subtype=0.62558 |             
+                    val_subtype_accuracy=0.52027 | val_subtype_f1=0.16432 |    
+                    val_subtype_pr_auc=0.30989 | val_subtype_precision=0.23678 
+                    | val_subtype_recall=0.21337 | val_subtype_roc_auc=0.62982 
+                    | val_survival=1.51277 |                                   
+                    val_survival_concordance_index=0.68600 |                   
+                    val_survival_n_events=23.00000 | val_total=2.52651         
+[17:50:04] INFO     Epoch  16 | lr=3.00e-04 | train_er=0.13642 |               
+                    train_her2=0.12368 | train_pr=0.15937 |                    
+                    train_subtype=0.72172 | train_survival=1.79845 |           
+                    train_total=2.93964 | val_er=0.12070 |                     
+                    val_er_accuracy=0.77987 | val_er_brier_score=0.19690 |     
+                    val_er_f1=0.43816 | val_er_pr_auc=0.59949 |                
+                    val_er_precision=0.39241 | val_er_recall=0.49600 |         
+                    val_er_roc_auc=0.63988 | val_her2=0.12315 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15942 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.54180 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.59404 | val_pr=0.15382 |                
+                    val_pr_accuracy=0.67722 | val_pr_brier_score=0.23305 |     
+                    val_pr_f1=0.52720 | val_pr_pr_auc=0.57816 |                
+                    val_pr_precision=0.58936 | val_pr_recall=0.54370 |         
+                    val_pr_roc_auc=0.57370 | val_subtype=0.62125 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.21589 |    
+                    val_subtype_pr_auc=0.30672 | val_subtype_precision=0.21343 
+                    | val_subtype_recall=0.25084 | val_subtype_roc_auc=0.61633 
+                    | val_survival=1.47203 |                                   
+                    val_survival_concordance_index=0.71665 |                   
+                    val_survival_n_events=23.00000 | val_total=2.49094         
+[17:50:07] INFO     Epoch  17 | lr=3.00e-04 | train_er=0.13780 |               
+                    train_her2=0.12011 | train_pr=0.15884 |                    
+                    train_subtype=0.71320 | train_survival=1.86775 |           
+                    train_total=2.99770 | val_er=0.11860 |                     
+                    val_er_accuracy=0.77358 | val_er_brier_score=0.18904 |     
+                    val_er_f1=0.43617 | val_er_pr_auc=0.59475 |                
+                    val_er_precision=0.39172 | val_er_recall=0.49200 |         
+                    val_er_roc_auc=0.63412 | val_her2=0.12451 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16491 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53280 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.57120 | val_pr=0.14817 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.22487 |     
+                    val_pr_f1=0.42716 | val_pr_pr_auc=0.58849 |                
+                    val_pr_precision=0.84395 | val_pr_recall=0.51000 |         
+                    val_pr_roc_auc=0.57944 | val_subtype=0.62656 |             
+                    val_subtype_accuracy=0.51351 | val_subtype_f1=0.18029 |    
+                    val_subtype_pr_auc=0.30893 | val_subtype_precision=0.18435 
+                    | val_subtype_recall=0.22147 | val_subtype_roc_auc=0.63191 
+                    | val_survival=1.53080 |                                   
+                    val_survival_concordance_index=0.69381 |                   
+                    val_survival_n_events=23.00000 | val_total=2.54864         
+[17:50:11] INFO     Epoch  18 | lr=3.00e-04 | train_er=0.13613 |               
+                    train_her2=0.12096 | train_pr=0.15772 |                    
+                    train_subtype=0.71624 | train_survival=1.85440 |           
+                    train_total=2.98545 | val_er=0.11839 |                     
+                    val_er_accuracy=0.77987 | val_er_brier_score=0.18951 |     
+                    val_er_f1=0.43816 | val_er_pr_auc=0.60527 |                
+                    val_er_precision=0.39241 | val_er_recall=0.49600 |         
+                    val_er_roc_auc=0.64753 | val_her2=0.12680 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16608 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53026 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.55692 | val_pr=0.14754 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22328 |     
+                    val_pr_f1=0.45742 | val_pr_pr_auc=0.57730 |                
+                    val_pr_precision=0.59539 | val_pr_recall=0.51611 |         
+                    val_pr_roc_auc=0.58917 | val_subtype=0.63183 |             
+                    val_subtype_accuracy=0.50676 | val_subtype_f1=0.23118 |    
+                    val_subtype_pr_auc=0.31629 | val_subtype_precision=0.22793 
+                    | val_subtype_recall=0.26046 | val_subtype_roc_auc=0.63273 
+                    | val_survival=1.58223 |                                   
+                    val_survival_concordance_index=0.68780 |                   
+                    val_survival_n_events=23.00000 | val_total=2.60680         
+[17:50:14] INFO     Checkpoint saved to                                        
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\checkpoints\checkpoint_epoch_
+                    19.pt.                                                     
+[17:50:14] INFO     Epoch  19 | lr=3.00e-04 | train_er=0.13651 |               
+                    train_her2=0.12161 | train_pr=0.15829 |                    
+                    train_subtype=0.71092 | train_survival=2.01814 |           
+                    train_total=3.14546 | val_er=0.11931 |                     
+                    val_er_accuracy=0.77987 | val_er_brier_score=0.18605 |     
+                    val_er_f1=0.43816 | val_er_pr_auc=0.58756 |                
+                    val_er_precision=0.39241 | val_er_recall=0.49600 |         
+                    val_er_roc_auc=0.62471 | val_her2=0.12680 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16457 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53265 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.56712 | val_pr=0.14752 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.22397 |     
+                    val_pr_f1=0.42716 | val_pr_pr_auc=0.58370 |                
+                    val_pr_precision=0.84395 | val_pr_recall=0.51000 |         
+                    val_pr_roc_auc=0.58343 | val_subtype=0.62457 |             
+                    val_subtype_accuracy=0.50676 | val_subtype_f1=0.14667 |    
+                    val_subtype_pr_auc=0.31901 | val_subtype_precision=0.16944 
+                    | val_subtype_recall=0.20140 | val_subtype_roc_auc=0.62931 
+                    | val_survival=1.51185 |                                   
+                    val_survival_concordance_index=0.70883 |                   
+                    val_survival_n_events=23.00000 | val_total=2.53005         
+[17:50:17] INFO     Epoch  20 | lr=1.50e-04 | train_er=0.13309 |               
+                    train_her2=0.11923 | train_pr=0.15777 |                    
+                    train_subtype=0.70461 | train_survival=1.78992 |           
+                    train_total=2.90462 | val_er=0.12006 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.19532 |     
+                    val_er_f1=0.56793 | val_er_pr_auc=0.60205 |                
+                    val_er_precision=0.65476 | val_er_recall=0.56424 |         
+                    val_er_roc_auc=0.64247 | val_her2=0.12523 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15358 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.54503 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.61281 | val_pr=0.14691 |                
+                    val_pr_accuracy=0.65823 | val_pr_brier_score=0.22552 |     
+                    val_pr_f1=0.51434 | val_pr_pr_auc=0.56773 |                
+                    val_pr_precision=0.55381 | val_pr_recall=0.52981 |         
+                    val_pr_roc_auc=0.58509 | val_subtype=0.63598 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.22681 |    
+                    val_subtype_pr_auc=0.31007 | val_subtype_precision=0.39222 
+                    | val_subtype_recall=0.26025 | val_subtype_roc_auc=0.61767 
+                    | val_survival=1.68626 |                                   
+                    val_survival_concordance_index=0.67398 |                   
+                    val_survival_n_events=23.00000 | val_total=2.71445         
+[17:50:20] INFO     Epoch  21 | lr=1.50e-04 | train_er=0.13321 |               
+                    train_her2=0.12190 | train_pr=0.15781 |                    
+                    train_subtype=0.70595 | train_survival=1.84889 |           
+                    train_total=2.96777 | val_er=0.11841 |                     
+                    val_er_accuracy=0.77987 | val_er_brier_score=0.18919 |     
+                    val_er_f1=0.43816 | val_er_pr_auc=0.60467 |                
+                    val_er_precision=0.39241 | val_er_recall=0.49600 |         
+                    val_er_roc_auc=0.64729 | val_her2=0.12732 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16633 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53642 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.57976 | val_pr=0.14770 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22581 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.58289 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.59620 | val_subtype=0.62699 |             
+                    val_subtype_accuracy=0.54054 | val_subtype_f1=0.23321 |    
+                    val_subtype_pr_auc=0.31765 | val_subtype_precision=0.40853 
+                    | val_subtype_recall=0.26288 | val_subtype_roc_auc=0.63398 
+                    | val_survival=1.70583 |                                   
+                    val_survival_concordance_index=0.67939 |                   
+                    val_survival_n_events=23.00000 | val_total=2.72625         
+[17:50:22] INFO     Epoch  22 | lr=1.50e-04 | train_er=0.13342 |               
+                    train_her2=0.12351 | train_pr=0.15653 |                    
+                    train_subtype=0.70704 | train_survival=1.87591 |           
+                    train_total=2.99641 | val_er=0.11799 |                     
+                    val_er_accuracy=0.77358 | val_er_brier_score=0.18569 |     
+                    val_er_f1=0.43617 | val_er_pr_auc=0.59644 |                
+                    val_er_precision=0.39172 | val_er_recall=0.49200 |         
+                    val_er_roc_auc=0.63835 | val_her2=0.12321 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16352 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.53524 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.58629 | val_pr=0.14637 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22132 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.58933 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.60731 | val_subtype=0.63040 |             
+                    val_subtype_accuracy=0.52703 | val_subtype_f1=0.22544 |    
+                    val_subtype_pr_auc=0.31832 | val_subtype_precision=0.24866 
+                    | val_subtype_recall=0.25225 | val_subtype_roc_auc=0.62669 
+                    | val_survival=1.65270 |                                   
+                    val_survival_concordance_index=0.71605 |                   
+                    val_survival_n_events=23.00000 | val_total=2.67067         
+[17:50:25] INFO     Epoch  23 | lr=1.50e-04 | train_er=0.13365 |               
+                    train_her2=0.12034 | train_pr=0.15629 |                    
+                    train_subtype=0.69954 | train_survival=1.81295 |           
+                    train_total=2.92276 | val_er=0.11817 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18636 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.60194 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.63753 | val_her2=0.12520 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15830 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.52539 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.55528 | val_pr=0.14787 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22323 |     
+                    val_pr_f1=0.48568 | val_pr_pr_auc=0.57780 |                
+                    val_pr_precision=0.59797 | val_pr_recall=0.52685 |         
+                    val_pr_roc_auc=0.59019 | val_subtype=0.62934 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.21964 |    
+                    val_subtype_pr_auc=0.31476 | val_subtype_precision=0.20769 
+                    | val_subtype_recall=0.25621 | val_subtype_roc_auc=0.63013 
+                    | val_survival=1.60869 |                                   
+                    val_survival_concordance_index=0.70102 |                   
+                    val_survival_n_events=23.00000 | val_total=2.62928         
+[17:50:28] INFO     Epoch  24 | lr=1.50e-04 | train_er=0.13377 |               
+                    train_her2=0.11868 | train_pr=0.15772 |                    
+                    train_subtype=0.69786 | train_survival=1.85443 |           
+                    train_total=2.96247 | val_er=0.11718 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18564 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62862 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.65541 | val_her2=0.12402 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.16458 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.51577 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.52428 | val_pr=0.14775 |                
+                    val_pr_accuracy=0.68987 | val_pr_brier_score=0.22358 |     
+                    val_pr_f1=0.50228 | val_pr_pr_auc=0.58760 |                
+                    val_pr_precision=0.62307 | val_pr_recall=0.53685 |         
+                    val_pr_roc_auc=0.59667 | val_subtype=0.62328 |             
+                    val_subtype_accuracy=0.53378 | val_subtype_f1=0.22098 |    
+                    val_subtype_pr_auc=0.31035 | val_subtype_precision=0.21275 
+                    | val_subtype_recall=0.25621 | val_subtype_roc_auc=0.62258 
+                    | val_survival=1.65932 |                                   
+                    val_survival_concordance_index=0.68900 |                   
+                    val_survival_n_events=23.00000 | val_total=2.67155         
+[17:50:31] INFO     Epoch  25 | lr=1.50e-04 | train_er=0.13396 |               
+                    train_her2=0.11897 | train_pr=0.15614 |                    
+                    train_subtype=0.70207 | train_survival=1.72826 |           
+                    train_total=2.83941 | val_er=0.11857 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18889 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.61496 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.64682 | val_her2=0.12428 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15961 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.52673 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.56344 | val_pr=0.14844 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22495 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.57785 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.58731 | val_subtype=0.62962 |             
+                    val_subtype_accuracy=0.52027 | val_subtype_f1=0.19383 |    
+                    val_subtype_pr_auc=0.29387 | val_subtype_precision=0.38511 
+                    | val_subtype_recall=0.22814 | val_subtype_roc_auc=0.61705 
+                    | val_survival=1.70520 |                                   
+                    val_survival_concordance_index=0.68480 |                   
+                    val_survival_n_events=23.00000 | val_total=2.72612         
+[17:50:33] INFO     Early stopping triggered at epoch 26 (val_total did not    
+                    improve for 12 epochs).                                    
+           INFO     Epoch  26 | lr=7.50e-05 | train_er=0.13323 |               
+                    train_her2=0.12059 | train_pr=0.15591 |                    
+                    train_subtype=0.70102 | train_survival=1.84662 |           
+                    train_total=2.95736 | val_er=0.11717 |                     
+                    val_er_accuracy=0.78616 | val_er_brier_score=0.18564 |     
+                    val_er_f1=0.44014 | val_er_pr_auc=0.62215 |                
+                    val_er_precision=0.39308 | val_er_recall=0.50000 |         
+                    val_er_roc_auc=0.64976 | val_her2=0.12462 |                
+                    val_her2_accuracy=0.87162 | val_her2_brier_score=0.15850 | 
+                    val_her2_f1=0.46570 | val_her2_pr_auc=0.52332 |            
+                    val_her2_precision=0.43581 | val_her2_recall=0.50000 |     
+                    val_her2_roc_auc=0.55365 | val_pr=0.14758 |                
+                    val_pr_accuracy=0.68354 | val_pr_brier_score=0.22324 |     
+                    val_pr_f1=0.40602 | val_pr_pr_auc=0.59022 |                
+                    val_pr_precision=0.34177 | val_pr_recall=0.50000 |         
+                    val_pr_roc_auc=0.59991 | val_subtype=0.62770 |             
+                    val_subtype_accuracy=0.52703 | val_subtype_f1=0.22672 |    
+                    val_subtype_pr_auc=0.30408 | val_subtype_precision=0.25448 
+                    | val_subtype_recall=0.25225 | val_subtype_roc_auc=0.62899 
+                    | val_survival=1.63777 |                                   
+                    val_survival_concordance_index=0.70703 |                   
+                    val_survival_n_events=23.00000 | val_total=2.65485         
+[17:50:33] INFO     Training stopped at epoch 26.                              
+[17:50:33] INFO     Run summary written to                                     
+                    C:\Users\A0X0P\OneDrive\Documents\cancer-framework\results\
+                    breast_ablation\clinical_only\run_summary.json.            

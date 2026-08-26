@@ -1,0 +1,50 @@
+# Architecture for the two-modality TCGA-BRCA model.
+#
+# Keys map onto src.models.model_factory.ModelConfig fields. Unknown keys are
+# ignored by build_model, so a typo silently falls back to the default: keep
+# this file aligned with ModelConfig.
+#
+#   Gene expression (50)      Clinical (12)
+#          |                        |
+#   Genomic Transformer       Clinical MLP
+#          \                       /
+#           Cross-modal attention
+#                    |
+#              Concatenation
+#                    |
+#                Fusion MLP
+#                    |
+#     PAM50 / ER / PR / HER2 / DeepSurv heads
+
+# Shared representation width used by both encoders and the fusion stage.
+embedding_dim: 256
+fused_dim: 256
+dropout: 0.1
+
+# Both modalities are active; there is no imaging branch.
+enable_clinical: true
+enable_genomics: true
+enable_survival: true
+
+# Clinical MLP. clinical_input_dim is the ratified 12-dimensional contract and
+# defaults to CLINICAL_FEATURE_DIM; it is stated here for provenance only.
+clinical_input_dim: 12
+clinical_hidden_dim: 128
+clinical_num_blocks: 2
+
+# Genomic Transformer over the 50-gene PAM50 panel.
+genomics_input_dim: 50
+genomics_d_model: 128
+genomics_nhead: 4
+genomics_num_layers: 3
+genomics_dim_feedforward: 256
+
+# Cross-modal attention over the two modality embeddings.
+cross_attention_nhead: 4
+cross_attention_dropout: 0.1
+
+# Task heads.
+classification_hidden_dim: 128
+subtype_num_classes: 5
+receptor_num_classes: 2
+survival_hidden_dim: 128
