@@ -1,0 +1,210 @@
+{
+  "purpose": "Literature comparison for the MOGEN-BRCA Chapter 4 results. Every number below was read from that study's own Europe PMC record; none is estimated, interpolated, or recalled from memory.",
+  "verification": {
+    "method": "Europe PMC REST API (https://www.ebi.ac.uk/europepmc/webservices/rest/search, resultType=core), queried per record by EXT_ID / PMCID / DOI.",
+    "retrieved": "2026-08-26",
+    "evidence_level": "Abstract and structured metadata only. Full texts were not parsed, so values reported only in a study's tables or figures are absent here rather than guessed.",
+    "excluded": [
+      "Huang Z et al., SALMON, Front Genet 2019;10:166 (PMID 30906311) - inspected, but the record reports no numeric C-index, only that performance improved qualitatively with more omics layers. Nothing citable.",
+      "Vale-Silva LA & Rohr K, MultiSurv, Sci Rep 2021;11:13505 (PMID 34188098) - inspected, but the record reports no numeric C-index for any cancer type. Nothing citable.",
+      "Several TCGA-BRCA prognostic-signature papers with high reported C-indices (0.86-0.92) were found but not tabulated: their values are within-subtype, nomogram-calibrated, or synthetic-data derived, with no independent external overall-survival validation stated, so they are not comparable to a single-use held-out test partition."
+    ]
+  },
+  "this_work": {
+    "name": "MOGEN-BRCA",
+    "dataset": "TCGA-BRCA, N = 1082 aligned patients",
+    "modalities": "50 PAM50 gene expression values + 12-dimensional clinical vector (age, pathological tumour stage, pathological nodal stage, sex)",
+    "model": "Genomic Transformer + Clinical MLP -> cross-modal attention -> fusion MLP -> 5 task heads",
+    "evaluation": "Patient-level stratified 70/15/15 split, seed 42, 756/163/163. Test partition evaluated once. Per-task label masking, so each task is scored only on patients whose label for that task exists.",
+    "results": {
+      "pam50_5_class": {"n": 148, "accuracy": 0.8649, "macro_f1": 0.7904, "roc_auc": 0.9430},
+      "er": {"n": 155, "accuracy": 0.9097, "macro_f1": 0.8708, "roc_auc": 0.9232},
+      "pr": {"n": 155, "accuracy": 0.8645, "macro_f1": 0.8345, "roc_auc": 0.8663},
+      "her2": {"n": 134, "accuracy": 0.7761, "macro_f1": 0.5765, "roc_auc": 0.7736},
+      "overall_survival": {"n": 160, "events": 23, "censored": 137, "c_index": 0.7112},
+      "overall_survival_genomics_only": {"c_index": 0.6008},
+      "overall_survival_clinical_only": {"c_index": 0.7372}
+    }
+  },
+  "direct_comparisons": {
+    "definition": "Same dataset (TCGA-BRCA), an overlapping task, a transcriptomic and/or clinical input modality, and a metric reported on the same scale as ours.",
+    "studies": [
+      {
+        "id": "qiu_2026",
+        "study": "Qiu S, Zhao Y, Li X. Domain adaptation, self-supervision, and generative augmentation enhance GNNs for breast cancer prediction.",
+        "venue": "Scientific Reports 2026;16(1):3011",
+        "pmid": "41559366",
+        "doi": "10.1038/s41598-025-32924-9",
+        "dataset": "TCGA-BRCA, 1084 samples; METABRIC, 1980 samples (one-directional TCGA -> METABRIC transfer test)",
+        "modality": "Gene expression only, mapped onto gene-centric PPI graphs and patient-similarity graphs",
+        "model": "Multi-task Graph Transformer / GNN with a shared encoder",
+        "tasks": "4-class intrinsic subtype; ER, PR, HER2 status; overall survival via a Cox proportional-hazards head",
+        "reported_results": {
+          "subtype_f1": 0.872,
+          "er_roc_auc": 0.960,
+          "pr_roc_auc": 0.943,
+          "her2_roc_auc": 0.918,
+          "her2_roc_auc_with_molgan_augmentation": 0.935,
+          "overall_survival_c_index": 0.721,
+          "external_subtype_f1_without_adaptation": 0.738,
+          "external_subtype_f1_with_adaptation": 0.801,
+          "her2_enriched_few_shot_f1_maml": 0.782
+        },
+        "quoted_sentence": "The multi-task Graph Transformer achieved subtype F1 = 0.872, ER/PR/HER2 AUCs of 0.960/0.943/0.918, and C-index = 0.721.",
+        "why_comparable": "This is the closest published match to the MOGEN-BRCA task set: the same cohort, the same three receptor tasks, intrinsic subtyping, and an overall-survival Cox head, all from transcriptomic input.",
+        "methodological_differences": [
+          "Four subtype classes (Luminal A, Luminal B, HER2-enriched, Basal-like); Normal-like is excluded. MOGEN-BRCA predicts five classes, and Normal-like is its weakest class (5 test patients, 2 correct), so the 5-class problem is strictly harder.",
+          "The abstract does not state which cohort or which validation regime produced the headline numbers. Because the 0.738 -> 0.801 pair is the only figure explicitly labelled external, the headline values are most plausibly internal fivefold cross-validation on TCGA-BRCA. MOGEN-BRCA reports a single held-out test partition scored once, which is a more conservative protocol; cross-validated figures are generally optimistic relative to it.",
+          "No clinical modality is used, so the study cannot separate genomic from clinical contribution the way the MOGEN-BRCA ablation does.",
+          "The averaging convention for the subtype F1 (macro vs weighted) is not stated, so 0.872 is not safely comparable to our macro-F1 of 0.7904.",
+          "No per-task label masking scheme is described, so the denominators behind each AUC are unknown."
+        ],
+        "interpretability_divergence": "GNNExplainer surfaced ESR1, ERBB2 and PGR as drivers. MOGEN-BRCA's SHAP analysis agrees on ESR1 (rank 1 of 62 for ER) but not on ERBB2 for HER2, where ERBB2 ranks only 11th and FOXC1 ranks 1st."
+      },
+      {
+        "id": "babas_2026",
+        "study": "Babas R, Vynios DH, Kompothrekas A, Boutsinas B, Karamanos N. Integrative survival prediction in breast cancer using extracellular matrix protease transcript signatures.",
+        "venue": "Cancers (Basel) 2026;18(10):1497",
+        "pmid": "42192859",
+        "doi": "10.3390/cancers18101497",
+        "dataset": "TCGA breast cancer cohort (development and internal 30% held-out test); METABRIC external validation. Neither sample size is stated in the record.",
+        "modality": "Protease transcripts per million (MMP/ADAM/ADAMTS families) + clinical covariates (age, ordinal stage)",
+        "model": "Random survival forest, selected over CoxPH, CoxNet and gradient-boosted survival",
+        "tasks": "Survival prediction and risk stratification only",
+        "reported_results": {
+          "integrative_rsf_c_index_tcga_heldout": 0.797,
+          "clinical_only_cox_c_index_tcga": 0.742,
+          "clinical_only_cox_c_index_95ci": [0.636, 0.826],
+          "locked_model_c_index_metabric_external": 0.581,
+          "locked_model_c_index_metabric_95ci": [0.562, 0.598]
+        },
+        "why_comparable": "The only study found that reports both a transcript+clinical survival model and an explicit clinical-only baseline on the same TCGA breast cohort. That pairing is exactly the contrast the MOGEN-BRCA modality ablation measures.",
+        "methodological_differences": [
+          "The survival endpoint is never named in the record. It cannot be confirmed to be overall survival, so the comparison to our OS_MONTHS/OS_STATUS endpoint is provisional.",
+          "Neither cohort size is reported, so the event count behind 0.742 and 0.797 is unknown and the width of the clinical-only interval (0.636-0.826) cannot be attributed to a specific n.",
+          "The transcript panel is MMP/ADAM/ADAMTS proteases, not the PAM50 panel, and was selected by univariate screening on the same cohort family.",
+          "Random survival forest rather than a Cox partial-likelihood neural network.",
+          "No subtype or receptor tasks, so no multi-task interaction."
+        ],
+        "relation_to_our_finding": "Their clinical-only Cox C-index of 0.742 (95% CI 0.636-0.826) is close to our clinical-only ablation C-index of 0.7372, which is reassuring for our clinical branch. The directions then diverge: adding transcripts raised their C-index to 0.797, whereas in MOGEN-BRCA the multimodal model (0.7112) scored *below* clinical-only (0.7372). Their clinical-only interval is wide enough to contain both 0.7112 and 0.797, which is itself an argument for not over-reading either gap."
+      }
+    ]
+  },
+  "contextual_comparisons": {
+    "definition": "Breast-cancer or pan-cancer studies that share a metric or an experimental shape but differ in dataset, modality, or endpoint. These frame the result; they do not benchmark it.",
+    "studies": [
+      {
+        "id": "lyu_2026_imcn",
+        "study": "Lyu C et al. iMCN: information compression-based multimodal confidence-guided fusion network.",
+        "venue": "Biomedical Physics & Engineering Express 2026",
+        "pmid": "41564441",
+        "doi": "10.1088/2057-1976/ae3b46",
+        "dataset": "TCGA-BRCA and TCGA-LUAD",
+        "modality": "Whole-slide images + genomic data",
+        "task": "Cancer survival prediction",
+        "reported_results": {"brca_c_index": 0.740, "luad_c_index": 0.691},
+        "why_contextual": "Same cohort and metric, but one of its two modalities is histopathology imaging, which is explicitly outside the MOGEN-BRCA architecture. Its 0.740 is a reasonable ceiling reference for TCGA-BRCA survival, not a like-for-like comparison."
+      },
+      {
+        "id": "wang_2026_mutrim",
+        "study": "Wang X et al. MuTriM: a multiscale deep learning model integrating longitudinal radiomics and pathomic features for predicting recurrence and adjuvant radiation benefit in breast cancer.",
+        "venue": "European Journal of Cancer 2026;238:116679",
+        "pmid": "41850009",
+        "doi": "10.1016/j.ejca.2026.116679",
+        "dataset": "FUSCC cohort N = 335 (training); TCGA cohort N = 126 (external test)",
+        "modality": "DCE-MRI radiomics + whole-slide-image pathomics. Transcriptomics used only for downstream biological interpretation, not as a model input.",
+        "task": "Recurrence-free survival",
+        "reported_results": {
+          "multimodal_c_index": 0.75,
+          "dce_mri_only_c_index": 0.65,
+          "wsi_only_c_index": 0.70,
+          "gain_over_best_unimodal": 0.05
+        },
+        "why_contextual": "Different modalities and a different endpoint (RFS, not OS), and not trained on TCGA. Included because it is the closest published breast-cancer multimodal-versus-unimodal survival ablation, i.e. the same experiment shape as Section 1 of this chapter.",
+        "relation_to_our_finding": "MuTriM found multimodal > both unimodal arms (+0.10 over MRI-only, +0.05 over WSI-only). MOGEN-BRCA found the opposite ordering on survival: clinical-only (0.7372) > multimodal (0.7112) > genomics-only (0.6008). Multimodal superiority is therefore not a universal result even within breast cancer, and our measurement should not be presented as though it were expected to reproduce theirs."
+      },
+      {
+        "id": "cheerla_2019",
+        "study": "Cheerla A, Gevaert O. Deep learning with multimodal representation for pancancer prognosis prediction.",
+        "venue": "Bioinformatics 2019;35(14):i446-i454",
+        "pmid": "31510656",
+        "doi": "10.1093/bioinformatics/btz342",
+        "dataset": "20 cancer types, pan-cancer",
+        "modality": "Clinical data + mRNA expression + microRNA expression + whole-slide images, with multimodal dropout for missing modalities",
+        "task": "Prognosis",
+        "reported_results": {"overall_c_index": 0.78, "preprint_overall_c_index": 0.784},
+        "why_contextual": "Frequently cited as the multimodal prognosis reference point, but 0.78 is pooled across 20 cancer types and includes histopathology. No breast-specific value is given in the record, so it cannot benchmark a breast-only model.",
+        "shared_design_note": "Its multimodal-dropout handling of absent modalities is conceptually the same problem MOGEN-BRCA solves with a zero-fill plus presence indicator, which is what lets the single-modality ablations keep identical head shapes."
+      },
+      {
+        "id": "botan_2026_corepam",
+        "study": "de Negreiros Botan R, de Sousa JB. Cross-platform reproducible modeling of breast cancer prognosis using the Core-PAM50 gene signature.",
+        "venue": "Breast Cancer Research 2026 (PMID 42169063); preprint Research Square 2025",
+        "doi": "10.21203/rs.3.rs-8048795/v1",
+        "dataset": "METABRIC n = 2173 (training); TCGA-BRCA n = 1098 (external); GSE25066 n = 508",
+        "modality": "Gene expression (microarray and RNA-seq) + clinical",
+        "task": "Overall survival (METABRIC OS, TCGA OS); DRFS in GSE25066",
+        "reported_results": {
+          "metabric_internal_c_index": 0.584,
+          "tcga_external_c_index": 0.42,
+          "tcga_os_hazard_ratio": 0.89,
+          "tcga_os_hazard_ratio_95ci": [0.67, 1.19],
+          "out_of_fold_c_index_published_version": 0.670
+        },
+        "quoted_explanation": "The authors describe the TCGA value as \"consistent with short follow-up and low event rates.\"",
+        "why_contextual": "A PAM50-derived expression signature evaluated on essentially our cohort (n = 1098 vs our 1082), which makes its TCGA result the single most relevant piece of context for interpreting a TCGA-BRCA survival C-index.",
+        "relation_to_our_finding": "An independent group taking a PAM50-derived expression signature into TCGA-BRCA overall survival obtained a C-index of approximately 0.42, i.e. below chance, with a near-null hazard ratio whose interval crosses 1, and attributed it to short follow-up and few events. Our test partition has 23 events among 160 evaluable patients and a median follow-up of 28.5 months. This is direct external support for two claims in this chapter: that TCGA-BRCA overall survival is a low-signal endpoint, and that our genomics-only C-index of 0.6008 is not an implementation defect."
+      },
+      {
+        "id": "uma_kandan_2026",
+        "study": "Uma Kandan S, Abul O. A robust machine learning approach for breast cancer subtype classification using relative gene expression order representations.",
+        "venue": "Computer Methods and Programs in Biomedicine 2026;285:109510",
+        "pmid": "42302593",
+        "doi": "10.1016/j.cmpb.2026.109510",
+        "dataset": "SCAN-B (training, internal and semi-external test sets); TCGA-BRCA (fully external). No sample size is reported for any cohort.",
+        "modality": "Within-sample relative expression *order* of the PAM50 genes, as rank features and word2vec embeddings",
+        "task": "Multiclass breast cancer molecular subtype classification. The number of classes is not stated in the record.",
+        "reported_results": {
+          "scan_b_precision_and_recall_floor": 0.91,
+          "tcga_brca_accuracy_floor": 0.95
+        },
+        "why_contextual": "Uses exactly our 50-gene panel for exactly our subtype task and validates externally on our cohort, but the reported figures are not on a comparable footing.",
+        "methodological_differences": [
+          "The 0.95 is a floor stated for \"the majority of subtypes\" on TCGA-BRCA, not an overall multiclass accuracy over all classes. It is not comparable to our all-class accuracy of 0.8649, and a per-subtype floor computed over a favourable subset of classes will exceed an all-class average almost by construction.",
+          "The class count is not stated, so it is unknown whether Normal-like is included. Normal-like is where MOGEN-BRCA loses most accuracy.",
+          "Trained on SCAN-B and applied to TCGA-BRCA, so its TCGA figure is a transfer result, not a within-cohort held-out result.",
+          "No cohort sizes are given, so no denominator is checkable."
+        ],
+        "shared_limitation": "This study inherits the same circularity as our PAM50 task: the PAM50 label was originally derived from these 50 genes, so high accuracy partly reflects label provenance rather than biological discovery. Neither their result nor ours should be read as independent subtype discovery."
+      }
+    ]
+  },
+  "methodologically_relevant_not_numerically_comparable": [
+    {
+      "id": "borges_2026",
+      "study": "Borges J. Auditing shortcut learning and misclassification in artificial intelligence-based breast cancer genomic subtyping.",
+      "venue": "JAMIA Open 2026;9(2):ooaf177",
+      "pmid": "41937807",
+      "doi": "10.1093/jamiaopen/ooaf177",
+      "dataset": "TCGA Breast Invasive Carcinoma, 691 complete cases",
+      "modality": "Clinical variables only",
+      "model_inputs": ["ER status", "PR status", "HER2 status", "tumour stage", "age"],
+      "task": "PAM50 subtype (Luminal A, Luminal B, HER2-enriched, Basal-like) from clinical predictors",
+      "reported_results": {
+        "mcfadden_pseudo_r2": 0.396,
+        "max_delta_probability_her2_enriched": 0.29,
+        "pseudo_shap_vs_shap_spearman_r": 0.91
+      },
+      "why_not_numerically_comparable": "The study reports no accuracy, AUC, F1, or confusion matrix. McFadden's pseudo-R-squared of 0.396 is a goodness-of-fit measure for a multinomial logistic regression, not a classification score, so it cannot be placed beside our clinical-only PAM50 accuracy of 0.4932.",
+      "why_still_relevant": "It feeds ER, PR and HER2 status in as *predictors* of PAM50 subtype. The MOGEN-BRCA data contract forbids exactly this: receptor status is a target in five separate tasks and is never a model input, and PAM50 is never allowed to supply a receptor label. Borges's own framing is that such a model 'effectively substitutes biomarker status for molecular data', which is the shortcut our contract is written to exclude.",
+      "mirror_image_finding": "Borges shows that clinical variables *including receptor status* retain moderate explanatory power for PAM50 subtype. Our clinical-only ablation, which excludes receptor status and uses only age, stage, nodal stage and sex, achieves a PAM50 ROC-AUC of 0.4505 and predicts only three of the five classes (134 of 148 predictions are Luminal A, 13 are Basal-like, one is Luminal B, and HER2-enriched and Normal-like are never predicted). Read together, the two results suggest that the apparent subtype signal in clinical-only models comes largely from receptor status rather than from age and stage, and that removing it, as our contract requires, removes almost all of it."
+    }
+  ],
+  "honest_limitations_of_this_comparison": [
+    "No study was found that predicts ER, PR and HER2 status from gene expression on TCGA-BRCA and reports accuracy, macro-F1, PR-AUC and a confusion matrix. Qiu et al. report ROC-AUC only. Our accuracy, macro-F1, Brier and confusion-matrix figures therefore have no published counterpart and are reported without comparison.",
+    "Most recent receptor-status prediction work uses H&E whole-slide images rather than transcriptomes, so it is not comparable on modality and was not tabulated.",
+    "All numbers here come from abstracts and structured metadata, not full texts. Where a study's abstract omits the cohort, endpoint, sample size, or averaging convention behind a number, that omission is recorded above rather than filled in.",
+    "No comparison in this table is a statistical test. Differences in reported metrics across studies confound model, cohort composition, split protocol, label definition, and event count, and our own test partition has 148-160 patients per task and 23 survival events. None of the gaps discussed here is accompanied by a confidence interval on our side.",
+    "Cross-validated or internally-tested published figures are not on the same footing as a single-use held-out test partition. Where a study's regime is unstated, we say so rather than assume the more favourable reading for either side."
+  ]
+}

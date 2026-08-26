@@ -20,12 +20,19 @@ ablation configs write only under `results/breast_ablation/`, and
 `tests/test_ablations.py` asserts that property directly against the checked-in
 YAML so it cannot regress silently.
 
+The post-hoc analyses — detailed metrics, threshold analysis, SHAP attribution and
+the literature record — read the frozen checkpoint and write only into
+`results/breast_analysis/` and `results/breast_explainability/`. Nothing is
+written inside `results/breast/` at any point, and the checkpoint's SHA-256 is
+recorded before and after the SHAP run to prove it
+(`1ad26a2535f1479e621429f73306f3be4d84e1ce878e5fde28f283a82b5faf14`, unchanged).
+
 ---
 
 ## 1. Reproducing the runs
 
 ```bash
-uv run pytest                                     # 276 tests
+uv run pytest                                     # 303 tests
 
 # Ablation training (each writes only into its own results directory)
 uv run python scripts/run_train.py --config configs/breast/train_genomics_only.yaml
@@ -47,11 +54,32 @@ uv run python scripts/run_ablation_comparison.py
 
 # SHAP attribution for the frozen full multimodal checkpoint
 uv run python scripts/run_shap.py
+
+# Per-patient prediction export, per run and per partition. --output is explicit
+# so nothing can be written into a frozen run's directory.
+uv run python scripts/export_predictions.py \
+    --config configs/breast/train.yaml \
+    --checkpoint results/breast/checkpoints/checkpoint_best.pt \
+    --partition test \
+    --output results/breast_analysis/predictions/full_multimodal_test.csv
+
+# Confusion matrices, positive-class detail, and the PR-AUC disambiguation.
+# Cross-checks itself against every committed test_metrics.json.
+uv run python scripts/run_detailed_metrics.py
+
+# Receptor threshold selection on validation, applied once to test
+uv run python scripts/run_threshold_analysis.py
 ```
 
 `scripts/run_ablation_comparison.py` and `scripts/run_shap.py` never write into
 `results/breast/`; the SHAP script additionally re-hashes the frozen checkpoint
 before and after the analysis and fails if the two hashes differ.
+
+`scripts/run_detailed_metrics.py` and `scripts/run_threshold_analysis.py` read
+the exported predictions and write only into `results/breast_analysis/`. The
+detailed-metrics script recomputes every quantity that also appears in a
+committed `test_metrics.json` and aborts if any of them disagrees beyond `1e-6`,
+so a drift between the export path and the evaluator cannot pass unnoticed.
 
 ---
 
@@ -147,6 +175,20 @@ per-class recalls *is* balanced accuracy, so the comparison maps the evaluator's
 existing `recall` field onto the `balanced_accuracy` column rather than adding a
 second implementation of the same quantity.
 
+**The `PR-AUC` column for ER, PR and HER2 is a macro over both classes, not the
+conventional binary average precision.** `src/evaluation/evaluator.py` computes
+`softmax(logits)` and passes the full `(N, 2)` matrix to `metrics.pr_auc`, which
+macro-averages the per-class average precision. So every `pr_auc` in a committed
+`test_metrics.json` — and every receptor PR-AUC in the tables below — is
+`mean(AP_positive, AP_negative)`. ROC-AUC and Brier are conventional: they slice
+the positive-class column. This was found while cross-checking the export path
+against the evaluator and is a *definition* difference, not an error, but it
+matters because averaging in the easy negative class flatters an imbalanced task.
+On HER2 the difference is large: 0.6963 macro versus **0.4758** positive-class
+average precision for the full model. `scripts/run_detailed_metrics.py` reports
+both under `pr_auc_macro_both_classes` and `pr_auc_positive_class`. The frozen
+files were not rewritten.
+
 Majority-class accuracy on this test partition, as a descriptive floor:
 subtype 0.5135, ER 0.7871, PR 0.6645, HER2 0.7612.
 
@@ -239,7 +281,167 @@ points are well within the range that sampling variation alone could produce.
 
 ---
 
-## 6. SHAP attribution for the frozen model
+## 6. Confusion matrices and positive-class detail
+
+`scripts/run_detailed_metrics.py` writes
+`results/breast_analysis/detailed_metrics.{json,csv}` from the exported
+per-patient predictions. It recomputes 29 quantities per run that also appear in
+that run's committed `test_metrics.json` and aborts if any disagree beyond
+`1e-6`. All three runs agree: maximum absolute differences of 9.069e-09
+(full multimodal), 1.351e-08 (genomics-only) and 6.791e-09 (clinical-only).
+
+Every confusion matrix below is oriented **rows = true class, columns =
+predicted class**.
+
+### PAM50, 5-class
+
+Class order is Luminal A, Luminal B, HER2-enriched, Basal-like, Normal-like, with
+test support 76 / 30 / 12 / 25 / 5.
+
+| Run | Macro precision | Balanced acc. | Confusion matrix |
+| --- | --- | --- | --- |
+| Full multimodal | 0.8714 | 0.7609 | `[[70,5,1,0,0],[7,22,1,0,0],[0,3,9,0,0],[0,0,0,25,0],[1,1,1,0,2]]` |
+| Genomics-only | 0.8301 | 0.7721 | `[[73,0,0,0,3],[11,19,0,0,0],[0,4,8,0,0],[0,0,0,25,0],[1,1,0,0,3]]` |
+| Clinical-only | 0.1506 | 0.2082 | `[[70,0,0,6,0],[27,0,0,3,0],[11,1,0,0,0],[22,0,0,3,0],[4,0,0,1,0]]` |
+
+Both genomic-bearing runs classify Basal-like perfectly (25/25) and fail mainly
+on Normal-like, the smallest class at 5 patients. The full model's errors
+concentrate on the Luminal A / Luminal B boundary, which is the biologically
+least separable pair in PAM50. The clinical-only matrix has empty columns: over
+148 patients it predicts Luminal A 134 times, Basal-like 13 times, Luminal B
+once, and **HER2-enriched and Normal-like never**.
+
+### Receptor tasks
+
+`AP+` is the conventional positive-class average precision; `AP macro` is the
+macro-over-both-classes figure that the committed files call `pr_auc`.
+
+| Run | Task | n | pos | Acc. | Bal. acc. | ROC-AUC | AP+ | AP macro | Brier | Confusion matrix |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Full | ER | 155 | 122 | 0.9097 | 0.8874 | 0.9232 | 0.9670 | 0.8823 | 0.0827 | `[[28,5],[9,113]]` |
+| Full | PR | 155 | 103 | 0.8645 | 0.8124 | 0.8663 | 0.9104 | 0.8715 | 0.1427 | `[[34,18],[3,100]]` |
+| Full | HER2 | 134 | 32 | 0.7761 | 0.5741 | 0.7736 | 0.4758 | 0.6963 | 0.1672 | `[[98,4],[26,6]]` |
+| Genomics | ER | 155 | 122 | 0.9226 | 0.8845 | 0.9183 | 0.9521 | 0.8763 | 0.0822 | `[[27,6],[6,116]]` |
+| Genomics | PR | 155 | 103 | 0.8581 | 0.7980 | 0.8652 | 0.9097 | 0.8763 | 0.1473 | `[[32,20],[2,101]]` |
+| Genomics | HER2 | 134 | 32 | 0.8284 | 0.6728 | 0.8033 | 0.6887 | 0.7930 | 0.1437 | `[[99,3],[20,12]]` |
+| Clinical | ER | 155 | 122 | 0.7871 | 0.5000 | 0.4773 | 0.7628 | 0.5022 | 0.2008 | `[[0,33],[0,122]]` |
+| Clinical | PR | 155 | 103 | 0.6645 | 0.5000 | 0.4979 | 0.6479 | 0.5318 | 0.2362 | `[[0,52],[0,103]]` |
+| Clinical | HER2 | 134 | 32 | 0.7612 | 0.5000 | 0.5411 | 0.2901 | 0.5454 | 0.1883 | `[[102,0],[32,0]]` |
+
+### HER2 positive-class metrics
+
+HER2 is the weak, imbalanced task (32 positives of 134), so it is reported at the
+positive-class level rather than only as a macro average.
+
+| Run | Precision | Recall | F1 | Specificity | Predicted positive | TP of 32 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Full multimodal | 0.6000 | 0.1875 | 0.2857 | 0.9608 | 10 | 6 |
+| Genomics-only | 0.8000 | 0.3750 | 0.5106 | 0.9706 | 15 | 12 |
+| Clinical-only | 0.0000 | 0.0000 | 0.0000 | 1.0000 | 0 | 0 |
+
+The full multimodal model finds **6 of 32** HER2-positive patients at the default
+threshold. Its accuracy of 0.7761 is almost entirely specificity: it is barely
+above the 0.7612 majority-class floor. Genomics-only is better on every one of
+these columns.
+
+For ER and PR the positive-class figures are strong for both genomic runs — full
+model ER precision 0.9576 / recall 0.9262 / F1 0.9417, PR 0.8475 / 0.9709 /
+0.9050; genomics-only ER 0.9508 / 0.9508 / 0.9508, PR 0.8347 / 0.9806 / 0.9018.
+
+### Majority-class collapse is directional
+
+The clinical-only run does not merely score badly; its confusion matrices have an
+all-zero column on every receptor task. It predicts **positive for all 155**
+patients on ER and PR, and **negative for all 134** on HER2. The collapse follows
+the majority class of each task, and its ROC-AUC is at or below chance on ER
+(0.4773) and PR (0.4979), so there is no usable ranking underneath the collapsed
+decision either. This is reported as measured; the baseline was not retuned.
+
+### Survival, all three runs
+
+Identical evaluable sets, because survival eligibility depends on the label rules
+rather than on the model: **n = 160, 23 events, 137 censored**, median follow-up
+28.52 months. C-index 0.7112 (full), 0.6008 (genomics-only), 0.7372
+(clinical-only).
+
+---
+
+## 7. Receptor decision thresholds, selected on validation
+
+`scripts/run_threshold_analysis.py` writes
+`results/breast_analysis/threshold_analysis.json` and `threshold_sweep.csv`
+(891 rows). It was motivated by the full model detecting only 6 of 32
+HER2-positive test patients at a 0.5 threshold.
+
+### Protocol
+
+The rule was fixed before any test label was read:
+
+1. Sweep thresholds 0.01–0.99 in 0.01 steps over the **validation** partition.
+2. **Primary rule:** maximise validation balanced accuracy. Ties break toward the
+   threshold nearest 0.50, then toward the smaller value.
+3. **Secondary rule:** the same, maximising validation positive-class F1. Both are
+   selected before test is touched and both are applied once, so neither is a
+   post-hoc pick between two test outcomes.
+4. A selected threshold is applied to test if the task is HER2, or if its
+   validation balanced-accuracy gain over 0.50 is at least 0.02.
+
+`main()` enforces the ordering structurally: every threshold is selected and
+written into the payload in phase 1, and test predictions are not loaded until
+phase 2. `tests/test_analysis.py` pins the gating, the tie-breaking, and the
+`prob >= threshold` boundary.
+
+**Thresholding cannot improve ROC-AUC or average precision.** Those rank
+patients and are identical at every threshold. Anything below is a movement along
+the same curve, not a better model.
+
+### Full multimodal
+
+| Task | Selected | Val. bal. acc. | Applied? | Test bal. acc. | Test sens. | Test pos. F1 |
+| --- | --- | --- | --- | --- | --- | --- |
+| ER | 0.50 | 0.9279 → 0.9279 (+0.0000) | no | — | — | — |
+| PR | 0.63 | 0.8122 → 0.8437 (+0.0315) | yes | 0.8124 → **0.7926** | 0.9709 → 0.8544 | 0.9050 → 0.8585 |
+| HER2 | 0.36 | 0.7028 → 0.7615 (+0.0588) | yes | 0.5741 → **0.6198** | 0.1875 → 0.4062 | 0.2857 → 0.4194 |
+
+**HER2 is the intended result.** Lowering the threshold to 0.36 more than doubles
+detected positives, from 6 to **13 of 32**, and raises balanced accuracy from
+0.5741 to 0.6198. It is a real trade: accuracy falls 0.7761 → 0.7313, positive
+precision falls 0.6000 → 0.4333, and false positives rise from 4 to 17. Which
+operating point is preferable is a clinical judgement, not a modelling one.
+
+**PR is a negative result and is reported as one.** The validation rule selected
+0.63, but on test it made balanced accuracy *worse*, 0.8124 → 0.7926. The
+pre-registered secondary threshold of 0.61 gave 0.8217. A threshold chosen on 163
+validation patients did not transfer. This is exactly the failure mode that
+selecting on test would have hidden.
+
+**ER was correctly gated out.** Its validation optimum already was 0.50, gain
+0.0000, so the test partition was not re-scored for ER at all.
+
+### Genomics-only
+
+| Task | Selected | Val. bal. acc. | Test bal. acc. | Test sens. | Test acc. |
+| --- | --- | --- | --- | --- | --- |
+| ER | 0.58 | 0.9065 → 0.9319 | 0.8845 → 0.8997 | 0.9508 → 0.9508 | 0.9226 → 0.9290 |
+| PR | 0.61 | 0.8069 → 0.8322 | 0.7980 → 0.8024 | 0.9806 → 0.8932 | 0.8581 → 0.8323 |
+| HER2 | 0.37 | 0.7515 → 0.7887 | 0.6728 → **0.7264** | 0.3750 → 0.5312 | 0.8284 → 0.8284 |
+
+Genomics-only at 0.37 is the **best HER2 operating point measured anywhere in
+this study**: 17 of 32 positives detected, balanced accuracy 0.7264, positive F1
+0.5106 → 0.5965, and accuracy unchanged at 0.8284. Unlike the full model's HER2
+retune, this one costs nothing in overall accuracy.
+
+### Clinical-only
+
+Every selected threshold produced test balanced accuracy at or below chance —
+ER 0.5060, PR 0.4791, HER2 0.4804 — despite apparent validation gains of +0.10,
++0.09 and +0.09. This is the expected consequence of at-or-below-chance ROC-AUC:
+moving a threshold redistributes errors but cannot manufacture ranking signal
+that the model does not have.
+
+---
+
+## 8. SHAP attribution for the frozen model
 
 `scripts/run_shap.py` explains the frozen full multimodal checkpoint. It never
 retrains, never steps an optimiser, and never uses test labels.
@@ -319,7 +521,65 @@ Two observations worth stating plainly, because neither flatters the model:
 
 Full rankings for all 62 features across all 10 explained outputs (5 tasks, with
 PAM50 additionally broken out per class) are in
-`results/breast_explainability/shap_feature_importance.csv` (620 rows).
+`results/breast_explainability/shap_feature_importance.csv` (620 rows), and the
+top 20 per output in `shap_top_features.csv` (180 rows).
+
+### Direction of contribution
+
+Magnitude alone does not say which way a feature pushes. Each row of
+`shap_feature_importance.csv` therefore also carries `mean_signed_shap`, the
+Pearson correlation between the feature's standardised value and its SHAP value
+across the 163 explained patients, and a `direction` label. A direction is only
+named when |correlation| ≥ 0.1; otherwise the feature is reported as *mixed*, and
+a feature nobody in the cohort varies on (an unpopulated one-hot level) is
+reported as *undefined* rather than given a spurious sign.
+
+| Task | Feature | mean \|SHAP\| | Corr. | Direction |
+| --- | --- | --- | --- | --- |
+| ER | ESR1 | 0.2719 | +0.932 | higher expression → toward ER-positive |
+| ER | FOXC1 | 0.1547 | −0.872 | higher expression → toward ER-negative |
+| ER | MAPT | 0.0638 | +0.868 | → positive |
+| ER | NAT1 | 0.0531 | +0.893 | → positive |
+| ER | ERBB2 | 0.0399 | −0.701 | → negative |
+| ER | stage_III | 0.0369 | −0.879 | → negative |
+| PR | ESR1 | 0.1716 | +0.914 | → PR-positive |
+| PR | FOXC1 | 0.1350 | −0.870 | → PR-negative |
+| PR | CEP55 | 0.0394 | −0.921 | → negative |
+| HER2 | FOXC1 | 0.1451 | −0.847 | higher expression → toward HER2-negative |
+| HER2 | ANLN | 0.0577 | +0.751 | → HER2-positive |
+| HER2 | ESR1 | 0.0565 | −0.638 | → negative |
+| HER2 | CEP55 | 0.0390 | +0.895 | → positive |
+| Survival | age | 0.4652 | +0.825 | older → **higher** risk |
+| Survival | nodal_N0 | 0.3610 | −0.906 | node-negative → **lower** risk |
+| Survival | nodal_N2 | 0.1345 | +0.945 | → higher risk |
+| Survival | stage_III | 0.1304 | +0.779 | → higher risk |
+| Survival | stage_II | 0.1204 | −0.735 | → lower risk |
+
+The receptor directions are the expected ones: ESR1 drives ER and PR positive,
+FOXC1 (a basal marker) drives all three receptor outputs negative. The survival
+directions are clinically coherent throughout — older age, higher nodal burden
+and higher stage all increase predicted risk, node-negative status lowers it.
+Coherent direction is a consistency check on the explanation, not evidence that
+the survival model is accurate; its test C-index is 0.7112 on 23 events.
+
+### Representative individual patients
+
+For each of ER, PR, HER2 and survival risk the script records three real test
+patients — highest, median and lowest explained output — with their full 62-feature
+attribution vector in `shap_individual_patients.csv` (540 rows) and a waterfall
+plot each. The median is an actual patient index, never an interpolated one.
+
+| Task | Output range across test (low / median / high) | Patients |
+| --- | --- | --- |
+| ER margin | −0.9512 / 1.5815 / 2.0975 | TCGA-E2-A1LH, TCGA-BH-A1FJ, TCGA-B6-A2IU |
+| PR margin | −1.4583 / 0.6709 / 1.0244 | TCGA-A8-A07R, TCGA-EW-A1J6, TCGA-E2-A1BD |
+| HER2 margin | −1.5845 / −0.9009 / 0.3999 | TCGA-AO-A1KO, TCGA-AO-A03V, TCGA-A8-A094 |
+| Risk score | −2.7011 / −1.2628 / 2.5440 | TCGA-B6-A0RL, TCGA-E2-A1BD, TCGA-D8-A1JF |
+
+The HER2 row shows the default-threshold problem directly: even the *highest*
+HER2 margin in the test partition is only +0.3999, and the median patient sits at
+−0.9009. The whole distribution is shifted negative, which is why lowering the
+threshold to 0.36 (section 7) recovers positives that a 0.5 cut discards.
 
 ### Sanity checks
 
@@ -349,7 +609,7 @@ also recorded in `shap_summary.json` under `interpretation`.
 
 ---
 
-## 7. Figures
+## 9. Figures and raw attribution arrays
 
 Under `results/breast_explainability/`:
 
@@ -359,10 +619,35 @@ Under `results/breast_explainability/`:
 | `shap_er_beeswarm.png`, `shap_pr_beeswarm.png`, `shap_her2_beeswarm.png`, `shap_survival_beeswarm.png` | Per-patient attribution distributions showing direction, not just magnitude |
 | `shap_pam50_beeswarm_{luminal_a,luminal_b,her2_enriched,basal_like,normal_like}.png` | Per-class PAM50 beeswarms |
 | `shap_pam50_class_bars.png` | Per-class attribution decomposition across the five subtypes |
+| `shap_{er,pr,her2,survival}_patient_{highest,median,lowest}_output.png` | Twelve per-patient waterfall plots for the representative patients in section 8 |
+
+`shap_values.npz` holds the 31 raw arrays behind every figure and table — one
+`(163, 62)` attribution matrix per explained output, plus the feature matrix, base
+values, predictions and patient IDs. It is **git-ignored**: its `features` array
+inverts back to per-patient log1p RSEM expression using the standardisation
+statistics stored inside the checkpoint, which makes it patient-level TCGA data
+under the same rule that keeps `data/` out of the repository. Regenerate it with
+`scripts/run_shap.py` (~17 minutes on CPU); the run is bit-reproducible under
+seed 42.
+
+Under `results/breast_analysis/`:
+
+| File | Content |
+| --- | --- |
+| `detailed_metrics.{json,csv}` | Confusion matrices, positive-class metrics and both PR-AUC conventions for all three runs |
+| `threshold_analysis.json` | Validation sweep, selection rule, selected thresholds and their single application to test |
+| `threshold_sweep.csv` | All 891 swept operating points (3 runs × 3 tasks × 99 thresholds) |
+| `literature_comparison.json` | The verified literature record behind section 11 |
+| `predictions/` | **Git-ignored.** Per-patient exported predictions for validation and test, both receptor class probabilities retained. Holds every patient's receptor and subtype labels plus survival time and status, so it is excluded for the same reason as `shap_values.npz`. Regenerate with `scripts/export_predictions.py`. |
+
+Everything aggregate is committed; only the two patient-level intermediates are
+not. The representative-patient artefacts (`shap_individual_patients.csv` and the
+twelve waterfall plots) *are* committed: they cover 22 patients rather than a
+whole partition, and the individual explanation is itself a required result.
 
 ---
 
-## 8. Standing limitations
+## 10. Standing limitations
 
 - **PAM50 framing.** The genomic input and the PAM50 target are the same 50-gene
   panel, so the subtype result is *reproduction/recovery of established PAM50
@@ -384,3 +669,132 @@ Under `results/breast_explainability/`:
 - **Patient-level data is not vendored.** `data/` is git-ignored. The cohort must
   be rebuilt from the sources in `docs/data_sources.md` before any of the
   training commands above will run.
+- **SHAP additivity is approximate.** Expected gradients is a sampling estimator,
+  so Σ SHAP does not exactly equal prediction − base value. Recorded gaps are
+  8–25 % of the standard deviation of the deviation being attributed, so feature
+  rankings are approximate and small rank differences should not be read as real.
+- **Thresholds were selected on 163 validation patients.** That is a small
+  selection set, and the PR result in section 7 shows it directly: a threshold
+  with a genuine +0.0315 validation gain lost 0.0198 balanced accuracy on test.
+  Reported threshold effects are single-split observations, not tuned operating
+  points with any guarantee of transfer.
+
+---
+
+## 11. Literature comparison
+
+`results/breast_analysis/literature_comparison.json` holds the verified record.
+Every number below was read from that study's own Europe PMC record — nothing is
+reconstructed from memory or from a secondary citation. **Evidence level:
+abstract and metadata only**; full texts were not retrieved, so quantities the
+abstracts do not state (cohort sizes, validation regime, averaging convention,
+event counts) are recorded as unknown rather than inferred.
+
+### Direct comparisons
+
+Same cohort, an overlapping task, a transcriptomic and/or clinical modality, and
+a metric on the same scale as ours.
+
+| Study | Dataset | Modality | Model | Task | Metric | Reported | Key methodological difference |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Qiu et al., *Sci Rep* 2026;16:3011 (PMID 41559366) | TCGA-BRCA n=1084; METABRIC n=1980 | Gene expression on PPI + patient-similarity graphs | Multi-task Graph Transformer | 4-class subtype | F1 | **0.872** | **Four classes** — Normal-like excluded; our weakest class. Averaging convention unstated. |
+| " | " | " | " | ER / PR / HER2 | ROC-AUC | **0.960 / 0.943 / 0.918** | No clinical modality, so no genomic-vs-clinical ablation is possible. Masking scheme undescribed. |
+| " | " | " | " | Overall survival | C-index | **0.721** | Validation regime not stated in the abstract; most plausibly internal CV, vs our single-use held-out test. |
+| Babas et al., *Cancers* 2026;18:1497 (PMID 42192859) | TCGA breast (30 % held-out); METABRIC external | MMP/ADAM/ADAMTS protease transcripts + age, stage | Random survival forest | Survival | C-index | **0.797** integrative; **0.742** clinical-only Cox (95 % CI 0.636–0.826); **0.581** METABRIC external | **Endpoint never named**; **no sample sizes reported**, so event counts are unknown. Protease panel, not PAM50. RSF, not a Cox network. |
+| **MOGEN-BRCA (this work)** | TCGA-BRCA n=1082, test n=163 | 50 PAM50 genes + 12 clinical | Genomic transformer + clinical MLP + cross-modal attention | 5-class subtype | macro-F1 / acc / ROC-AUC | 0.7904 / 0.8649 / 0.9430 | Five classes; single held-out test scored once |
+| " | " | " | " | ER / PR / HER2 | ROC-AUC | 0.9232 / 0.8663 / 0.7736 | Per-task masking; n = 155 / 155 / 134 |
+| " | " | " | " | Overall survival | C-index | 0.7112 (23 events) | Clinical-only arm 0.7372; genomics-only 0.6008 |
+
+Reading these honestly: Qiu's receptor AUCs exceed ours on all three tasks, most
+sharply on HER2 (0.918 vs 0.7736), and their subtype F1 exceeds our macro-F1 —
+though on a strictly easier four-class problem, with an unstated averaging
+convention and an unstated validation regime. Our survival C-index (0.7112) is
+close to theirs (0.721). The one thing our study provides that neither direct
+comparison does is the **measured** decomposition of which modality carries which
+task.
+
+Babas's clinical-only C-index of 0.742 is strikingly close to our clinical-only
+0.7372, which is reassuring for our clinical branch. The directions then diverge:
+adding transcripts raised theirs to 0.797, while our multimodal model (0.7112)
+scored *below* clinical-only. Their clinical-only interval (0.636–0.826) is wide
+enough to contain both figures, which is an argument against over-reading either
+gap.
+
+### Contextual comparisons
+
+Shared metric or shared experimental shape, but a different dataset, modality or
+endpoint. These frame the result; they do not benchmark it.
+
+| Study | Dataset | Modality | Task | Metric | Reported | Why contextual only |
+| --- | --- | --- | --- | --- | --- | --- |
+| Lyu et al., iMCN, *Biomed Phys Eng Express* 2026 (PMID 41564441) | TCGA-BRCA, TCGA-LUAD | WSI + genomics | Survival | C-index | 0.740 BRCA; 0.691 LUAD | Histopathology imaging is outside this architecture. A ceiling reference for TCGA-BRCA survival, not like-for-like. |
+| Wang et al., MuTriM, *Eur J Cancer* 2026;238:116679 (PMID 41850009) | FUSCC n=335 train; TCGA n=126 external | DCE-MRI radiomics + WSI pathomics | **RFS**, not OS | C-index | **0.75** multimodal vs **0.65** MRI-only vs **0.70** WSI-only | Different modalities and endpoint, not trained on TCGA. Included because it is the closest published breast multimodal-vs-unimodal ablation. |
+| Cheerla & Gevaert, *Bioinformatics* 2019;35:i446 (PMID 31510656) | 20 cancer types | Clinical + mRNA + miRNA + WSI, multimodal dropout | Prognosis | C-index | 0.78 pooled | Pan-cancer pooled and includes WSI; no breast-specific value in the record. |
+| de Negreiros Botan & de Sousa, Core-PAM50, *Breast Cancer Res* 2026 (PMID 42169063) | METABRIC n=2173 train; **TCGA-BRCA n=1098 external**; GSE25066 n=508 | Expression + clinical | Overall survival | C-index | METABRIC 0.584; **TCGA external ≈0.42**; TCGA OS HR 0.89 (0.67–1.19) | Externally trained. Its value is as evidence about the endpoint, not as a benchmark. |
+| Uma Kandan & Abul, *Comput Methods Programs Biomed* 2026;285:109510 (PMID 42302593) | SCAN-B train; TCGA-BRCA external | Within-sample **rank order** of PAM50 genes | Subtype | precision/recall; accuracy | ≥91 % on SCAN-B; "at least 95 % accuracy" on TCGA for **"the majority of subtypes"** | A per-subtype floor over a favourable subset, class count and cohort sizes unstated, and a transfer result. Not comparable to our all-class 0.8649. |
+
+Two of these matter more than the rest.
+
+**MuTriM is the closest published version of our own ablation experiment**, and it
+found the opposite ordering: multimodal beat both unimodal arms by +0.10 and
++0.05. Multimodal superiority is therefore not a universal result even within
+breast cancer, and our measured ordering (clinical-only > multimodal >
+genomics-only on survival) should not be presented as a failure to reproduce an
+established law.
+
+**Core-PAM50 is independent external support that TCGA-BRCA overall survival is a
+low-signal endpoint.** An independent group took a PAM50-derived expression
+signature into TCGA-BRCA OS on essentially our cohort (n=1098 vs our 1082) and
+obtained a C-index of about 0.42 — below chance — with a hazard ratio of 0.89
+(0.67–1.19) crossing the null, which they attribute to "short follow-up and low
+event rates". Our test partition has 23 events among 160 evaluable patients and a
+median follow-up of 28.5 months. Our genomics-only C-index of 0.6008 is therefore
+consistent with the endpoint's difficulty and is not, on this evidence, an
+implementation defect.
+
+### Methodologically relevant, not numerically comparable
+
+Borges, *JAMIA Open* 2026;9(2):ooaf177 (PMID 41937807) predicts 4-class PAM50 on
+TCGA-BRCA (691 complete cases) from **ER status, PR status, HER2 status, tumour
+stage and age**. It reports McFadden pseudo-R² 0.396 and ΔP up to +0.29 for
+HER2-enriched, but no accuracy, AUC, F1 or confusion matrix, so nothing in it can
+be placed beside our clinical-only PAM50 accuracy of 0.4932.
+
+It matters anyway, for two reasons. First, it feeds receptor status in as a
+*predictor* of subtype — precisely what this project's data contract forbids, and
+its own framing is that such a model "effectively substitutes biomarker status for
+molecular data". Second, it is the mirror image of our clinical-only result:
+Borges shows clinical variables *including* receptor status retain moderate
+subtype explanatory power, whereas our clinical-only arm, which excludes receptor
+status and uses only age, stage, nodal stage and sex, reaches PAM50 ROC-AUC 0.4505
+and predicts three of five classes. Read together, the apparent subtype signal in
+clinical-only models appears to come largely from receptor status rather than from
+age and stage.
+
+### Studies inspected and excluded
+
+Two frequently cited multimodal-survival methods were inspected and **cannot be
+cited numerically**: SALMON (Huang et al., *Front Genet* 2019;10:166, PMID
+30906311) and MultiSurv (Vale-Silva & Rohr, *Sci Rep* 2021;11:13505, PMID
+34188098). Neither abstract reports a numeric C-index, and full texts were not
+retrieved, so quoting a figure for either would mean inventing one. Also excluded:
+several TCGA-BRCA signature papers reporting C-indices of 0.858–0.92, all of which
+are within-subtype, nomogram-calibrated, or derived on synthetic data without
+external OS validation.
+
+### Limits of this comparison
+
+- No study here shares our exact protocol, so **no entry is a strict benchmark**.
+  Differences in class count, endpoint, cohort size, validation regime and
+  masking are individually large enough to move a metric by more than the gaps
+  being compared.
+- Evidence is **abstract-level**. Where an abstract omits the validation regime or
+  the cohort size, that omission is recorded, not filled in.
+- Our numbers come from a **single test partition scored once**. Most reported
+  literature values are cross-validated or drawn from the best of several
+  configurations, which biases the comparison against us in an unquantified way.
+- No confidence interval or significance test was computed for any MOGEN-BRCA
+  metric, so none of these comparisons is a statistical claim.
+- Metric names are not always definitions. Our own `pr_auc` for receptor tasks is
+  a macro over both classes (section 4), and F1 averaging conventions in the cited
+  work are frequently unstated.

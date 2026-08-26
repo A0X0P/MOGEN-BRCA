@@ -1,7 +1,7 @@
 [project]
-name = "cancer-framework"
+name = "mogen-brca"
 version = "0.1.0"
-description = "Add your description here"
+description = "MOGEN-BRCA: multi-omic gene-expression and clinical fusion for TCGA-BRCA subtype, receptor-status and survival prediction"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

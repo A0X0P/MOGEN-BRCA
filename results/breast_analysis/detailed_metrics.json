@@ -1,0 +1,767 @@
+{
+  "purpose": "Per-task metric set for the three modality configurations, including the confusion matrices, balanced accuracy and positive-class breakdowns that the aggregate test_metrics.json files do not carry.",
+  "partition": "test",
+  "analysis_git_commit": "52516142c1f89b88cc2883ac647a8828eb70746d",
+  "predictions_source": "scripts/export_predictions.py",
+  "notes": {
+    "balanced_accuracy": "Equals macro-averaged recall for a single-label task; both are reported so neither convention has to be inferred.",
+    "positive_class": "Reported for all three receptor tasks. Required for HER2, which is the imbalanced task, and given for ER/PR so the three are directly comparable.",
+    "threshold": "All metrics here use the default 0.5 decision threshold. The validation-selected alternatives are in threshold_analysis.json.",
+    "pr_auc": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+    "negative_class_probability": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+    "statistical_testing": "No hypothesis test was performed. Differences between runs must not be described as statistically significant."
+  },
+  "runs": {
+    "full_multimodal": {
+      "label": "Full multimodal MOGEN-BRCA (gene expression + clinical)",
+      "provenance": {
+        "experiment_name": "brca_two_modality",
+        "output_dir": "results/breast",
+        "frozen_reference": true,
+        "git_commit": "3978ab33c267cc91c33f31e036a3c8184573be59",
+        "seed": 42,
+        "split_sizes": {
+          "train": 756,
+          "val": 163,
+          "test": 163
+        },
+        "trainable_parameters": 1514512,
+        "total_parameters": 1514512,
+        "epochs_completed": 27,
+        "training_protocol": {
+          "epochs": 60,
+          "batch_size": 32,
+          "learning_rate": 0.0003,
+          "weight_decay": 1e-05,
+          "scheduler": {
+            "name": "plateau",
+            "monitor": "val_total",
+            "mode": "min",
+            "factor": 0.5,
+            "patience": 5
+          },
+          "monitor": "val_total",
+          "monitor_mode": "min",
+          "early_stopping_patience": 12,
+          "mixed_precision": false,
+          "device": "auto"
+        },
+        "training_duration": null,
+        "environment": {
+          "python": "3.13.0",
+          "torch": "2.13.0+cpu",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "cuda_available": false
+        }
+      },
+      "cross_check_against_recorded_metrics": {
+        "recorded_metrics_file": "results/breast/test_metrics.json",
+        "metrics_compared": 29,
+        "max_abs_difference": 9.06887995255623e-09,
+        "worst_metric": "pr.brier_score",
+        "agrees": true,
+        "tolerance": 1e-06
+      },
+      "n_test_patients": 163,
+      "tasks": {
+        "subtype": {
+          "n": 148,
+          "class_labels": [
+            "Luminal A",
+            "Luminal B",
+            "HER2-enriched",
+            "Basal-like",
+            "Normal-like"
+          ],
+          "support_per_class": [
+            76,
+            30,
+            12,
+            25,
+            5
+          ],
+          "accuracy": 0.8648648648648649,
+          "macro_precision": 0.8714226633581472,
+          "macro_recall": 0.7608771929824562,
+          "balanced_accuracy": 0.7608771929824562,
+          "macro_f1": 0.7903661911858633,
+          "roc_auc_ovr_macro": 0.9429781116308377,
+          "pr_auc_macro": 0.8045422407857579,
+          "confusion_matrix": [
+            [
+              70,
+              5,
+              1,
+              0,
+              0
+            ],
+            [
+              7,
+              22,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              9,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              25,
+              0
+            ],
+            [
+              1,
+              1,
+              1,
+              0,
+              2
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.5135135135135135
+        },
+        "er": {
+          "n": 155,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 122,
+          "n_negative": 33,
+          "accuracy": 0.9096774193548387,
+          "macro_precision": 0.8571919377004122,
+          "macro_recall": 0.887357178340785,
+          "balanced_accuracy": 0.887357178340785,
+          "macro_f1": 0.8708333333333333,
+          "roc_auc": 0.9232488822652758,
+          "pr_auc_positive_class": 0.9669747204331595,
+          "pr_auc_macro_both_classes": 0.8822911957214132,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.08265075665178023,
+          "positive_class": {
+            "precision": 0.9576271186440678,
+            "recall": 0.9262295081967213,
+            "specificity": 0.8484848484848485,
+            "f1": 0.9416666666666667,
+            "support": 122.0,
+            "n_predicted_positive": 118.0
+          },
+          "confusion_matrix": [
+            [
+              28,
+              5
+            ],
+            [
+              9,
+              113
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.7870967741935484,
+          "decision_threshold": 0.5
+        },
+        "pr": {
+          "n": 155,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 103,
+          "n_negative": 52,
+          "accuracy": 0.864516129032258,
+          "macro_precision": 0.8831882730187814,
+          "macro_recall": 0.8123599701269604,
+          "balanced_accuracy": 0.8123599701269604,
+          "macro_f1": 0.8345111596929178,
+          "roc_auc": 0.8663181478715458,
+          "pr_auc_positive_class": 0.9103982391674128,
+          "pr_auc_macro_both_classes": 0.8714804718587872,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.1426916031747724,
+          "positive_class": {
+            "precision": 0.847457627118644,
+            "recall": 0.970873786407767,
+            "specificity": 0.6538461538461539,
+            "f1": 0.9049773755656109,
+            "support": 103.0,
+            "n_predicted_positive": 118.0
+          },
+          "confusion_matrix": [
+            [
+              34,
+              18
+            ],
+            [
+              3,
+              100
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.6645161290322581,
+          "decision_threshold": 0.5
+        },
+        "her2": {
+          "n": 134,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 32,
+          "n_negative": 102,
+          "accuracy": 0.7761194029850746,
+          "macro_precision": 0.6951612903225806,
+          "macro_recall": 0.5741421568627452,
+          "balanced_accuracy": 0.5741421568627452,
+          "macro_f1": 0.5764854614412136,
+          "roc_auc": 0.7735906862745098,
+          "pr_auc_positive_class": 0.47583325479851624,
+          "pr_auc_macro_both_classes": 0.6962538081558589,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.1672324903498263,
+          "positive_class": {
+            "precision": 0.6,
+            "recall": 0.1875,
+            "specificity": 0.9607843137254902,
+            "f1": 0.2857142857142857,
+            "support": 32.0,
+            "n_predicted_positive": 10.0
+          },
+          "confusion_matrix": [
+            [
+              98,
+              4
+            ],
+            [
+              26,
+              6
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.7611940298507462,
+          "decision_threshold": 0.5
+        },
+        "survival": {
+          "n_evaluable": 160,
+          "n_events": 23,
+          "n_censored": 137,
+          "concordance_index": 0.7112441783100466,
+          "median_followup_months": 28.520235061645508
+        }
+      }
+    },
+    "genomics_only": {
+      "label": "Genomics-only ablation (50 PAM50 genes)",
+      "provenance": {
+        "experiment_name": "brca_ablation_genomics_only",
+        "output_dir": "results/breast_ablation/genomics_only",
+        "frozen_reference": false,
+        "git_commit": "3978ab33c267cc91c33f31e036a3c8184573be59",
+        "seed": 42,
+        "split_sizes": {
+          "train": 756,
+          "val": 163,
+          "test": 163
+        },
+        "trainable_parameters": 885392,
+        "total_parameters": 885392,
+        "epochs_completed": 41,
+        "training_protocol": {
+          "epochs": 60,
+          "batch_size": 32,
+          "learning_rate": 0.0003,
+          "weight_decay": 1e-05,
+          "scheduler": {
+            "name": "plateau",
+            "monitor": "val_total",
+            "mode": "min",
+            "factor": 0.5,
+            "patience": 5
+          },
+          "monitor": "val_total",
+          "monitor_mode": "min",
+          "early_stopping_patience": 12,
+          "mixed_precision": false,
+          "device": "auto"
+        },
+        "training_duration": {
+          "seconds": 361,
+          "first_log_timestamp": "17:36:54",
+          "last_log_timestamp": "17:42:55",
+          "definition": "Span between the first and last timestamped line of train_stdout.log. Excludes interpreter start-up."
+        },
+        "environment": {
+          "python": "3.13.0",
+          "torch": "2.13.0+cpu",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "cuda_available": false
+        }
+      },
+      "cross_check_against_recorded_metrics": {
+        "recorded_metrics_file": "results/breast_ablation/genomics_only/test_metrics.json",
+        "metrics_compared": 29,
+        "max_abs_difference": 1.3509814683621002e-08,
+        "worst_metric": "her2.brier_score",
+        "agrees": true,
+        "tolerance": 1e-06
+      },
+      "n_test_patients": 163,
+      "tasks": {
+        "subtype": {
+          "n": 148,
+          "class_labels": [
+            "Luminal A",
+            "Luminal B",
+            "HER2-enriched",
+            "Basal-like",
+            "Normal-like"
+          ],
+          "support_per_class": [
+            76,
+            30,
+            12,
+            25,
+            5
+          ],
+          "accuracy": 0.8648648648648649,
+          "macro_precision": 0.8300980392156863,
+          "macro_recall": 0.7721052631578947,
+          "balanced_accuracy": 0.7721052631578947,
+          "macro_f1": 0.7911981094589791,
+          "roc_auc_ovr_macro": 0.9621509164894798,
+          "pr_auc_macro": 0.8432392417492677,
+          "confusion_matrix": [
+            [
+              73,
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              11,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              4,
+              8,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              25,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              0,
+              3
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.5135135135135135
+        },
+        "er": {
+          "n": 155,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 122,
+          "n_negative": 33,
+          "accuracy": 0.9225806451612903,
+          "macro_precision": 0.8845007451564828,
+          "macro_recall": 0.8845007451564828,
+          "balanced_accuracy": 0.8845007451564828,
+          "macro_f1": 0.8845007451564828,
+          "roc_auc": 0.9182811723795329,
+          "pr_auc_positive_class": 0.9521093824043099,
+          "pr_auc_macro_both_classes": 0.8763296460805868,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.08218856613082395,
+          "positive_class": {
+            "precision": 0.9508196721311475,
+            "recall": 0.9508196721311475,
+            "specificity": 0.8181818181818182,
+            "f1": 0.9508196721311475,
+            "support": 122.0,
+            "n_predicted_positive": 122.0
+          },
+          "confusion_matrix": [
+            [
+              27,
+              6
+            ],
+            [
+              6,
+              116
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.7870967741935484,
+          "decision_threshold": 0.5
+        },
+        "pr": {
+          "n": 155,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 103,
+          "n_negative": 52,
+          "accuracy": 0.8580645161290322,
+          "macro_precision": 0.887943607194944,
+          "macro_recall": 0.79798356982823,
+          "balanced_accuracy": 0.79798356982823,
+          "macro_f1": 0.8229858803986712,
+          "roc_auc": 0.8651979088872294,
+          "pr_auc_positive_class": 0.9096921193244569,
+          "pr_auc_macro_both_classes": 0.8763213040511417,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.1472917409068543,
+          "positive_class": {
+            "precision": 0.8347107438016529,
+            "recall": 0.9805825242718447,
+            "specificity": 0.6153846153846154,
+            "f1": 0.9017857142857143,
+            "support": 103.0,
+            "n_predicted_positive": 121.0
+          },
+          "confusion_matrix": [
+            [
+              32,
+              20
+            ],
+            [
+              2,
+              101
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.6645161290322581,
+          "decision_threshold": 0.5
+        },
+        "her2": {
+          "n": 134,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 32,
+          "n_negative": 102,
+          "accuracy": 0.8283582089552238,
+          "macro_precision": 0.8159663865546218,
+          "macro_recall": 0.6727941176470589,
+          "balanced_accuracy": 0.6727941176470589,
+          "macro_f1": 0.7032829498411476,
+          "roc_auc": 0.8033088235294117,
+          "pr_auc_positive_class": 0.6886734777023309,
+          "pr_auc_macro_both_classes": 0.7930067274612361,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.14373965422255272,
+          "positive_class": {
+            "precision": 0.8,
+            "recall": 0.375,
+            "specificity": 0.9705882352941176,
+            "f1": 0.5106382978723404,
+            "support": 32.0,
+            "n_predicted_positive": 15.0
+          },
+          "confusion_matrix": [
+            [
+              99,
+              3
+            ],
+            [
+              20,
+              12
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.7611940298507462,
+          "decision_threshold": 0.5
+        },
+        "survival": {
+          "n_evaluable": 160,
+          "n_events": 23,
+          "n_censored": 137,
+          "concordance_index": 0.6007984031936128,
+          "median_followup_months": 28.520235061645508
+        }
+      }
+    },
+    "clinical_only": {
+      "label": "Clinical-only ablation (12-dimensional clinical vector)",
+      "provenance": {
+        "experiment_name": "brca_ablation_clinical_only",
+        "output_dir": "results/breast_ablation/clinical_only",
+        "frozen_reference": false,
+        "git_commit": "3978ab33c267cc91c33f31e036a3c8184573be59",
+        "seed": 42,
+        "split_sizes": {
+          "train": 756,
+          "val": 163,
+          "test": 163
+        },
+        "trainable_parameters": 483728,
+        "total_parameters": 483728,
+        "epochs_completed": 27,
+        "training_protocol": {
+          "epochs": 60,
+          "batch_size": 32,
+          "learning_rate": 0.0003,
+          "weight_decay": 1e-05,
+          "scheduler": {
+            "name": "plateau",
+            "monitor": "val_total",
+            "mode": "min",
+            "factor": 0.5,
+            "patience": 5
+          },
+          "monitor": "val_total",
+          "monitor_mode": "min",
+          "early_stopping_patience": 12,
+          "mixed_precision": false,
+          "device": "auto"
+        },
+        "training_duration": {
+          "seconds": 77,
+          "first_log_timestamp": "17:49:16",
+          "last_log_timestamp": "17:50:33",
+          "definition": "Span between the first and last timestamped line of train_stdout.log. Excludes interpreter start-up."
+        },
+        "environment": {
+          "python": "3.13.0",
+          "torch": "2.13.0+cpu",
+          "platform": "Windows-11-10.0.26200-SP0",
+          "cuda_available": false
+        }
+      },
+      "cross_check_against_recorded_metrics": {
+        "recorded_metrics_file": "results/breast_ablation/clinical_only/test_metrics.json",
+        "metrics_compared": 29,
+        "max_abs_difference": 6.791476936385266e-09,
+        "worst_metric": "er.brier_score",
+        "agrees": true,
+        "tolerance": 1e-06
+      },
+      "n_test_patients": 163,
+      "tasks": {
+        "subtype": {
+          "n": 148,
+          "class_labels": [
+            "Luminal A",
+            "Luminal B",
+            "HER2-enriched",
+            "Basal-like",
+            "Normal-like"
+          ],
+          "support_per_class": [
+            76,
+            30,
+            12,
+            25,
+            5
+          ],
+          "accuracy": 0.49324324324324326,
+          "macro_precision": 0.15063145809414466,
+          "macro_recall": 0.20821052631578948,
+          "balanced_accuracy": 0.20821052631578948,
+          "macro_f1": 0.16491228070175437,
+          "roc_auc_ovr_macro": 0.45048851954631103,
+          "pr_auc_macro": 0.21737577323862514,
+          "confusion_matrix": [
+            [
+              70,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              27,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              11,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              22,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              1,
+              0
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.5135135135135135
+        },
+        "er": {
+          "n": 155,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 122,
+          "n_negative": 33,
+          "accuracy": 0.7870967741935484,
+          "macro_precision": 0.3935483870967742,
+          "macro_recall": 0.5,
+          "balanced_accuracy": 0.5,
+          "macro_f1": 0.4404332129963899,
+          "roc_auc": 0.4772727272727273,
+          "pr_auc_positive_class": 0.7627789300328446,
+          "pr_auc_macro_both_classes": 0.5021806903455577,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.2007864036525533,
+          "positive_class": {
+            "precision": 0.7870967741935484,
+            "recall": 1.0,
+            "specificity": 0.0,
+            "f1": 0.8808664259927798,
+            "support": 122.0,
+            "n_predicted_positive": 155.0
+          },
+          "confusion_matrix": [
+            [
+              0,
+              33
+            ],
+            [
+              0,
+              122
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.7870967741935484,
+          "decision_threshold": 0.5
+        },
+        "pr": {
+          "n": 155,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 103,
+          "n_negative": 52,
+          "accuracy": 0.6645161290322581,
+          "macro_precision": 0.33225806451612905,
+          "macro_recall": 0.5,
+          "balanced_accuracy": 0.5,
+          "macro_f1": 0.3992248062015504,
+          "roc_auc": 0.4978528752800597,
+          "pr_auc_positive_class": 0.6479096647956046,
+          "pr_auc_macro_both_classes": 0.5317750566738,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.23621270238754302,
+          "positive_class": {
+            "precision": 0.6645161290322581,
+            "recall": 1.0,
+            "specificity": 0.0,
+            "f1": 0.7984496124031008,
+            "support": 103.0,
+            "n_predicted_positive": 155.0
+          },
+          "confusion_matrix": [
+            [
+              0,
+              52
+            ],
+            [
+              0,
+              103
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.6645161290322581,
+          "decision_threshold": 0.5
+        },
+        "her2": {
+          "n": 134,
+          "class_labels": [
+            "Negative",
+            "Positive"
+          ],
+          "n_positive": 32,
+          "n_negative": 102,
+          "accuracy": 0.7611940298507462,
+          "macro_precision": 0.3805970149253731,
+          "macro_recall": 0.5,
+          "balanced_accuracy": 0.5,
+          "macro_f1": 0.4322033898305085,
+          "roc_auc": 0.5410539215686275,
+          "pr_auc_positive_class": 0.2900545825863088,
+          "pr_auc_macro_both_classes": 0.5454008260795096,
+          "pr_auc_note": "'pr_auc' in the committed test_metrics.json files is the macro average of the positive-class and negative-class average precision, because the evaluator passes the full (N, 2) probability matrix. That is 'pr_auc_macro_both_classes' here. 'pr_auc_positive_class' is the conventional binary average precision and is the lower, less flattering figure on the imbalanced HER2 task. Both are reported; neither replaces the other, and the frozen files were not altered.",
+          "negative_class_probability_note": "The negative-class probability is the model's own softmax output, read from the exported predictions, not reconstructed as 1 - p_positive. Reconstruction alters which patients hold identical scores and therefore perturbs the negative-class average precision at the 1e-4 level.",
+          "brier_score": 0.1882611768087474,
+          "positive_class": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "specificity": 1.0,
+            "f1": 0.0,
+            "support": 32.0,
+            "n_predicted_positive": 0.0
+          },
+          "confusion_matrix": [
+            [
+              102,
+              0
+            ],
+            [
+              32,
+              0
+            ]
+          ],
+          "confusion_matrix_orientation": "rows = true class, columns = predicted class",
+          "majority_class_accuracy": 0.7611940298507462,
+          "decision_threshold": 0.5
+        },
+        "survival": {
+          "n_evaluable": 160,
+          "n_events": 23,
+          "n_censored": 137,
+          "concordance_index": 0.7371922821024618,
+          "median_followup_months": 28.520235061645508
+        }
+      }
+    }
+  }
+}

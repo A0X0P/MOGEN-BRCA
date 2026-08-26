@@ -251,6 +251,22 @@ data/metadata/
 # reported metric was computed from — is retained under version control.
 checkpoint_epoch_*.pt
 
+# Patient-level intermediates from the post-hoc analyses. These are model
+# outputs, but each one reconstructs per-patient TCGA values for a whole
+# partition, so the rule above applies to them too:
+#   - predictions/*.csv hold every patient's ER/PR/HER2/PAM50 label and their
+#     survival time and event status, for 163 validation + 163 test patients.
+#   - shap_values.npz holds the 163 x 62 standardised feature matrix, which
+#     inverts back to log1p RSEM expression using the standardisation statistics
+#     stored inside checkpoint_best.pt.
+# Both are regenerated from the frozen checkpoint by a single command
+# (scripts/export_predictions.py, and scripts/run_shap.py at roughly 17 minutes
+# on CPU). Every aggregate derived from them — detailed_metrics, the threshold
+# sweep, the SHAP importance and top-feature tables, and all figures — is
+# committed. See docs/experiments.md section 9.
+results/breast_analysis/predictions/
+results/breast_explainability/shap_values.npz
+
 # The stock Python template ignores *.log for Django; the run logs under
 # results/ are this project's audit trail for wall-clock training duration,
 # which run_summary.json does not record. Keep them.

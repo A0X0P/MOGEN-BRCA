@@ -52,7 +52,7 @@ import platform
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Optional, Sequence
 
 import matplotlib
 
@@ -94,6 +94,26 @@ MODALITY_COLOR = {GENOMIC_MODALITY: "#2f6f9f", CLINICAL_MODALITY: "#c8792b"}
 
 #: Features shown in a bar/beeswarm panel.
 TOP_N_DISPLAY = 20
+
+#: Features listed in the per-task top-feature table.
+TOP_N_TABLE = 20
+
+#: |Pearson r| between a feature's value and its SHAP value below which the
+#: direction of contribution is reported as mixed rather than monotone. A low
+#: correlation with a high mean |SHAP| means the feature matters but pushes
+#: different patients in different directions, which is worth naming rather than
+#: forcing into a single sign.
+DIRECTION_CORRELATION_CUTOFF = 0.1
+
+#: How the representative patients shown in the individual explanations are
+#: chosen. The rule uses model predictions only, never labels, so no test label
+#: influences which patients are displayed. Each patient's true label is
+#: reported alongside for context.
+REPRESENTATIVE_SELECTION = (
+    ("highest_output", "patient with the highest explained output"),
+    ("median_output", "patient at the median explained output"),
+    ("lowest_output", "patient with the lowest explained output"),
+)
 
 
 @dataclass(frozen=True)
@@ -376,6 +396,74 @@ def mean_abs_importance(array: np.ndarray) -> np.ndarray:
     return np.abs(array).mean(axis=0)
 
 
+def mean_signed_shap(array: np.ndarray) -> np.ndarray:
+    """Mean *signed* SHAP value per feature.
+
+    Distinguishes a feature that consistently pushes the output one way from one
+    that pushes different patients in opposite directions: the latter has a large
+    mean absolute value and a near-zero mean signed value.
+    """
+    return array.mean(axis=0)
+
+
+def feature_value_correlation(array: np.ndarray, features: np.ndarray) -> np.ndarray:
+    """Pearson correlation between each feature's value and its SHAP value.
+
+    This is the direction of contribution: a positive correlation means a higher
+    value of that feature pushes the explained output up across the explained
+    cohort. Constant features (a one-hot level nobody in the cohort has) have no
+    defined correlation and yield ``nan``.
+
+    Args:
+        array: SHAP values, shape ``(n_patients, n_features)``.
+        features: Feature values, same shape.
+
+    Returns:
+        Correlation per feature, shape ``(n_features,)``, with ``nan`` where the
+        feature or its attribution is constant.
+    """
+    correlations = np.full(array.shape[1], np.nan)
+    for index in range(array.shape[1]):
+        values, shap_values = features[:, index], array[:, index]
+        if np.std(values) == 0.0 or np.std(shap_values) == 0.0:
+            continue
+        correlations[index] = float(np.corrcoef(values, shap_values)[0, 1])
+    return correlations
+
+
+def direction_label(correlation: float) -> str:
+    """Name the direction of contribution implied by a feature/SHAP correlation."""
+    if not np.isfinite(correlation):
+        return "undefined (feature constant across explained patients)"
+    if correlation >= DIRECTION_CORRELATION_CUTOFF:
+        return "higher feature value increases the output"
+    if correlation <= -DIRECTION_CORRELATION_CUTOFF:
+        return "higher feature value decreases the output"
+    return "mixed (no consistent direction across patients)"
+
+
+def representative_indices(predictions: np.ndarray) -> dict[str, int]:
+    """Pick the highest, median and lowest patient by explained output.
+
+    Selection depends only on the model's own output, never on a label, so
+    displaying these patients cannot leak test labels into any decision. The
+    median is the patient at the middle rank, not an interpolated value, so a
+    real patient is always shown.
+
+    Args:
+        predictions: Explained output per patient, shape ``(n_patients,)``.
+
+    Returns:
+        Mapping from selection key to row index.
+    """
+    order = np.argsort(predictions)
+    return {
+        "highest_output": int(order[-1]),
+        "median_output": int(order[len(order) // 2]),
+        "lowest_output": int(order[0]),
+    }
+
+
 # ----------------------------------------------------------------------------
 # Figures
 # ----------------------------------------------------------------------------
@@ -491,6 +579,68 @@ def plot_pam50_class_bars(
     plt.tight_layout()
     plt.savefig(path, dpi=150)
     plt.close()
+    logger.info("Wrote %s.", path.name)
+
+
+def plot_patient_waterfall(
+    array: np.ndarray,
+    features: np.ndarray,
+    names: Sequence[str],
+    modalities: Sequence[str],
+    row: int,
+    base_value: float,
+    prediction: float,
+    title: str,
+    path: Path,
+) -> None:
+    """Per-patient attribution figure for one explained output.
+
+    Bars are the individual SHAP values for this patient's top features, ordered
+    by magnitude and coloured by modality, so the genomic and clinical
+    contributions to a single prediction are visually separable. The base value
+    and the model's output for this patient are annotated, because an attribution
+    is only interpretable relative to the background it is measured against.
+
+    Args:
+        array: SHAP values for the explained output, shape ``(n_patients, n_features)``.
+        features: Feature values, same shape.
+        names: Feature names.
+        modalities: Per-feature modality labels.
+        row: Row index of the patient to plot.
+        base_value: Mean explained output over the background patients.
+        prediction: The model's explained output for this patient.
+        title: Figure title.
+        path: Destination PNG path.
+    """
+    values = array[row]
+    order = np.argsort(np.abs(values))[::-1][:TOP_N_DISPLAY][::-1]
+
+    labels = [f"{names[index]} = {features[row, index]:+.2f}" for index in order]
+    colors = [MODALITY_COLOR[modalities[index]] for index in order]
+
+    figure, axis = plt.subplots(figsize=(9.5, 7.0))
+    axis.barh(range(len(order)), values[order], color=colors)
+    axis.set_yticks(range(len(order)))
+    axis.set_yticklabels(labels, fontsize=8)
+    axis.axvline(0.0, color="black", linewidth=0.8)
+    axis.set_xlabel("SHAP value (contribution to this patient's output)")
+    axis.grid(axis="x", alpha=0.3)
+
+    handles = [
+        plt.Rectangle((0, 0), 1, 1, color=MODALITY_COLOR[modality])
+        for modality in (GENOMIC_MODALITY, CLINICAL_MODALITY)
+    ]
+    axis.legend(handles, [GENOMIC_MODALITY, CLINICAL_MODALITY], loc="lower right", fontsize=8)
+
+    figure.suptitle(
+        f"{title}\nbase value {base_value:+.3f} -> model output {prediction:+.3f}"
+        f"   (sum of all 62 SHAP values {values.sum():+.3f})"
+        "\nSHAP attribution (not causal effect)",
+        fontsize=10,
+    )
+    figure.tight_layout()
+    figure.savefig(path, dpi=150)
+    plt.close(figure)
     logger.info("Wrote %s.", path.name)
 
 
@@ -789,29 +939,50 @@ def importance_rows(
     results: dict[str, dict[str, Any]],
     names: Sequence[str],
     modalities: Sequence[str],
+    features: np.ndarray,
 ) -> list[dict[str, Any]]:
     """Build the ``shap_feature_importance.csv`` rows, ranked within each task.
 
     PAM50 contributes one row set per class plus a ``pam50`` row set averaged
     over the five classes.
+
+    Each row carries the mean absolute SHAP value (magnitude, which sets the
+    rank), the mean signed value, and the feature/SHAP correlation with its
+    direction label. The class-averaged PAM50 rows have no single signed value —
+    averaging magnitudes across five class logits discards the sign — so their
+    signed and direction columns are left empty rather than filled with a
+    misleading number.
+
+    Args:
+        results: Per-task SHAP results.
+        names: Feature names.
+        modalities: Per-feature modality labels.
+        features: The explained patients' feature matrix.
+
+    Returns:
+        One row per (task, feature) pair.
     """
     rows: list[dict[str, Any]] = []
 
     for output in EXPLAINED_OUTPUTS:
         result = results[output.task]
-        per_output = [mean_abs_importance(array) for array in result["arrays"]]
 
-        labelled: list[tuple[str, np.ndarray]] = []
+        labelled: list[tuple[str, np.ndarray, Optional[np.ndarray]]] = []
+        per_output = [mean_abs_importance(array) for array in result["arrays"]]
         if len(per_output) > 1:
-            labelled.append((output.task, np.mean(per_output, axis=0)))
+            labelled.append((output.task, np.mean(per_output, axis=0), None))
             labelled.extend(
-                (f"{output.task}_{slug(name)}", values)
-                for name, values in zip(output.output_names, per_output)
+                (f"{output.task}_{slug(name)}", per_output[index], result["arrays"][index])
+                for index, name in enumerate(output.output_names)
             )
         else:
-            labelled.append((output.task, per_output[0]))
+            labelled.append((output.task, per_output[0], result["arrays"][0]))
 
-        for task_label, importance in labelled:
+        for task_label, importance, array in labelled:
+            signed = None if array is None else mean_signed_shap(array)
+            correlation = (
+                None if array is None else feature_value_correlation(array, features)
+            )
             order = np.argsort(importance)[::-1]
             for rank, index in enumerate(order, start=1):
                 rows.append(
@@ -821,8 +992,117 @@ def importance_rows(
                         "feature": names[index],
                         "mean_abs_shap": float(importance[index]),
                         "rank": rank,
+                        "mean_shap": "" if signed is None else float(signed[index]),
+                        "feature_shap_correlation": (
+                            ""
+                            if correlation is None or not np.isfinite(correlation[index])
+                            else float(correlation[index])
+                        ),
+                        "direction": (
+                            ""
+                            if correlation is None
+                            else direction_label(correlation[index])
+                        ),
                     }
                 )
+
+    return rows
+
+
+def top_feature_rows(
+    results: dict[str, dict[str, Any]],
+    names: Sequence[str],
+    modalities: Sequence[str],
+    features: np.ndarray,
+) -> list[dict[str, Any]]:
+    """Top-``TOP_N_TABLE`` features per explained output, with direction.
+
+    A separate, smaller table from the full ranking, so the headline features for
+    each of the ten explained outputs can be read without filtering 620 rows.
+    Genomic and clinical features are labelled, and the modality is carried on
+    every row, so the two blocks stay distinguishable in the reporting.
+    """
+    rows: list[dict[str, Any]] = []
+
+    for output in EXPLAINED_OUTPUTS:
+        result = results[output.task]
+        for index, output_name in enumerate(output.output_names):
+            array = result["arrays"][index]
+            importance = mean_abs_importance(array)
+            signed = mean_signed_shap(array)
+            correlation = feature_value_correlation(array, features)
+            order = np.argsort(importance)[::-1][:TOP_N_TABLE]
+
+            for rank, feature_index in enumerate(order, start=1):
+                rows.append(
+                    {
+                        "task": output.task,
+                        "explained_output": output_name,
+                        "rank": rank,
+                        "modality": modalities[feature_index],
+                        "feature": names[feature_index],
+                        "mean_abs_shap": float(importance[feature_index]),
+                        "mean_shap": float(signed[feature_index]),
+                        "feature_shap_correlation": (
+                            float(correlation[feature_index])
+                            if np.isfinite(correlation[feature_index])
+                            else ""
+                        ),
+                        "direction": direction_label(correlation[feature_index]),
+                    }
+                )
+
+    return rows
+
+
+def individual_rows(
+    results: dict[str, dict[str, Any]],
+    names: Sequence[str],
+    modalities: Sequence[str],
+    features: np.ndarray,
+    explained_ids: Sequence[str],
+) -> list[dict[str, Any]]:
+    """Per-patient attributions for the representative patients.
+
+    For every explained output, three patients are selected by model output alone
+    (highest, median, lowest) and their top-``TOP_N_TABLE`` feature attributions
+    are written out. The row carries the feature's encoded value, so a reader can
+    see *what* the model saw and not only how much it mattered.
+    """
+    rows: list[dict[str, Any]] = []
+
+    for output in EXPLAINED_OUTPUTS:
+        result = results[output.task]
+        for index, output_name in enumerate(output.output_names):
+            array = result["arrays"][index]
+            predictions = result["predictions"][:, index]
+            base_value = float(result["base_values"][index])
+
+            for key, patient_row in representative_indices(predictions).items():
+                values = array[patient_row]
+                order = np.argsort(np.abs(values))[::-1][:TOP_N_TABLE]
+                for rank, feature_index in enumerate(order, start=1):
+                    rows.append(
+                        {
+                            "task": output.task,
+                            "explained_output": output_name,
+                            "selection": key,
+                            "patient_id": explained_ids[patient_row],
+                            "base_value": base_value,
+                            "model_output": float(predictions[patient_row]),
+                            "sum_all_shap_values": float(values.sum()),
+                            "rank": rank,
+                            "modality": modalities[feature_index],
+                            "feature": names[feature_index],
+                            "feature_value_standardised": float(
+                                features[patient_row, feature_index]
+                            ),
+                            "shap_value": float(values[feature_index]),
+                            "pushes_output": (
+                                "up" if values[feature_index] > 0 else "down"
+                            ),
+                        }
+                    )
 
     return rows
 
@@ -858,6 +1138,7 @@ def build_summary(
     results: dict[str, dict[str, Any]],
     names: Sequence[str],
     modalities: Sequence[str],
+    features: np.ndarray,
     checks: dict[str, Any],
     artifacts: InferenceArtifacts,
     checkpoint_epoch: int,
@@ -875,16 +1156,45 @@ def build_summary(
 
         outputs = {}
         for index, output_name in enumerate(output.output_names):
-            order = np.argsort(per_output[index])[::-1][:10]
+            array = result["arrays"][index]
+            signed = mean_signed_shap(array)
+            correlation = feature_value_correlation(array, features)
+            predictions = result["predictions"][:, index]
+            order = np.argsort(per_output[index])[::-1][:TOP_N_TABLE]
+
             outputs[output_name] = {
                 "base_value": result["base_values"][index],
                 "additivity": result["additivity"][index],
-                "top_10_features": [
+                "explained_output_range": {
+                    "min": float(predictions.min()),
+                    "median": float(np.median(predictions)),
+                    "max": float(predictions.max()),
+                },
+                "representative_patients": {
+                    key: {
+                        "patient_id": explained_ids[row],
+                        "model_output": float(predictions[row]),
+                        "sum_of_shap_values": float(array[row].sum()),
+                        "selection_rule": description,
+                    }
+                    for (key, description), row in zip(
+                        REPRESENTATIVE_SELECTION,
+                        [
+                            representative_indices(predictions)[key]
+                            for key, _ in REPRESENTATIVE_SELECTION
+                        ],
+                    )
+                },
+                f"top_{TOP_N_TABLE}_features": [
                     {
                         "feature": names[i],
                         "modality": modalities[i],
                         "mean_abs_shap": float(per_output[index][i]),
-                        "mean_shap": float(result["arrays"][index][:, i].mean()),
+                        "mean_shap": float(signed[i]),
+                        "feature_shap_correlation": (
+                            float(correlation[i]) if np.isfinite(correlation[i]) else None
+                        ),
+                        "direction": direction_label(correlation[i]),
                     }
                     for i in order
                 ],
@@ -972,6 +1282,47 @@ def build_summary(
     }
 
 
+def write_shap_arrays(
+    results: dict[str, dict[str, Any]],
+    joint_test: torch.Tensor,
+    names: Sequence[str],
+    modalities: Sequence[str],
+    explained_ids: Sequence[str],
+    path: Path,
+) -> None:
+    """Persist the raw SHAP arrays alongside the inputs that produced them.
+
+    Expected gradients is a sampling estimator, so a second run is not
+    bit-identical to this one. Saving the arrays means the individual-patient
+    explanations, the aggregate rankings and any later re-analysis all quote the
+    *same* numbers instead of a fresh estimate that differs in the last digits.
+
+    Keys are ``shap_<task>_<output>`` for each explained output, plus ``features``,
+    ``patient_ids``, ``feature_names`` and ``feature_modalities``.
+    """
+    payload: dict[str, np.ndarray] = {
+        "features": joint_test.numpy(),
+        "patient_ids": np.array(list(explained_ids)),
+        "feature_names": np.array(list(names)),
+        "feature_modalities": np.array(list(modalities)),
+    }
+
+    for output in EXPLAINED_OUTPUTS:
+        result = results[output.task]
+        for index, output_name in enumerate(output.output_names):
+            key = f"shap_{output.task}_{slug(output_name)}"
+            payload[key] = result["arrays"][index]
+            payload[f"prediction_{output.task}_{slug(output_name)}"] = result[
+                "predictions"
+            ][:, index]
+            payload[f"base_value_{output.task}_{slug(output_name)}"] = np.asarray(
+                result["base_values"][index]
+            )
+
+    np.savez_compressed(path, **payload)
+    logger.info("Wrote %s (%d arrays).", path.name, len(payload))
+
+
 def write_outputs(
     results: dict[str, dict[str, Any]],
     joint_test: torch.Tensor,
@@ -979,8 +1330,9 @@ def write_outputs(
     modalities: Sequence[str],
     summary: dict[str, Any],
     rows: list[dict[str, Any]],
+    explained_ids: Sequence[str],
 ) -> None:
-    """Write every figure, the importance table, and the summary document."""
+    """Write every figure, the tables, the raw arrays, and the summary document."""
     ensure_dir(OUTPUT_DIR)
     features = joint_test.numpy()
 
@@ -1005,32 +1357,109 @@ def write_outputs(
                 f"{output.task.upper()} — {output.title}",
                 OUTPUT_DIR / f"shap_{output.task}_beeswarm.png",
             )
-            continue
+        else:
+            plot_pam50_class_bars(
+                arrays, features, names, OUTPUT_DIR / f"shap_{output.task}_class_bars.png"
+            )
+            for array, class_name in zip(arrays, output.output_names):
+                plot_beeswarm(
+                    array,
+                    features,
+                    names,
+                    f"PAM50 {class_name} logit",
+                    OUTPUT_DIR / f"shap_{output.task}_beeswarm_{slug(class_name)}.png",
+                )
 
-        plot_pam50_class_bars(
-            arrays, features, names, OUTPUT_DIR / f"shap_{output.task}_class_bars.png"
-        )
-        for array, class_name in zip(arrays, output.output_names):
-            plot_beeswarm(
-                array,
+        # Individual-patient figures for the single-output tasks. PAM50's
+        # per-class individual attributions are written to the CSV but not
+        # plotted, since the subtype target is derived from the same 50-gene
+        # panel and the per-class figures would invite over-reading a circular
+        # result.
+        if len(arrays) != 1:
+            continue
+        predictions = result["predictions"][:, 0]
+        for key, row in representative_indices(predictions).items():
+            plot_patient_waterfall(
+                arrays[0],
                 features,
                 names,
-                f"PAM50 {class_name} logit",
-                OUTPUT_DIR / f"shap_{output.task}_beeswarm_{slug(class_name)}.png",
+                modalities,
+                row,
+                float(result["base_values"][0]),
+                float(predictions[row]),
+                f"{output.task.upper()} — {explained_ids[row]} ({key.replace('_', ' ')})",
+                OUTPUT_DIR / f"shap_{output.task}_patient_{key}.png",
             )
 
-    csv_path = OUTPUT_DIR / "shap_feature_importance.csv"
-    with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(
-            handle, fieldnames=["task", "modality", "feature", "mean_abs_shap", "rank"]
-        )
-        writer.writeheader()
-        writer.writerows(rows)
+    write_table(
+        OUTPUT_DIR / "shap_feature_importance.csv",
+        rows,
+        [
+            "task",
+            "modality",
+            "feature",
+            "mean_abs_shap",
+            "rank",
+            "mean_shap",
+            "feature_shap_correlation",
+            "direction",
+        ],
+    )
+    write_table(
+        OUTPUT_DIR / "shap_top_features.csv",
+        top_feature_rows(results, names, modalities, features),
+        [
+            "task",
+            "explained_output",
+            "rank",
+            "modality",
+            "feature",
+            "mean_abs_shap",
+            "mean_shap",
+            "feature_shap_correlation",
+            "direction",
+        ],
+    )
+    write_table(
+        OUTPUT_DIR / "shap_individual_patients.csv",
+        individual_rows(results, names, modalities, features, explained_ids),
+        [
+            "task",
+            "explained_output",
+            "selection",
+            "patient_id",
+            "base_value",
+            "model_output",
+            "sum_all_shap_values",
+            "rank",
+            "modality",
+            "feature",
+            "feature_value_standardised",
+            "shap_value",
+            "pushes_output",
+        ],
+    )
+    write_shap_arrays(
+        results,
+        joint_test,
+        names,
+        modalities,
+        explained_ids,
+        OUTPUT_DIR / "shap_values.npz",
+    )
 
     (OUTPUT_DIR / "shap_summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8"
     )
-    logger.info("Wrote %s rows to %s.", len(rows), csv_path.name)
+
+
+def write_table(path: Path, rows: list[dict[str, Any]], columns: Sequence[str]) -> None:
+    """Write one CSV table with a fixed column order."""
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(columns))
+        writer.writeheader()
+        writer.writerows(rows)
+    logger.info("Wrote %d rows to %s.", len(rows), path.name)
 
 
 # ----------------------------------------------------------------------------
@@ -1121,6 +1550,7 @@ def main() -> None:
         results,
         names,
         modalities,
+        joint_test.numpy(),
         checks,
         artifacts,
         checkpoint_epoch,
@@ -1134,13 +1564,14 @@ def main() -> None:
         names,
         modalities,
         summary,
-        importance_rows(results, names, modalities),
+        importance_rows(results, names, modalities, joint_test.numpy()),
+        explained_ids,
     )
 
     for output in EXPLAINED_OUTPUTS:
         share = summary["tasks"][output.task]["modality_contribution"]["share"]
         top = summary["tasks"][output.task]["outputs"][output.output_names[0]][
-            "top_10_features"
+            f"top_{TOP_N_TABLE}_features"
         ][:3]
         logger.info(
             "%s: genomic share %.1f%%, clinical share %.1f%%, top features %s.",

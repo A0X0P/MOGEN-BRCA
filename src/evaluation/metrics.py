@@ -1,6 +1,8 @@
 """Pure metric functions for classification, survival, and calibration.
 
-Each function takes numpy arrays and returns a scalar float. No side effects.
+Most functions take numpy arrays and return a scalar float. Two return
+structured counts instead: :func:`confusion_matrix_counts` returns a matrix and
+:func:`positive_class_report` returns a small mapping. None has side effects.
 scikit-learn is used for classification metrics and Brier score.
 Concordance index is implemented directly (lifelines is not a project dependency).
 """
@@ -11,7 +13,9 @@ import numpy as np
 from sklearn.metrics import (
     accuracy_score,
     average_precision_score,
+    balanced_accuracy_score,
     brier_score_loss,
+    confusion_matrix,
     f1_score,
     precision_score,
     recall_score,
@@ -72,6 +76,83 @@ def f1(y_true: np.ndarray, y_pred: np.ndarray, average: str = "macro") -> float:
         F1 in ``[0, 1]``.
     """
     return float(f1_score(y_true, y_pred, average=average, zero_division=0))
+
+
+def balanced_accuracy(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+    """Balanced accuracy: the unweighted mean of the per-class recalls.
+
+    For a single-label task this is numerically identical to macro-averaged
+    recall (:func:`recall` with ``average="macro"``). It is exposed separately
+    because reporting conventions name the two differently, and because a
+    reader should not have to know they coincide.
+
+    Args:
+        y_true: Ground-truth class indices, shape ``(N,)``.
+        y_pred: Predicted class indices, shape ``(N,)``.
+
+    Returns:
+        Balanced accuracy in ``[0, 1]``. A model that predicts one class for
+        every patient scores ``1 / n_classes``.
+    """
+    return float(balanced_accuracy_score(y_true, y_pred))
+
+
+def confusion_matrix_counts(
+    y_true: np.ndarray, y_pred: np.ndarray, n_classes: int
+) -> list[list[int]]:
+    """Confusion matrix as nested integer lists, rows = true, columns = predicted.
+
+    The class axis is pinned to ``range(n_classes)`` so the matrix keeps its
+    full shape even when a partition contains no instances of a class, or the
+    model never predicts one. A collapsed prediction is then visible as an
+    all-zero column rather than as a silently smaller matrix.
+
+    Args:
+        y_true: Ground-truth class indices, shape ``(N,)``.
+        y_pred: Predicted class indices, shape ``(N,)``.
+        n_classes: Number of classes in the task's vocabulary.
+
+    Returns:
+        An ``n_classes x n_classes`` matrix of counts.
+    """
+    matrix = confusion_matrix(y_true, y_pred, labels=list(range(n_classes)))
+    return [[int(value) for value in row] for row in matrix]
+
+
+def positive_class_report(
+    y_true: np.ndarray, y_pred: np.ndarray, pos_label: int = 1
+) -> dict[str, float]:
+    """Precision, recall, specificity and F1 for the positive class alone.
+
+    Macro averages hide the behaviour of a minority class: a model that never
+    predicts positive can still post a respectable macro-F1. For the imbalanced
+    receptor tasks the positive class is reported on its own.
+
+    Args:
+        y_true: Ground-truth class indices, shape ``(N,)``.
+        y_pred: Predicted class indices, shape ``(N,)``.
+        pos_label: The class treated as positive.
+
+    Returns:
+        Mapping with ``precision``, ``recall`` (sensitivity), ``specificity``,
+        ``f1``, ``support`` and ``n_predicted_positive``.
+    """
+    true_binary = (np.asarray(y_true) == pos_label).astype(int)
+    pred_binary = (np.asarray(y_pred) == pos_label).astype(int)
+
+    negatives = int((true_binary == 0).sum())
+    true_negatives = int(((true_binary == 0) & (pred_binary == 0)).sum())
+
+    return {
+        "precision": float(
+            precision_score(true_binary, pred_binary, zero_division=0)
+        ),
+        "recall": float(recall_score(true_binary, pred_binary, zero_division=0)),
+        "specificity": float(true_negatives / negatives) if negatives else float("nan"),
+        "f1": float(f1_score(true_binary, pred_binary, zero_division=0)),
+        "support": float(true_binary.sum()),
+        "n_predicted_positive": float(pred_binary.sum()),
+    }
 
 
 def roc_auc(

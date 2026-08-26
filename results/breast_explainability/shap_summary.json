@@ -488,66 +488,191 @@
             "max_abs_additivity_gap": 0.7585574939483162,
             "std_of_explained_deviation": 1.069616436958313
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -0.9511748552322388,
+            "median": 1.5814697742462158,
+            "max": 2.097525119781494
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-B6-A2IU",
+              "model_output": 2.097525119781494,
+              "sum_of_shap_values": 0.8780715744214621,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-BH-A1FJ",
+              "model_output": 1.5814697742462158,
+              "sum_of_shap_values": 0.29311482703335023,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-E2-A1LH",
+              "model_output": -0.9511748552322388,
+              "sum_of_shap_values": -1.6850033064868446,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.2718895573006952,
-              "mean_shap": -0.045950096273982576
+              "mean_shap": -0.04595009627398253,
+              "feature_shap_correlation": 0.9321321821751013,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.15469887993819198,
-              "mean_shap": -0.02089752474364683
+              "mean_shap": -0.020897524743646808,
+              "feature_shap_correlation": -0.871550453579182,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.06377458563782508,
-              "mean_shap": -0.016579724990902878
+              "mean_shap": -0.016579724990902878,
+              "feature_shap_correlation": 0.8680680896025261,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "NAT1",
               "modality": "genomic",
               "mean_abs_shap": 0.05305139709825878,
-              "mean_shap": -0.007372059700714194
+              "mean_shap": -0.007372059700714192,
+              "feature_shap_correlation": 0.8930182962610624,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.0459324061576672,
-              "mean_shap": -0.008406770191777312
+              "mean_shap": -0.008406770191777308,
+              "feature_shap_correlation": -0.6576253583315471,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ERBB2",
               "modality": "genomic",
               "mean_abs_shap": 0.03986417069786824,
-              "mean_shap": -0.002157086967479212
+              "mean_shap": -0.0021570869674792065,
+              "feature_shap_correlation": -0.7013672749529565,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.037297253644412734,
-              "mean_shap": 0.00141453112907127
+              "mean_shap": 0.0014145311290712699,
+              "feature_shap_correlation": 0.33549722067808985,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "stage_III",
               "modality": "clinical",
               "mean_abs_shap": 0.036854538372374825,
-              "mean_shap": 0.001818100900252589
+              "mean_shap": 0.0018181009002525886,
+              "feature_shap_correlation": -0.8793195676595889,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDH3",
               "modality": "genomic",
               "mean_abs_shap": 0.0365497039281953,
-              "mean_shap": -0.009378402270153602
+              "mean_shap": -0.0093784022701536,
+              "feature_shap_correlation": -0.7232863559257108,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.03574911025686862,
-              "mean_shap": 0.0023487965822351275
+              "mean_shap": 0.0023487965822351236,
+              "feature_shap_correlation": -0.7730464426360943,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CDC6",
+              "modality": "genomic",
+              "mean_abs_shap": 0.03502458025499366,
+              "mean_shap": -0.0036128399641028467,
+              "feature_shap_correlation": -0.8516652813636048,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "RRM2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.03127907922283088,
+              "mean_shap": -0.0012998826789304137,
+              "feature_shap_correlation": -0.7971211133199559,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.029859774556724117,
+              "mean_shap": -0.0027141683372098554,
+              "feature_shap_correlation": 0.851322983560488,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CXXC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.029469400563649464,
+              "mean_shap": -0.0012508812815130931,
+              "feature_shap_correlation": 0.8188789410174536,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "nodal_N0",
+              "modality": "clinical",
+              "mean_abs_shap": 0.026330272549706452,
+              "mean_shap": -0.00248855294204713,
+              "feature_shap_correlation": 0.24455002864387038,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CCNE1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.025736149707362183,
+              "mean_shap": -0.005278426243562654,
+              "feature_shap_correlation": -0.872864032655745,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.0247534524167439,
+              "mean_shap": 0.0020285953336595716,
+              "feature_shap_correlation": -0.6735255755940869,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "nodal_N2",
+              "modality": "clinical",
+              "mean_abs_shap": 0.022550009635191482,
+              "mean_shap": -0.003300132641345683,
+              "feature_shap_correlation": -0.9087721345395005,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.02204473024561792,
+              "mean_shap": -0.005312929148774883,
+              "feature_shap_correlation": -0.5896424389084384,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "TMEM45B",
+              "modality": "genomic",
+              "mean_abs_shap": 0.020177102421843156,
+              "mean_shap": 0.0036029933544042434,
+              "feature_shap_correlation": -0.4931805364270831,
+              "direction": "higher feature value decreases the output"
             }
           ]
         }
@@ -575,66 +700,191 @@
             "max_abs_additivity_gap": 0.561792365885446,
             "std_of_explained_deviation": 0.7994685173034668
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -1.458345890045166,
+            "median": 0.6708922386169434,
+            "max": 1.0244239568710327
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-E2-A1BD",
+              "model_output": 1.0244239568710327,
+              "sum_of_shap_values": 0.6880365264556332,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-EW-A1J6",
+              "model_output": 0.6708922386169434,
+              "sum_of_shap_values": 0.21078829428783447,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-A8-A07R",
+              "model_output": -1.458345890045166,
+              "sum_of_shap_values": -2.071177503202717,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.17161021997666767,
-              "mean_shap": -0.027941629093539845
+              "mean_shap": -0.02794162909353986,
+              "feature_shap_correlation": 0.9139563357939751,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.13501846207891946,
-              "mean_shap": -0.01496600062972408
+              "mean_shap": -0.014966000629724094,
+              "feature_shap_correlation": -0.870109136527108,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.046840167881303366,
-              "mean_shap": -0.011818286874557125
+              "mean_shap": -0.011818286874557136,
+              "feature_shap_correlation": 0.8908547959393875,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.0394052561770548,
-              "mean_shap": 0.0023375039272532463
+              "mean_shap": 0.002337503927253246,
+              "feature_shap_correlation": -0.9205099236575247,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "NAT1",
               "modality": "genomic",
               "mean_abs_shap": 0.03703576912566485,
-              "mean_shap": -0.004687269622446035
+              "mean_shap": -0.004687269622446035,
+              "feature_shap_correlation": 0.9135141575466861,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.031189830232440135,
-              "mean_shap": -0.0043932041639346865
+              "mean_shap": -0.004393204163934685,
+              "feature_shap_correlation": -0.7610387241163943,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDH3",
               "modality": "genomic",
               "mean_abs_shap": 0.027797833607900755,
-              "mean_shap": -0.007463272000466723
+              "mean_shap": -0.007463272000466716,
+              "feature_shap_correlation": -0.7318850067349006,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.026942101257180103,
-              "mean_shap": -0.0027054961370047963
+              "mean_shap": -0.0027054961370047994,
+              "feature_shap_correlation": -0.8958054375681466,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ERBB2",
               "modality": "genomic",
               "mean_abs_shap": 0.024891478733295908,
-              "mean_shap": -0.0009432872231212419
+              "mean_shap": -0.0009432872231212388,
+              "feature_shap_correlation": -0.695293037315605,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "stage_III",
               "modality": "clinical",
               "mean_abs_shap": 0.022800106574034838,
-              "mean_shap": 0.0022842982937825093
+              "mean_shap": 0.002284298293782508,
+              "feature_shap_correlation": -0.9491873759609786,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CCNE1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.02231832012938978,
+              "mean_shap": -0.003570974226288293,
+              "feature_shap_correlation": -0.8781555297423742,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "RRM2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.02075445783953855,
+              "mean_shap": -0.00035309741023906296,
+              "feature_shap_correlation": -0.7957254418064234,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CXXC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.018023979803799894,
+              "mean_shap": -0.00028538062748547694,
+              "feature_shap_correlation": 0.8513946998371896,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "age",
+              "modality": "clinical",
+              "mean_abs_shap": 0.017885237458075007,
+              "mean_shap": 0.0008127407629952974,
+              "feature_shap_correlation": 0.0033824784779988726,
+              "direction": "mixed (no consistent direction across patients)"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.017260784502343446,
+              "mean_shap": -0.003326150480825066,
+              "feature_shap_correlation": -0.6438510774478075,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.016849532690906138,
+              "mean_shap": 0.0016650678288440332,
+              "feature_shap_correlation": -0.7323465431834478,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.015490426367313842,
+              "mean_shap": -0.0015047698045358372,
+              "feature_shap_correlation": 0.838325231053568,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "KRT17",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01437190436418992,
+              "mean_shap": 0.002858262643684693,
+              "feature_shap_correlation": 0.2536111676672726,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CCNB1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.014367052622583264,
+              "mean_shap": 0.004055424222443521,
+              "feature_shap_correlation": -0.8078539235230753,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "TMEM45B",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01370748657646057,
+              "mean_shap": 0.0016311402684369924,
+              "feature_shap_correlation": -0.5424675003848903,
+              "direction": "higher feature value decreases the output"
             }
           ]
         }
@@ -662,66 +912,191 @@
             "max_abs_additivity_gap": 0.4149243972680081,
             "std_of_explained_deviation": 0.40011361241340637
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -1.584472417831421,
+            "median": -0.9009220600128174,
+            "max": 0.399949312210083
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-A8-A094",
+              "model_output": 0.399949312210083,
+              "sum_of_shap_values": 1.225310762901628,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-AO-A03V",
+              "model_output": -0.9009220600128174,
+              "sum_of_shap_values": -0.0071862795934806946,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-AO-A1KO",
+              "model_output": -1.584472417831421,
+              "sum_of_shap_values": -0.827440188547005,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.14505648950840022,
-              "mean_shap": -0.006520393424758189
+              "mean_shap": -0.006520393424758174,
+              "feature_shap_correlation": -0.8471592707585941,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.05769578103724267,
-              "mean_shap": 0.0036574562361388284
+              "mean_shap": 0.003657456236138832,
+              "feature_shap_correlation": 0.7511806127924949,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.056506004645908985,
-              "mean_shap": 0.005376216953289267
+              "mean_shap": 0.005376216953289272,
+              "feature_shap_correlation": -0.6375140293791782,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.03970570967550599,
-              "mean_shap": 0.010377219805718972
+              "mean_shap": 0.010377219805718972,
+              "feature_shap_correlation": -0.8294628712017829,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.0390112407287105,
-              "mean_shap": -0.0007315205610498921
+              "mean_shap": -0.0007315205610498906,
+              "feature_shap_correlation": 0.8948948643049887,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.034378191237543224,
-              "mean_shap": 0.003993762339655961
+              "mean_shap": 0.003993762339655965,
+              "feature_shap_correlation": 0.8626573474096576,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "KRT17",
               "modality": "genomic",
               "mean_abs_shap": 0.032037586465137845,
-              "mean_shap": -0.005858606570508015
+              "mean_shap": -0.0058586065705080155,
+              "feature_shap_correlation": -0.7600868056082386,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "NAT1",
               "modality": "genomic",
               "mean_abs_shap": 0.02968201695157975,
-              "mean_shap": 0.004630413811678907
+              "mean_shap": 0.004630413811678906,
+              "feature_shap_correlation": -0.8460586804598687,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.02959249807429914,
-              "mean_shap": -0.0007838608279933654
+              "mean_shap": -0.0007838608279933651,
+              "feature_shap_correlation": -0.0746307644432085,
+              "direction": "mixed (no consistent direction across patients)"
             },
             {
               "feature": "nodal_N0",
               "modality": "clinical",
               "mean_abs_shap": 0.02172644204100831,
-              "mean_shap": -0.004849204753277318
+              "mean_shap": -0.00484920475327732,
+              "feature_shap_correlation": -0.08148516475768743,
+              "direction": "mixed (no consistent direction across patients)"
+            },
+            {
+              "feature": "ERBB2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01904496965178537,
+              "mean_shap": 0.00029702858915795735,
+              "feature_shap_correlation": 0.6937277342207772,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CCNB1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.018176269443801685,
+              "mean_shap": -0.003765910243514158,
+              "feature_shap_correlation": 0.832265236511013,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CXXC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.017636280090421338,
+              "mean_shap": -0.00048387283568739997,
+              "feature_shap_correlation": -0.7121132667800192,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "GRB7",
+              "modality": "genomic",
+              "mean_abs_shap": 0.017241358954424062,
+              "mean_shap": 0.004010971579504368,
+              "feature_shap_correlation": 0.7373975174957462,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "RRM2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.016727477529089766,
+              "mean_shap": 0.0011087961381857393,
+              "feature_shap_correlation": 0.7491210329958744,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.016590942511082927,
+              "mean_shap": -0.0012971642684258228,
+              "feature_shap_correlation": 0.6288276835076675,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01258180107707349,
+              "mean_shap": 0.0016771315802239168,
+              "feature_shap_correlation": 0.5342895834372977,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "EXO1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.012284823575056385,
+              "mean_shap": 0.00021379939331328646,
+              "feature_shap_correlation": 0.8587105923355586,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CDH3",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01147288688889442,
+              "mean_shap": -0.000291161462276755,
+              "feature_shap_correlation": -0.42107214229898227,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CCNE1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01128571955340312,
+              "mean_shap": -7.292307764595998e-05,
+              "feature_shap_correlation": -0.2722333601791704,
+              "direction": "higher feature value decreases the output"
             }
           ]
         }
@@ -749,66 +1124,191 @@
             "max_abs_additivity_gap": 1.284390226877905,
             "std_of_explained_deviation": 2.213923931121826
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -2.479254961013794,
+            "median": 2.9104554653167725,
+            "max": 3.8473660945892334
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-E2-A1IF",
+              "model_output": 3.8473660945892334,
+              "sum_of_shap_values": 1.463203418657347,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-A2-A4S2",
+              "model_output": 2.9104554653167725,
+              "sum_of_shap_values": 1.364533239503685,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-BH-A0WA",
+              "model_output": -2.479254961013794,
+              "sum_of_shap_values": -3.975135624136425,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.48429623880644135,
-              "mean_shap": -0.08243506357180025
+              "mean_shap": -0.08243506357180015,
+              "feature_shap_correlation": 0.9277215312779138,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.31905455790411485,
-              "mean_shap": -0.040157409048555456
+              "mean_shap": -0.04015740904855544,
+              "feature_shap_correlation": -0.8672310867896917,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.1419836087453064,
-              "mean_shap": -0.03401200616193979
+              "mean_shap": -0.034012006161939785,
+              "feature_shap_correlation": 0.8736283419884391,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.12773680772083346,
-              "mean_shap": -0.01716009526850763
+              "mean_shap": -0.017160095268507626,
+              "feature_shap_correlation": -0.707940804726026,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "NAT1",
               "modality": "genomic",
               "mean_abs_shap": 0.11473327929465064,
-              "mean_shap": -0.01674730507622908
+              "mean_shap": -0.01674730507622907,
+              "feature_shap_correlation": 0.9001847052352525,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.11075533473127132,
-              "mean_shap": 0.006678512193415999
+              "mean_shap": 0.006678512193415995,
+              "feature_shap_correlation": -0.8817763427871591,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.08844234364772711,
-              "mean_shap": -0.00798013222446367
+              "mean_shap": -0.007980132224463672,
+              "feature_shap_correlation": -0.8720552141008231,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ERBB2",
               "modality": "genomic",
               "mean_abs_shap": 0.0778869899381706,
-              "mean_shap": -0.0038078242229952347
+              "mean_shap": -0.0038078242229952334,
+              "feature_shap_correlation": -0.7300187612996274,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDH3",
               "modality": "genomic",
               "mean_abs_shap": 0.07143605073632439,
-              "mean_shap": -0.01854108194590136
+              "mean_shap": -0.01854108194590136,
+              "feature_shap_correlation": -0.7362460524367943,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "RRM2",
               "modality": "genomic",
               "mean_abs_shap": 0.07056553441903063,
-              "mean_shap": -0.0021880083646822466
+              "mean_shap": -0.002188008364682244,
+              "feature_shap_correlation": -0.8125331615976866,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "nodal_N2",
+              "modality": "clinical",
+              "mean_abs_shap": 0.06408865538397937,
+              "mean_shap": 4.131529267700816e-05,
+              "feature_shap_correlation": -0.9338631630546869,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CCNE1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06219312630933355,
+              "mean_shap": -0.010849070648968843,
+              "feature_shap_correlation": -0.8954846593631851,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CXXC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06141686162382441,
+              "mean_shap": -0.0018285978983381271,
+              "feature_shap_correlation": 0.7985939833114812,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06002846924156191,
+              "mean_shap": 0.004589883105886697,
+              "feature_shap_correlation": -0.7076866314486158,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "age",
+              "modality": "clinical",
+              "mean_abs_shap": 0.052808242049185244,
+              "mean_shap": 0.01487003771717302,
+              "feature_shap_correlation": -0.07919888852250498,
+              "direction": "mixed (no consistent direction across patients)"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.051776079151559413,
+              "mean_shap": -0.010371692165955314,
+              "feature_shap_correlation": -0.6539938411296226,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.051470466393976046,
+              "mean_shap": -0.004069512222105124,
+              "feature_shap_correlation": 0.8290130381395588,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CCNB1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.04744803530790251,
+              "mean_shap": 0.013675283547044868,
+              "feature_shap_correlation": -0.7597850977648105,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "KRT17",
+              "modality": "genomic",
+              "mean_abs_shap": 0.043105874607605135,
+              "mean_shap": 0.01047170252144657,
+              "feature_shap_correlation": 0.36711076802689097,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "TMEM45B",
+              "modality": "genomic",
+              "mean_abs_shap": 0.042782618017461936,
+              "mean_shap": 0.009017905638702544,
+              "feature_shap_correlation": -0.5394303170061792,
+              "direction": "higher feature value decreases the output"
             }
           ]
         },
@@ -819,66 +1319,191 @@
             "max_abs_additivity_gap": 1.1799686545316455,
             "std_of_explained_deviation": 1.7202179431915283
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -2.373833179473877,
+            "median": 1.574751853942871,
+            "max": 3.0284838676452637
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-A8-A090",
+              "model_output": 3.0284838676452637,
+              "sum_of_shap_values": 1.679340638078544,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-BH-A0HK",
+              "model_output": 1.574751853942871,
+              "sum_of_shap_values": 0.09037027570919096,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-A2-A4RX",
+              "model_output": -2.373833179473877,
+              "sum_of_shap_values": -3.386651121154699,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.4675798748118073,
-              "mean_shap": -0.08060723155883055
+              "mean_shap": -0.08060723155883051,
+              "feature_shap_correlation": 0.932379091485362,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.38694354366625683,
-              "mean_shap": -0.04095781792274171
+              "mean_shap": -0.04095781792274173,
+              "feature_shap_correlation": -0.8887601344472432,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.09455951967886157,
-              "mean_shap": -0.005267943887860713
+              "mean_shap": -0.005267943887860711,
+              "feature_shap_correlation": 0.7449829621092103,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "KRT17",
               "modality": "genomic",
               "mean_abs_shap": 0.07550706367228252,
-              "mean_shap": -0.010891755803648918
+              "mean_shap": -0.01089175580364891,
+              "feature_shap_correlation": -0.708274720690159,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDH3",
               "modality": "genomic",
               "mean_abs_shap": 0.07305316859543705,
-              "mean_shap": -0.01857401320130318
+              "mean_shap": -0.018574013201303214,
+              "feature_shap_correlation": -0.7637159945071611,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.06353312648929345,
-              "mean_shap": 0.003203811880910428
+              "mean_shap": 0.0032038118809104305,
+              "feature_shap_correlation": 0.754952016848229,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.053142611862895324,
-              "mean_shap": -0.006781921518745084
+              "mean_shap": -0.006781921518745087,
+              "feature_shap_correlation": 0.20876551486521047,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.05159300291956347,
-              "mean_shap": 0.004120026690589124
+              "mean_shap": 0.004120026690589131,
+              "feature_shap_correlation": 0.0563651404752094,
+              "direction": "mixed (no consistent direction across patients)"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.04581932653720203,
-              "mean_shap": 0.000759687481181629
+              "mean_shap": 0.0007596874811816269,
+              "feature_shap_correlation": 0.6596706661449174,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ERBB2",
               "modality": "genomic",
               "mean_abs_shap": 0.04419974300215764,
-              "mean_shap": -0.0006218788766197131
+              "mean_shap": -0.0006218788766197158,
+              "feature_shap_correlation": -0.6140191186497882,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "NAT1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.0440294931986565,
+              "mean_shap": -0.007350555949131015,
+              "feature_shap_correlation": 0.5063224141489815,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.043009435841468054,
+              "mean_shap": -0.0029391517148508366,
+              "feature_shap_correlation": 0.8331218144708646,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CCNB1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.0402126715370061,
+              "mean_shap": -0.00522349951279377,
+              "feature_shap_correlation": 0.7583635900432537,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "nodal_N0",
+              "modality": "clinical",
+              "mean_abs_shap": 0.03994643738255119,
+              "mean_shap": -0.004742374481914975,
+              "feature_shap_correlation": -0.7148533182968543,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CCNE1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.0397907855510025,
+              "mean_shap": -0.008075243866112818,
+              "feature_shap_correlation": -0.7467496052512661,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "nodal_N1",
+              "modality": "clinical",
+              "mean_abs_shap": 0.03207167479337311,
+              "mean_shap": -0.0013771768881727497,
+              "feature_shap_correlation": 0.9349351045191007,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "nodal_N2",
+              "modality": "clinical",
+              "mean_abs_shap": 0.030341396007118975,
+              "mean_shap": 7.543518147410569e-05,
+              "feature_shap_correlation": -0.8658880844193184,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "FGFR4",
+              "modality": "genomic",
+              "mean_abs_shap": 0.029847550861685,
+              "mean_shap": -0.006784584648754071,
+              "feature_shap_correlation": -0.4875240003753486,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "GRB7",
+              "modality": "genomic",
+              "mean_abs_shap": 0.028987791570219863,
+              "mean_shap": 0.005018384612658361,
+              "feature_shap_correlation": 0.4723034354725298,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "stage_I",
+              "modality": "clinical",
+              "mean_abs_shap": 0.02786389818665841,
+              "mean_shap": 0.0011433185238955196,
+              "feature_shap_correlation": 0.9224552036638962,
+              "direction": "higher feature value increases the output"
             }
           ]
         },
@@ -889,66 +1514,191 @@
             "max_abs_additivity_gap": 0.9822437916721198,
             "std_of_explained_deviation": 1.4635618925094604
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -2.539015531539917,
+            "median": -1.4775102138519287,
+            "max": 2.384488344192505
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-D8-A1XT",
+              "model_output": 2.384488344192505,
+              "sum_of_shap_values": 3.055387841938021,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-C8-A3M7",
+              "model_output": -1.4775102138519287,
+              "sum_of_shap_values": -0.8356424507439455,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-AO-A03V",
+              "model_output": -2.539015531539917,
+              "sum_of_shap_values": -0.9906546984710409,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.32702096894878785,
-              "mean_shap": 0.053352574971436605
+              "mean_shap": 0.05335257497143652,
+              "feature_shap_correlation": -0.9102175239280454,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.17455259027858944,
-              "mean_shap": 0.015839126236172462
+              "mean_shap": 0.015839126236172448,
+              "feature_shap_correlation": 0.7216225959197642,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.15638239246448388,
-              "mean_shap": 0.04117447948584784
+              "mean_shap": 0.04117447948584784,
+              "feature_shap_correlation": -0.8633065590571587,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.12571486894756156,
-              "mean_shap": -0.008173291300646352
+              "mean_shap": -0.008173291300646346,
+              "feature_shap_correlation": 0.8769420619402175,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.12177189460070721,
-              "mean_shap": 0.01256638253415053
+              "mean_shap": 0.012566382534150537,
+              "feature_shap_correlation": 0.8555672293125329,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "NAT1",
               "modality": "genomic",
               "mean_abs_shap": 0.11910739512206846,
-              "mean_shap": 0.015616181762224462
+              "mean_shap": 0.015616181762224485,
+              "feature_shap_correlation": -0.88317828891494,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.10430794461623519,
-              "mean_shap": 0.009139151421977965
+              "mean_shap": 0.00913915142197797,
+              "feature_shap_correlation": -0.5125431764374653,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ERBB2",
               "modality": "genomic",
               "mean_abs_shap": 0.07565362235472543,
-              "mean_shap": 0.004612426855353006
+              "mean_shap": 0.004612426855353002,
+              "feature_shap_correlation": 0.7175932417586334,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.0712629880381204,
-              "mean_shap": -0.013952412202440822
+              "mean_shap": -0.01395241220244082,
+              "feature_shap_correlation": -0.1361922212570486,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "RRM2",
               "modality": "genomic",
               "mean_abs_shap": 0.0710753377712634,
-              "mean_shap": 0.004042217866126541
+              "mean_shap": 0.00404221786612654,
+              "feature_shap_correlation": 0.7850876267633993,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "KRT17",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06940123767876429,
+              "mean_shap": -0.017755260735043854,
+              "feature_shap_correlation": -0.6926541040239511,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CXXC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06872020926377811,
+              "mean_shap": -0.0010281187133803068,
+              "feature_shap_correlation": -0.7581101666673177,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06608285968311663,
+              "mean_shap": -0.007230114112813667,
+              "feature_shap_correlation": 0.654646477716908,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CCNB1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.06295274835798662,
+              "mean_shap": -0.017855248681227582,
+              "feature_shap_correlation": 0.7610918064767954,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "GRB7",
+              "modality": "genomic",
+              "mean_abs_shap": 0.055950128303039075,
+              "mean_shap": 0.01204505192888269,
+              "feature_shap_correlation": 0.6721891403420995,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "nodal_N0",
+              "modality": "clinical",
+              "mean_abs_shap": 0.04909997239053627,
+              "mean_shap": 0.0034901013773347687,
+              "feature_shap_correlation": -0.33241677035665773,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "stage_II",
+              "modality": "clinical",
+              "mean_abs_shap": 0.048842641363194605,
+              "mean_shap": 0.0011799359715394273,
+              "feature_shap_correlation": 0.7153693428850357,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "nodal_N2",
+              "modality": "clinical",
+              "mean_abs_shap": 0.04720239056323462,
+              "mean_shap": 0.0028574842100865154,
+              "feature_shap_correlation": 0.9500849095301945,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.04630432002156806,
+              "mean_shap": 0.0043018983751003815,
+              "feature_shap_correlation": -0.8109025400110633,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.045821765259977824,
+              "mean_shap": 0.007710235790961745,
+              "feature_shap_correlation": 0.6160910607711535,
+              "direction": "higher feature value increases the output"
             }
           ]
         },
@@ -959,66 +1709,191 @@
             "max_abs_additivity_gap": 1.259497472932396,
             "std_of_explained_deviation": 2.2945637702941895
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -3.869158983230591,
+            "median": -2.619389772415161,
+            "max": 3.202522039413452
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-AR-A1AJ",
+              "model_output": 3.202522039413452,
+              "sum_of_shap_values": 5.533776974582206,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-E2-A1BD",
+              "model_output": -2.619389772415161,
+              "sum_of_shap_values": -0.8800526162913223,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-A8-A090",
+              "model_output": -3.869158983230591,
+              "sum_of_shap_values": -1.689481642048707,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.5590294173991954,
-              "mean_shap": 0.05395609205345605
+              "mean_shap": 0.05395609205345596,
+              "feature_shap_correlation": 0.878046567884534,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.5094609191131978,
-              "mean_shap": 0.09014861344360932
+              "mean_shap": 0.09014861344360924,
+              "feature_shap_correlation": -0.916055244376413,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CDH3",
               "modality": "genomic",
               "mean_abs_shap": 0.09565648089110569,
-              "mean_shap": 0.02502071954805065
+              "mean_shap": 0.025020719548050657,
+              "feature_shap_correlation": 0.7701656108843609,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.07882811757708219,
-              "mean_shap": 0.004246918343478295
+              "mean_shap": 0.004246918343478299,
+              "feature_shap_correlation": -0.4538147421670004,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "CCNE1",
               "modality": "genomic",
               "mean_abs_shap": 0.0651473928503824,
-              "mean_shap": 0.01121289478063346
+              "mean_shap": 0.01121289478063347,
+              "feature_shap_correlation": 0.7947876344500987,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "KRT17",
               "modality": "genomic",
               "mean_abs_shap": 0.06499831976224275,
-              "mean_shap": 0.009388018350033082
+              "mean_shap": 0.009388018350033086,
+              "feature_shap_correlation": 0.639114792927029,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "nodal_N2",
               "modality": "clinical",
               "mean_abs_shap": 0.05869400253612974,
-              "mean_shap": -0.0012744353151168872
+              "mean_shap": -0.0012744353151168844,
+              "feature_shap_correlation": 0.9211067204887763,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.05482387464966,
-              "mean_shap": -0.01438294741659471
+              "mean_shap": -0.014382947416594715,
+              "feature_shap_correlation": 0.14146291488739338,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.052833803320740884,
-              "mean_shap": -0.0018625401693301738
+              "mean_shap": -0.001862540169330159,
+              "feature_shap_correlation": -0.24642869675201237,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "NAT1",
               "modality": "genomic",
               "mean_abs_shap": 0.04912637497464613,
-              "mean_shap": 0.00792988430287615
+              "mean_shap": 0.007929884302876163,
+              "feature_shap_correlation": -0.6080990664598241,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "ERBB2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.04860021059812929,
+              "mean_shap": 0.002148693389364886,
+              "feature_shap_correlation": 0.6325786342552451,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "ANLN",
+              "modality": "genomic",
+              "mean_abs_shap": 0.04547662558184459,
+              "mean_shap": 0.0084536767347316,
+              "feature_shap_correlation": 0.01989699364404501,
+              "direction": "mixed (no consistent direction across patients)"
+            },
+            {
+              "feature": "nodal_N0",
+              "modality": "clinical",
+              "mean_abs_shap": 0.043192562026935555,
+              "mean_shap": 0.009006666349231432,
+              "feature_shap_correlation": 0.037684015674234746,
+              "direction": "mixed (no consistent direction across patients)"
+            },
+            {
+              "feature": "CDC6",
+              "modality": "genomic",
+              "mean_abs_shap": 0.038627242066446854,
+              "mean_shap": 0.00011708479826401859,
+              "feature_shap_correlation": -0.5266609486590758,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.038048748090140076,
+              "mean_shap": 0.0022445567269041714,
+              "feature_shap_correlation": -0.8058967524373984,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.03649651701734727,
+              "mean_shap": 0.007979375741632981,
+              "feature_shap_correlation": 0.6069038041166099,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "stage_I",
+              "modality": "clinical",
+              "mean_abs_shap": 0.03501193402390117,
+              "mean_shap": 0.00013248963172664418,
+              "feature_shap_correlation": -0.9129144966214763,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "RRM2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.034952534846058356,
+              "mean_shap": 0.0001187747860045303,
+              "feature_shap_correlation": 0.7177930108262345,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "ACTR3B",
+              "modality": "genomic",
+              "mean_abs_shap": 0.03493559867333194,
+              "mean_shap": 0.003522904094032043,
+              "feature_shap_correlation": 0.6426880822860905,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "nodal_N1",
+              "modality": "clinical",
+              "mean_abs_shap": 0.03239717397613186,
+              "mean_shap": 0.00160334911666143,
+              "feature_shap_correlation": -0.8432795534643459,
+              "direction": "higher feature value decreases the output"
             }
           ]
         },
@@ -1029,66 +1904,191 @@
             "max_abs_additivity_gap": 0.575242011549781,
             "std_of_explained_deviation": 0.4120291471481323
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -0.6209080815315247,
+            "median": 0.06538964062929153,
+            "max": 1.9600002765655518
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-AO-A1KO",
+              "model_output": 1.9600002765655518,
+              "sum_of_shap_values": 1.9320074285754847,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-A1-A0SQ",
+              "model_output": 0.06538964062929153,
+              "sum_of_shap_values": -0.0073510866811256365,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-AR-A250",
+              "model_output": -0.6209080815315247,
+              "sum_of_shap_values": -0.5874376263792289,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "ESR1",
               "modality": "genomic",
               "mean_abs_shap": 0.09893680980737218,
-              "mean_shap": 0.016837914220237196
+              "mean_shap": 0.016837914220237206,
+              "feature_shap_correlation": -0.8901651559483214,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "FOXC1",
               "modality": "genomic",
               "mean_abs_shap": 0.08700292136352704,
-              "mean_shap": 0.01045747720288697
+              "mean_shap": 0.01045747720288699,
+              "feature_shap_correlation": 0.8130274262834873,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.06780365383858168,
-              "mean_shap": 0.0010928028069846101
+              "mean_shap": 0.001092802806984608,
+              "feature_shap_correlation": -0.932377705774103,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.05047381449966579,
-              "mean_shap": -0.0005603972513022378
+              "mean_shap": -0.0005603972513022374,
+              "feature_shap_correlation": -0.48886621201231567,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "KRT17",
               "modality": "genomic",
               "mean_abs_shap": 0.04731582535044718,
-              "mean_shap": 0.005977870980732447
+              "mean_shap": 0.005977870980732445,
+              "feature_shap_correlation": 0.7517918519267951,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.04560000144044607,
-              "mean_shap": 0.00033614559232655834
+              "mean_shap": 0.00033614559232655736,
+              "feature_shap_correlation": -0.7923083667998048,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "stage_III",
               "modality": "clinical",
               "mean_abs_shap": 0.036212453600783526,
-              "mean_shap": -0.0015534383355785353
+              "mean_shap": -0.001553438335578535,
+              "feature_shap_correlation": 0.824240940178576,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.0329575117204206,
-              "mean_shap": -0.0037135178367286204
+              "mean_shap": -0.0037135178367286178,
+              "feature_shap_correlation": -0.8600018502097384,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "nodal_N0",
               "modality": "clinical",
               "mean_abs_shap": 0.030967372420533698,
-              "mean_shap": 0.0074834242141469925
+              "mean_shap": 0.007483424214146987,
+              "feature_shap_correlation": 0.18283747116331295,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CCNB1",
               "modality": "genomic",
               "mean_abs_shap": 0.022549793526800754,
-              "mean_shap": 0.003317098268592832
+              "mean_shap": 0.003317098268592832,
+              "feature_shap_correlation": -0.9022691387878613,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "GRB7",
+              "modality": "genomic",
+              "mean_abs_shap": 0.02148807060642239,
+              "mean_shap": -0.005761979108207522,
+              "feature_shap_correlation": -0.8144200984965568,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "MAPT",
+              "modality": "genomic",
+              "mean_abs_shap": 0.020311500319895294,
+              "mean_shap": -0.0029174276820834546,
+              "feature_shap_correlation": 0.41700103907485314,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "MLPH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.019557886757537574,
+              "mean_shap": 0.0016628440660304453,
+              "feature_shap_correlation": -0.8531925008465782,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "stage_II",
+              "modality": "clinical",
+              "mean_abs_shap": 0.019356823372722216,
+              "mean_shap": 0.0027547821846640092,
+              "feature_shap_correlation": -0.5547004703293784,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "EXO1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.016795569892953166,
+              "mean_shap": 0.000902742246992125,
+              "feature_shap_correlation": -0.8933135561922964,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "MYBL2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.015557294963279672,
+              "mean_shap": 0.00034355030657684315,
+              "feature_shap_correlation": -0.9241734714798127,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "BIRC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.01483517563862291,
+              "mean_shap": -0.0016614123518992028,
+              "feature_shap_correlation": -0.7947937386343366,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "PHGDH",
+              "modality": "genomic",
+              "mean_abs_shap": 0.014372459502155351,
+              "mean_shap": 0.000966146974324667,
+              "feature_shap_correlation": -0.6465191444425995,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "EGFR",
+              "modality": "genomic",
+              "mean_abs_shap": 0.013120799862811883,
+              "mean_shap": -0.0007693763204892354,
+              "feature_shap_correlation": 0.47808547490506403,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.012429439570391878,
+              "mean_shap": 0.0021238855409446067,
+              "feature_shap_correlation": -0.7776405708181878,
+              "direction": "higher feature value decreases the output"
             }
           ]
         }
@@ -1116,66 +2116,191 @@
             "max_abs_additivity_gap": 1.0087021367890596,
             "std_of_explained_deviation": 1.1776846647262573
           },
-          "top_10_features": [
+          "explained_output_range": {
+            "min": -2.701099395751953,
+            "median": -1.262791395187378,
+            "max": 2.543959140777588
+          },
+          "representative_patients": {
+            "highest_output": {
+              "patient_id": "TCGA-D8-A1JF",
+              "model_output": 2.543959140777588,
+              "sum_of_shap_values": 3.317458189867548,
+              "selection_rule": "patient with the highest explained output"
+            },
+            "median_output": {
+              "patient_id": "TCGA-B6-A0RL",
+              "model_output": -1.262791395187378,
+              "sum_of_shap_values": -0.1295836992654781,
+              "selection_rule": "patient at the median explained output"
+            },
+            "lowest_output": {
+              "patient_id": "TCGA-E2-A1BD",
+              "model_output": -2.701099395751953,
+              "sum_of_shap_values": -1.6458670436329108,
+              "selection_rule": "patient with the lowest explained output"
+            }
+          },
+          "top_20_features": [
             {
               "feature": "age",
               "modality": "clinical",
               "mean_abs_shap": 0.46517650836150254,
-              "mean_shap": -0.03638782502302483
+              "mean_shap": -0.036387825023024845,
+              "feature_shap_correlation": 0.8252300273085312,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "nodal_N0",
               "modality": "clinical",
               "mean_abs_shap": 0.36097790699125515,
-              "mean_shap": 0.01138140605518432
+              "mean_shap": 0.011381406055184324,
+              "feature_shap_correlation": -0.9056162520214242,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "nodal_N2",
               "modality": "clinical",
               "mean_abs_shap": 0.1345090312566794,
-              "mean_shap": 0.0004933627038491388
+              "mean_shap": 0.0004933627038491321,
+              "feature_shap_correlation": 0.9445724631154766,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "stage_III",
               "modality": "clinical",
               "mean_abs_shap": 0.13036758439195203,
-              "mean_shap": -0.011211539799008114
+              "mean_shap": -0.01121153979900813,
+              "feature_shap_correlation": 0.7786048637300292,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "stage_II",
               "modality": "clinical",
               "mean_abs_shap": 0.12041908787684356,
-              "mean_shap": -0.00885997138195659
+              "mean_shap": -0.008859971381956584,
+              "feature_shap_correlation": -0.7352503329561996,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "MAPT",
               "modality": "genomic",
               "mean_abs_shap": 0.082977672002695,
-              "mean_shap": 0.0200733977711181
+              "mean_shap": 0.02007339777111809,
+              "feature_shap_correlation": -0.8214843481939242,
+              "direction": "higher feature value decreases the output"
             },
             {
               "feature": "ANLN",
               "modality": "genomic",
               "mean_abs_shap": 0.07831487279926466,
-              "mean_shap": 0.0076263185416502914
+              "mean_shap": 0.0076263185416502914,
+              "feature_shap_correlation": 0.6655340938020546,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CEP55",
               "modality": "genomic",
               "mean_abs_shap": 0.07361374890425719,
-              "mean_shap": -0.009558849807771158
+              "mean_shap": -0.009558849807771157,
+              "feature_shap_correlation": 0.8295911215563938,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "nodal_N1",
               "modality": "clinical",
               "mean_abs_shap": 0.07194473439715589,
-              "mean_shap": 0.02281748700569122
+              "mean_shap": 0.02281748700569122,
+              "feature_shap_correlation": 0.6971411121722088,
+              "direction": "higher feature value increases the output"
             },
             {
               "feature": "CDC6",
               "modality": "genomic",
               "mean_abs_shap": 0.06665649235916207,
-              "mean_shap": 0.00383573536017334
+              "mean_shap": 0.0038357353601733367,
+              "feature_shap_correlation": 0.8249777933439832,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "ESR1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.05873400837380152,
+              "mean_shap": 0.004418068654242221,
+              "feature_shap_correlation": -0.3315666023780274,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "FOXC1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.058338760891037546,
+              "mean_shap": -0.0004698020053711661,
+              "feature_shap_correlation": -0.5949888147853588,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "NAT1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.05641338551559012,
+              "mean_shap": 0.006042572654109792,
+              "feature_shap_correlation": -0.8414014835966511,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "stage_I",
+              "modality": "clinical",
+              "mean_abs_shap": 0.049349287044206665,
+              "mean_shap": -0.002559458992231594,
+              "feature_shap_correlation": -0.7904420375491558,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "stage_IV",
+              "modality": "clinical",
+              "mean_abs_shap": 0.04541629895415765,
+              "mean_shap": -0.012603542755266501,
+              "feature_shap_correlation": 0.9800120631635431,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "KRT17",
+              "modality": "genomic",
+              "mean_abs_shap": 0.041986231607055974,
+              "mean_shap": -0.008421542700730606,
+              "feature_shap_correlation": -0.7720541867512986,
+              "direction": "higher feature value decreases the output"
+            },
+            {
+              "feature": "CCNB1",
+              "modality": "genomic",
+              "mean_abs_shap": 0.04172959884432292,
+              "mean_shap": -0.013167458620333602,
+              "feature_shap_correlation": 0.7654039139332459,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "RRM2",
+              "modality": "genomic",
+              "mean_abs_shap": 0.030736214504067855,
+              "mean_shap": 0.0010011417799634815,
+              "feature_shap_correlation": 0.7184922262906562,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CENPF",
+              "modality": "genomic",
+              "mean_abs_shap": 0.0295118241706949,
+              "mean_shap": -0.007777552042920012,
+              "feature_shap_correlation": 0.5272013035369705,
+              "direction": "higher feature value increases the output"
+            },
+            {
+              "feature": "CXXC5",
+              "modality": "genomic",
+              "mean_abs_shap": 0.028948084733667806,
+              "mean_shap": -0.00041880772031645534,
+              "feature_shap_correlation": -0.7445457834835958,
+              "direction": "higher feature value decreases the output"
             }
           ]
         }
